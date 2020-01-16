@@ -48,7 +48,7 @@ public class CodeGeneration {
                         //.setSuperEntityColumns(new String[] {"id", "version", "flag"})
                         .setTablePrefix(new String[] {""})
                         .setNaming(NamingStrategy.underline_to_camel)
-                        .setInclude(new String[] {"user_real_apply"})//这里修改表名
+                        .setInclude(new String[] {"user_virtual_fund_record"})//这里修改表名
         ).setPackageInfo(
                 new PackageConfig().setParent("com.cqc.admin")
                         .setController("controller")
