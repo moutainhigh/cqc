@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no ">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>安全中心</title>
+    <!-- 网页ico -->
+    <link rel="shortcut icon" href="./favicon.ico">
+    <!-- 导入基础base.css文件 -->
+    <link rel="stylesheet" href="./css/base.css" />
+    <!-- 导入本类.css文件 -->
+    <link rel="stylesheet" href="./css/common.css" />
+    <!-- 导入jquery -->
+    <script src="./js/jquery.min.js"></script>
+    <!-- 根据设备宽度，计算html根节点的font-size -->
+    <script>
+        // 获取html根节点要素内容
+        var htmlEle = document.documentElement,
+            // 设备宽度等于客户端宽度
+            deviceWidth = htmlEle.clientWidth;
+        // 750px的屏幕基准像素为100px
+        htmlEle.style.fontSize = 100 * (deviceWidth / 750) + "px";
+
+        // 执行onresize事件，
+        window.onresize = function () {
+            // 获取html根节点要素内容
+            var htmlEle = document.documentElement,
+                // 设备宽度等于客户端宽度
+                deviceWidth = htmlEle.clientWidth;
+            // 750px的屏幕基准像素为100px
+            htmlEle.style.fontSize = 100 * (deviceWidth / 750) + "px";
+        }
+    </script>
+    <style>
+        .pro_each span{
+            color: black !important;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- zdy改成本自定义名称 -->
+    <div class="wrap_common">
+        <!-- 顶部start -->
+        <div class="top_wrap">
+            <div class="top">
+                <!-- 标题 -->
+                <h2>安全中心</h2>
+                <!-- 左边返回样式-->
+                <a href="javascript:history.back(-1)" class="ret"></a>
+            </div>
+        </div>
+        <!-- 内容start -->
+        <!-- 将zdy改成自定义名字 -->
+        <div class="content_common">
+            <div class="model_two" style="min-height: 100%; max-height: 100%; margin-top: 1.1rem;">
+               <a href="realname.html">
+                    <div class="pro_each">
+                        <span>实名认证</span>
+                        <em class="comm"></em>
+                    </div>
+                </a>
+                <a href="./change_pass.html">
+                    <div class="pro_each">
+                        <span>修改登录密码</span>
+                        <em class="comm"></em>
+                    </div>
+                </a>
+                <a href="./pay_pass.html">
+                    <div class="pro_each">
+                        <span>设置支付密码</span>
+                        <em class="comm"></em>
+                    </div>
+                </a>
+                <a href="./change_area.html">
+                    <div class="pro_each">
+                        <span>修改地区</span>
+                        <em class="comm"></em>
+                    </div>
+                </a>
+                <!-- <a href="#">
+                    <div class="pro_each">
+                        <span>手势设置</span>
+                        <em class="comm"></em>
+                    </div>
+                </a> -->
+                <a href="./google_down.html">
+                    <div class="pro_each">
+                        <span>谷歌设置</span>
+                        <em class="comm"></em>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <!-- 内容end -->
+    </div>
+</body>
+<script>
+</script>
+</html>

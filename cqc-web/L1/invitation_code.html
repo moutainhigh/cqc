@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no ">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>我的邀请码</title>
+    <!-- 网页ico -->
+    <link rel="shortcut icon" href="./favicon.ico">
+    <!-- 导入基础base.css文件 -->
+    <link rel="stylesheet" href="./css/base.css" />
+    <!-- 导入本类.css文件 -->
+    <link rel="stylesheet" href="./css/common.css" />
+    <!-- 导入jquery -->
+    <script src="./js/jquery.min.js"></script>
+    <!-- 导入clipboard -->
+    <script src="./js/clipboard.min.js"></script>
+    <!-- 根据设备宽度，计算html根节点的font-size -->
+    <script>
+        // 获取html根节点要素内容
+        var htmlEle = document.documentElement,
+            // 设备宽度等于客户端宽度
+            deviceWidth = htmlEle.clientWidth;
+        // 750px的屏幕基准像素为100px
+        htmlEle.style.fontSize = 100 * (deviceWidth / 750) + "px";
+
+        // 执行onresize事件，
+        window.onresize = function () {
+            // 获取html根节点要素内容
+            var htmlEle = document.documentElement,
+                // 设备宽度等于客户端宽度
+                deviceWidth = htmlEle.clientWidth;
+            // 750px的屏幕基准像素为100px
+            htmlEle.style.fontSize = 100 * (deviceWidth / 750) + "px";
+        }
+    </script>
+    <style>
+       .invitation_code_box{
+            width: 90%;
+            margin: 0 auto;
+            box-shadow: 0 0 0.1rem gray;
+            height: auto;
+            margin-top: 1rem;
+       } 
+       .invitation_code_box .get_code{
+           width: 100%;
+           line-height: .6rem;
+           height: .6rem;
+           text-align: center;
+           background: #f1f1f1;
+           font-size: .3rem;
+           color: #b2b2b2;
+       }
+       .invitation_code_box .code_time{
+           width: 100%;
+           box-sizing: border-box;
+           padding: 8% 10%;
+           background: white;
+       }
+       .invitation_code_box .code_time p{
+            font-size: .28rem;
+            color: #b2b2b2;
+            margin-top: .3rem;
+            width: 100%;
+            text-align: center;
+       }
+       .invitation_code_box .code_time p:nth-child(3){
+           padding: .15rem .2rem;
+           font-size: .3rem;
+           border: 1px solid gray;
+           border-radius: .5rem;
+           width: 50%;
+           margin:.5rem auto;
+       }
+       .invitation_code_box .code_time .code_input{
+           padding: .15rem .2rem;
+           font-size: .3rem;
+           border: 1px solid gray;
+           border-radius: .5rem;
+           width: 50%;
+           margin:.5rem 1rem;
+           text-align: center;
+       }
+       .invitation_code_box .code_time p:nth-child(4){
+           background: blue;
+           border-radius: .5rem;
+           height: .7rem;
+           line-height: .7rem;
+           width: 100%;
+           text-align: center;
+           color: white;
+       }
+       .invitation_code_box:nth-child(1){
+           display: none;
+       }
+    </style>
+</head>
+
+<body>
+    <!-- zdy改成本自定义名称 -->
+    <div class="wrap_common">
+        <!-- 顶部start -->
+        <div class="top_wrap">
+            <div class="top">
+                <!-- 标题 -->
+                <h2>我的邀请码</h2>
+                <!-- 左边返回样式-->
+                <a href="javascript:history.back(-1)" class="ret"></a>
+            </div>
+        </div>
+        <!-- 内容start -->
+        <!-- 将zdy改成自定义名字 -->
+        <div class="content_common">
+            <div class="model_two" style="min-height: 100%; max-height: 100%; margin-top: 1.1rem;">
+                <div class="invitation_code_box">
+                    <div class="get_code">获取邀请码</div>
+                    <div class="code_time">
+                        <p>邀请码有效时间为10分钟</p>
+                        <p>请尽快使用</p>
+                        <input type="text" id="code" value="" class="code_input">
+                        <p data-clipboard-target="#code" class="copy">点击复制</p>
+                    </div>
+                </div>
+                <div class="invitation_code_box">
+                    <div class="get_code">获取邀请码</div>
+                    <div class="code_time">
+                        <p>请先点击获取邀请码按钮</p>
+                        <p></p>
+                        <p>暂未获取邀请码</p>
+                        <p id="get_code">获取邀请码</p>
+                    </div>
+                </div>
+                <div class="info" style="margin-top: 1rem; width: 2rem;"></div>
+            </div>
+        </div>
+        <!-- 内容end -->
+    </div>
+</body>
+<script>
+// new ClipboardJS;
+var clipboard = new Clipboard('.copy');
+// 随机生成邀请码
+var code_box = $(".invitation_code_box");
+$("#get_code").click(function(){
+    $(code_box[1]).hide();
+    $(code_box[0]).show();
+    $("#code").val( _getRandomString(10));
+    // 10分钟后刷新
+    setTimeout(function(){
+        $(code_box[0]).hide();
+        $(code_box[1]).show();  
+    },100000);
+});
+// 获取长度为len的随机字符串
+function _getRandomString(len) {
+    len = len || 32;
+    var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678'; // 默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1
+    var maxPos = $chars.length;     //计算长度
+    var code = '';
+    for (i = 0; i < len; i++) {
+        // 随机截取$charAt中的一个字符串，截取len次
+        code += $chars.charAt(Math.floor(Math.random() * maxPos));
+        // Math.floor 四舍五入
+        // Math.random() 生成随机数（0~1）,确保生成数不会大于32
+    }
+    return code.toUpperCase();
+    // "ABC".toLowerCase()//转小写
+    // "abc".toUpperCase()//转大写
+}
+// 复制
+clipboard.on('success', function(e) {
+    var msg = '复制成功';
+    e.clearSelection();
+    $(".info").text(msg).show().fadeOut(2000)
+});
+</script>
+</html>

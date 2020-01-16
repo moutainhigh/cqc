@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no ">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>添加收款码</title>
+    <!-- 网页ico -->
+    <link rel="shortcut icon" href="./favicon.ico">
+    <!-- 导入基础base.css文件 -->
+    <link rel="stylesheet" href="./css/base.css" />
+    <!-- 导入本类.css文件 -->
+    <link rel="stylesheet" href="./css/common.css" />
+    <!-- 导入jquery -->
+    <script src="./js/jquery.min.js"></script>
+    <!-- 根据设备宽度，计算html根节点的font-size -->
+    <script>
+        // 获取html根节点要素内容
+        var htmlEle = document.documentElement,
+            // 设备宽度等于客户端宽度
+            deviceWidth = htmlEle.clientWidth;
+        // 750px的屏幕基准像素为100px
+        htmlEle.style.fontSize = 100 * (deviceWidth / 750) + "px";
+
+        // 执行onresize事件，
+        window.onresize = function () {
+            // 获取html根节点要素内容
+            var htmlEle = document.documentElement,
+                // 设备宽度等于客户端宽度
+                deviceWidth = htmlEle.clientWidth;
+            // 750px的屏幕基准像素为100px
+            htmlEle.style.fontSize = 100 * (deviceWidth / 750) + "px";
+        }
+    </script>
+</head>
+<style>
+    .notice_content_text{
+        min-height: auto !important;
+    }
+    .code{display: flex;justify-content: flex-start; width: 100%;}
+    /* .code_add{width: 2rem;height: 2rem;border: 1px dotted gray; background:url(./img/add.png) no-repeat center; background-size:100% 100%; box-sizing: border-box; padding: .2rem;} */
+    .code_view{width: 2rem;height: 2rem;border: 1px dotted gray; box-sizing: border-box; margin-left:.2rem;}
+</style>
+<body style="background: #3e7fff;">
+    <!-- 遮罩层 -->
+    <div class="gray_bg"></div>
+    <!-- 筛选 -->
+    <div class="screen_comm" style="display: block;">
+        <!-- 顶部start -->
+        <div class="top_wrap">
+            <div class="top">
+                <!-- 标题 -->
+                <h2>添加收款码</h2>
+                <!-- 左边返回样式-->
+                <a href="javascript:history.back(-1)" class="ret"></a>
+            </div>
+        </div>
+        <!-- 顶部end -->
+        <!-- 筛选内容start -->
+        <div class="content_news">
+            <div class="news_each">
+                <h3>账号名称</h3>
+                <input type="text" class="input_text">
+                <h3>账号类型</h3>
+                <div class="cate">
+                    <span class="each_btn" data-type = "1">全部</span>
+                    <span class="each_btn" data-type = "2">微信扫描</span>
+                    <span class="each_btn" data-type = "3">支付宝扫码</span>
+                    <!-- <span class="each_btn">拼多多微信</span>
+                    <span class="each_btn">拼多多支付宝</span>
+                    <span class="each_btn">聚合扫码</span> -->
+                </div>
+                <h3>收款二维码</h3>
+                <div class="code">
+                    <!-- <div class="code_add"></div> -->
+                    <div class="code_view"></div>
+                </div>
+                <a href="#" class="sure_btn">提交</a>
+            </div>
+            <!-- 筛选内容end -->
+        </div>
+    </div>
+    <!-- 筛选end -->
+</body>
+<script>
+     $(".cate .each_btn").click(function(){
+        $(this).addClass("bg_blue").siblings().removeClass("bg_blue");
+    });
+</script>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no ">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>我的银行卡</title>
+    <!-- 网页ico -->
+    <link rel="shortcut icon" href="./favicon.ico">
+    <!-- 导入基础base.css文件 -->
+    <link rel="stylesheet" href="./css/base.css" />
+    <!-- 导入本类.css文件 -->
+    <link rel="stylesheet" href="./css/common.css" />
+    <!-- 导入jquery -->
+    <script src="./js/jquery.min.js"></script>
+    <!-- 根据设备宽度，计算html根节点的font-size -->
+    <script>
+        // 获取html根节点要素内容
+        var htmlEle = document.documentElement,
+            // 设备宽度等于客户端宽度
+            deviceWidth = htmlEle.clientWidth;
+        // 750px的屏幕基准像素为100px
+        htmlEle.style.fontSize = 100 * (deviceWidth / 750) + "px";
+
+        // 执行onresize事件，
+        window.onresize = function () {
+            // 获取html根节点要素内容
+            var htmlEle = document.documentElement,
+                // 设备宽度等于客户端宽度
+                deviceWidth = htmlEle.clientWidth;
+            // 750px的屏幕基准像素为100px
+            htmlEle.style.fontSize = 100 * (deviceWidth / 750) + "px";
+        }
+    </script>
+</head>
+<style>
+    /* 重置样式 */
+    
+</style>
+<body>
+    <!-- 遮罩层 -->
+    <div class="gray_bg"></div>
+    <!-- zdy改成本自定义名称 -->
+    <div class="wrap_common">
+        <!-- 顶部start -->
+        <div class="top_wrap">
+            <div class="top">
+                <!-- 标题 -->
+                <h2>我的银行卡</h2>
+                <!-- 左边返回样式-->
+                <a href="javascript:history.back(-1);" class="ret"></a>
+            </div>
+        </div>
+        <!-- 内容start -->
+        <!-- 将zdy改成自定义名字 -->
+        <div class="content_common">
+            <div class="model_one" style="height:10%; padding-top: .5rem;">
+                <a href="add_bank.html" class="add_bank">添加银行卡</a>
+            </div>
+            <div class="model_two" style="min-height: 90%; max-height: 90%;">
+               <a href="javascript:void(0);" onclick="setBank(this)">
+                    <div class="pro_each">
+                        <img src="./img/ABC.png" alt="">
+                        <span>中国农业银行</span>
+                        <span class="text">默认</span>
+                    </div>
+                </a>
+                <a href="javascript:void(0);" onclick="setBank(this)">
+                    <div class="pro_each">
+                        <img src="./img/js.png" alt="">
+                        <span>中国建设银行</span>
+                        <span class="text"></span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <!-- 内容end -->
+        <div class="comm_show">
+            <h3>设置银行卡</h3>
+            <p>是否设置为默认银行卡或删除银行卡?</p>
+            <div class="comm_show_btn">
+                <div class="one">
+                    <a href="#" id="cancel">取消</a>
+                </div>
+                <div class="two">
+                    <a href="#" id="del">删除</a>
+                    <a href="#" id="def">默认</a>
+                </div>
+            </div>
+        </div>
+        <div class="comm_mes">
+            <p>888888</p>
+        </div>
+    </div>
+</body>
+<script>
+    function setBank(obj){
+        var ele = obj;
+        $(".gray_bg").fadeIn(300);
+        $(".comm_show").fadeIn(300);
+        $("#cancel").click(function(){
+            $(".gray_bg").fadeOut(300);
+            $(".comm_show").fadeOut(300);
+            ele = undefined;
+        });
+        $("#del").click(function(){
+            $(".gray_bg").fadeOut(300);
+            $(".comm_show").fadeOut(300);
+            $(".comm_mes").show().fadeOut(1500).find("p").text("删除成功");
+            $(ele).remove();
+            ele = undefined;
+        });
+        $("#def").click(function(){
+            $(".pro_each").find("span:last-child").text(' ');
+            $(ele).find("span:last-child").text("默认");
+            $(".gray_bg").fadeOut(300);
+            $(".comm_show").fadeOut(300);
+            $(".comm_mes").show().fadeOut(1500).find("p").text("设置成功");
+            ele = undefined;
+        });
+    }
+</script>
+</html>

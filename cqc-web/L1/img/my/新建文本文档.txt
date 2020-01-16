@@ -1,0 +1,18 @@
+							    	<foreach name="data" item="vo">
+								    <span id="zt">
+								    	<php>
+											if($vo['status'] == 0)echo "正在审核";
+											if($vo['status'] == 1)echo 审核通过;
+											if($vo['status'] == 2)echo "提现成功";
+											if($vo['status'] == '-1')echo false;
+				                            if($vo['status'] == 3)echo "已提现未出款";
+				                            if($vo['status'] == 4)echo "贷款资金冻结";
+											if($vo['status'] == 5)echo "订单退款";
+				                            if($vo['status'] == 6)echo "收取保险费";
+				                          	if($vo['status'] == 7)echo "待激活用户";
+				                          	if($vo['status'] == 8)echo "预付首期费用";
+				                          	if($vo['status'] == 9)echo "VIP加急到账";
+										</php>
+								    </span>
+								    <span id="shenhe"></span>
+								    </foreach>

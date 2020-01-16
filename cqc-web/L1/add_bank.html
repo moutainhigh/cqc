@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no ">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>添加银行卡</title>
+    <!-- 网页ico -->
+    <link rel="shortcut icon" href="./favicon.ico">
+    <!-- 导入基础base.css文件 -->
+    <link rel="stylesheet" href="./css/base.css" />
+    <!-- 导入本类.css文件 -->
+    <link rel="stylesheet" href="./css/common.css" />
+    <!-- 导入jquery -->
+    <script src="./js/jquery.min.js"></script>
+    <!-- 根据设备宽度，计算html根节点的font-size -->
+    <script>
+        // 获取html根节点要素内容
+        var htmlEle = document.documentElement,
+            // 设备宽度等于客户端宽度
+            deviceWidth = htmlEle.clientWidth;
+        // 750px的屏幕基准像素为100px
+        htmlEle.style.fontSize = 100 * (deviceWidth / 750) + "px";
+
+        // 执行onresize事件，
+        window.onresize = function () {
+            // 获取html根节点要素内容
+            var htmlEle = document.documentElement,
+                // 设备宽度等于客户端宽度
+                deviceWidth = htmlEle.clientWidth;
+            // 750px的屏幕基准像素为100px
+            htmlEle.style.fontSize = 100 * (deviceWidth / 750) + "px";
+        }
+    </script>
+</head>
+<style>
+    /* 重置样式 */
+    .btn_input{
+        margin-top: .2rem !important;
+    }
+</style>
+<body>
+    <!-- 遮罩层 -->
+    <div class="gray_bg"></div>
+    <!-- zdy改成本自定义名称 -->
+    <div class="wrap_common">
+        <!-- 顶部start -->
+        <div class="top_wrap">
+            <div class="top">
+                <!-- 标题 -->
+                <h2>添加银行卡</h2>
+                <!-- 左边返回样式-->
+                <a href="javascript:history.back(-1)" class="ret"></a>
+            </div>
+        </div>
+        <!-- 内容start -->
+        <!-- 将zdy改成自定义名字 -->
+        <div class="content_common">
+            <div class="model_two" style="min-height: 100%; max-height: 100%; margin-top: 1.1rem;">
+               <div class="pro_each" style="border: none;">
+                    <input type="text" class="search_input" placeholder="输入银行卡名称搜索，例如：农业银行"/>
+                </div>
+                <a href="#" class="add_bank">
+                    <div class="pro_each">
+                        <img src="./img/ABC.png" alt="">
+                        <span>中国农业银行</span>
+                    </div>
+                </a>
+                <a href="#" class="add_bank">
+                    <div class="pro_each">
+                        <img src="./img/js.png" alt="">
+                        <span>中国建设银行</span>
+                    </div>
+                </a>
+                <a href="#" class="add_bank">
+                    <div class="pro_each">
+                        <img src="./img/China.png" alt="">
+                        <span>中国银行</span>
+                    </div>
+                </a>
+                <a href="#" class="add_bank">
+                    <div class="pro_each">
+                        <img src="./img/zs.png" alt="">
+                        <span>招商银行</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <!-- 内容end -->
+    </div>
+    <div class="show">
+        <div class="one_model_bank">
+            <div class="bank_tx">
+                <h3>银行</h3>
+                <span></span>
+            </div>
+            <div class="common_model">
+                <h3>银行卡号</h3>
+                <input type="text" value="" name="" class="tx_input" placeholder="请输入正确的银行卡号">
+            </div>
+            <div class="common_model">
+                 <input type="submit" value="确定" class="btn_input">
+                 <input type="submit" value="取消" class="btn_input bg_or" id="cancel">
+            </div>
+         </div>
+    </div>
+</body>
+<script>
+    $(".add_bank").click(function(){
+        $(".one_model_bank span").text($(this).find("span").text());
+        $(".gray_bg,.one_model_bank").show();
+        $("#cancel,.gray_bg").click(function(){
+            $(".gray_bg,.one_model_bank").hide();
+        });
+    });
+</script>
+</html>

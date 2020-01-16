@@ -1,0 +1,115 @@
+.wrap_index {
+  padding: 1.7rem 0 1.1rem;
+  position: relative;
+}
+.wrap_index .one_model {
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+}
+.wrap_index .one_model .city_hot {
+  position: absolute;
+  top: 2.5rem;
+  left: 0.5rem;
+}
+.wrap_index .one_model .city_hot img {
+  width: 0.5rem;
+  height: 0.5rem;
+}
+.wrap_index .one_model .go_order {
+  width: 50%;
+  text-align: center;
+  font-size: 0.4rem;
+  margin: 0.3rem auto;
+  line-height: 0.8rem;
+}
+.wrap_index .one_model .go_order .go_info {
+  font-size: 0.3rem;
+}
+.wrap_index .one_model .go_order .start_btn img {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+.wrap_index .one_model .go_order .start_btn .go {
+  font-size: 0.3rem;
+  display: block;
+  margin-top: 0.2rem;
+}
+.wrap_index .two_model {
+  width: 100%;
+  height: auto;
+  background: white;
+}
+.wrap_index .two_model ul {
+  display: none;
+}
+.wrap_index .two_model ul li {
+  border-bottom: 1px solid #f1f1f1;
+  display: flex;
+  justify-content: flex-start;
+  height: 1rem;
+  align-items: center;
+  position: relative;
+  transition: all 1s;
+  width: 60%;
+  overflow: hidden;
+}
+.wrap_index .two_model ul li img {
+  width: 0.4rem;
+  height: 0.4rem;
+  margin-left: 0.25rem;
+}
+.wrap_index .two_model ul li .two {
+  width: 2.6rem;
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+  height: 100%;
+  margin-left: 0.3rem;
+}
+.wrap_index .two_model ul li .two span:first-child {
+  width: 70%;
+  font-size: 0.15rem;
+  color: gray;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: 0.15rem;
+}
+.wrap_index .two_model ul li .two span:nth-child(2) {
+  width: 30%;
+  font-size: 0.15rem;
+  color: gray;
+  margin-top: 0.15rem;
+}
+.wrap_index .two_model ul li .two span:nth-child(3) {
+  width: 100%;
+  font-size: 0.3rem;
+  color: black;
+  font-weight: bold;
+  margin-top: 0.1rem;
+}
+.wrap_index .two_model ul li .three {
+  background: #3e7fff;
+  padding: 0.1rem 0.1rem;
+  color: white;
+  border-radius: 0.05rem;
+  position: absolute;
+  right: 0.3rem;
+  transition: all 0.5s;
+}
+.wrap_index .two_model ul li .four {
+  background: green;
+  height: 100%;
+  width: 0rem;
+  text-align: center;
+  color: white;
+  line-height: 1rem;
+  margin-left: 0.3rem;
+  transition: width 0.5s;
+  float: right;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}

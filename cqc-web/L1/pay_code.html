@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no ">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>收款码管理</title>
+    <!-- 网页ico -->
+    <link rel="shortcut icon" href="./favicon.ico">
+    <!-- 导入基础base.css文件 -->
+    <link rel="stylesheet" href="./css/base.css" />
+    <!-- 导入本类.css文件 -->
+    <link rel="stylesheet" href="./css/common.css" />
+    <!-- 导入jquery -->
+    <script src="./js/jquery.min.js"></script>
+    <!-- 根据设备宽度，计算html根节点的font-size -->
+    <script>
+        // 获取html根节点要素内容
+        var htmlEle = document.documentElement,
+            // 设备宽度等于客户端宽度
+            deviceWidth = htmlEle.clientWidth;
+        // 750px的屏幕基准像素为100px
+        htmlEle.style.fontSize = 100 * (deviceWidth / 750) + "px";
+
+        // 执行onresize事件，
+        window.onresize = function () {
+            // 获取html根节点要素内容
+            var htmlEle = document.documentElement,
+                // 设备宽度等于客户端宽度
+                deviceWidth = htmlEle.clientWidth;
+            // 750px的屏幕基准像素为100px
+            htmlEle.style.fontSize = 100 * (deviceWidth / 750) + "px";
+        }
+    </script>
+</head>
+<style>
+    .notice_content_text{
+        min-height: auto !important;
+    }
+</style>
+<body style="background: #3e7fff;">
+    <!-- 遮罩层 -->
+    <div class="gray_bg"></div>
+    <!-- zdy改成本自定义名称 -->
+    <div class="wrap_common">
+        <!-- 顶部start -->
+        <div class="top_wrap">
+            <div class="top">
+                <!-- 标题 -->
+                <h2>收款码管理</h2>
+                <!-- 左边返回样式-->
+                <a href="javascript:history.back(-1)" class="ret"></a>
+                <!-- 右边筛选样式 -->
+                <a href="javascript:;" class="screen"></a>
+            </div>
+        </div>
+        <!-- 内容start -->
+        <!-- 将zdy改成自定义名字 -->
+        <div class="content_common">
+            <div class="model_one" style="height:10%; padding-top: .5rem;">
+                <a href="javascript:add();" class="add_bank">添加收款码</a>
+                <a href="javascript:startAuto();" class="add_bank">自动接单</a>
+            </div>
+            <div class="model_two" style="min-height: 90%; max-height: 90%;">
+                <a href="javascript:void(0);">
+                    <div class="pro_each">
+                        <img src="./img/Alipay.png" alt="" data-type="3">
+                        <span class="name">米娅琴</span>
+                        <div class="start_end">
+                            <input id="chck1" type="checkbox" class="chck" onclick="openCode(this)">
+                            <label for="chck1" class="check-trail">
+                            <span class="check-handler"></span>
+                        </div>
+                    </div>
+                </a>
+                <a href="javascript:void(0);">
+                    <div class="pro_each">
+                        <img src="./img/WeChat.png" alt="" data-type="2">
+                        <span class="name">李伟松</span>
+                        <div class="start_end">
+                            <input id="chck2" type="checkbox" class="chck" onclick="openCode(this)">
+                            <label for="chck2" class="check-trail">
+                            <span class="check-handler"></span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <!-- 内容end -->
+        <!-- 添加收款码 -->
+        <div class="add_each">
+            <ul>
+                <li onclick="window.location.href='./add_copy.html'">扫描</li>
+                <li onclick="window.location.href='./add_copy.html'">相册</li>
+                <li id="cancel_add">取消</li>
+            </ul>
+        </div>
+        <!-- 自动接单 -->
+        <div class="notice_box">
+            <div class="notice_content">
+                <h2 class="notice_title">开启自动接单</h2>
+                <span class="notice_content_text">开启自动接单成功需要缴纳50.00PKC，缴纳成功后绑定...</span>
+            </div>
+            <a href="javascript:;" class="notice_cancel b-color">确认</a>
+            <a href="javascript:;" class="notice_cancel r-color" id="cancel">取消</a>
+        </div>
+    </div>
+    <!-- 筛选 -->
+    <div class="screen_comm">
+        <!-- 顶部start -->
+        <div class="top_wrap">
+            <div class="top">
+                <!-- 标题 -->
+                <h2>查询收款码</h2>
+                <!-- 右边书写样式 -->
+                <a href="javascript:;" class="close"></a>
+                <!-- 左边接收款样式-->
+                <a href="auto_details.html" class="rmb"></a>
+            </div>
+        </div>
+        <!-- 顶部end -->
+        <!-- 筛选内容start -->
+        <div class="content_news">
+            <div class="news_each">
+                <h3>请输入名称</h3>
+                <input type="text" class="input_text">
+                <h3>账号类型</h3>
+                <div class="cate">
+                    <span class="each_btn" data-type = "1">全部</span>
+                    <span class="each_btn" data-type = "2">微信扫描</span>
+                    <span class="each_btn" data-type = "3">支付宝扫码</span>
+                    <!-- <span class="each_btn">拼多多微信</span>
+                    <span class="each_btn">拼多多支付宝</span>
+                    <span class="each_btn">聚合扫码</span> -->
+                </div>
+                <a href="#" class="sure_btn">确认</a>
+            </div>
+            <!-- 筛选内容end -->
+        </div>
+    </div>
+    <!-- 筛选end -->
+    <div class="open_code">
+        <h3>设置收款账号</h3>
+        <span>是否<em class="status">关闭</em><em class="code_name">123456</em>的收款账号?</span>
+        <div class="code_view">
+            <img src="./img/pinduoduo.png" alt="">
+        </div>
+        <div class="each_btn">
+            <a href="javascript:void(0);" class="btn1">确定</a>
+            <a href="javascript:void(0);" class="btn2">取消</a>
+        </div>
+    </div>
+</body>
+<script>
+    var each_btn = $(".cate .each_btn");
+    var pro_each = $(".pro_each");
+    console.log($(".pro_each .name:contains(米)"));
+    var search_input = $(".news_each .input_text");
+    console.log($(pro_each[0]).find(".name"));
+    // 按钮阻止冒泡
+    var chck = $(".chck");
+    for(i=0;i<chck.length; i++){
+       if($(chck[i]).is(":checked")){
+        event.preventDefault();
+       }
+    }
+    // 添加收款码
+    function add(){
+        $(".gray_bg").show();
+        $(".add_each").animate({"height":"2.4rem"});
+        if($(".gray_bg").is(":visible")){
+            $(".gray_bg,#cancel_add").click(function(){
+                $(".add_each").animate({"height":"0rem"});
+                $(".gray_bg").hide();
+            });
+        }
+    }
+    // 开启自动接单
+    function startAuto(){
+        $(".gray_bg").show();
+        $(".notice_box").show();
+        if($(".gray_bg").is(":visible")){
+            $(".gray_bg,#cancel").click(function(){
+                $(".notice_box").hide();
+                $(".gray_bg").hide();
+            });
+        } 
+    }
+    // 开启二维码收款
+    function openCode(obj){
+        var target = obj;
+        if($(target).is(":checked")){
+            $(".gray_bg,.open_code").show();
+            $(".open_code span .status").text("开启");
+            $(".open_code span .code_name").text($(target).parent().parent().find(".name").text());
+            // 确认按钮
+            $(".btn1").click(function(){
+                $(".gray_bg,.open_code").hide();
+                $(target).prop('checked', true);
+                target = undefined;
+            });
+             // 取消按钮
+             $(".btn2").click(function(){
+                $(".gray_bg,.open_code").hide();
+                $(target).removeAttr("checked");
+                target = undefined;
+            });
+        }else if(!$(target).is(":checked")){
+            $(".gray_bg,.open_code").show();
+            $(".open_code span .status").text("关闭");
+            $(".open_code span .code_name").text($(target).parent().parent().find(".name").text());
+            // 确认按钮
+            $(".btn1").click(function(){
+                $(".gray_bg,.open_code").hide();
+                $(target).removeAttr("checked");
+                target = undefined;
+            });
+             // 取消按钮
+             $(".btn2").click(function(){
+                $(".gray_bg,.open_code").hide();
+                $(target).prop('checked', true);
+                target = undefined;
+            });
+        }
+    }
+
+
+    // 筛选
+    $(".cate .each_btn").click(function(){
+        $(this).addClass("bg_blue").siblings().removeClass("bg_blue");
+    });
+    $(".screen").click(function(){
+        $(".screen_comm").show();
+        $(".wrap_common").hide();
+    });
+    $(".close").click(function(){
+        $(".screen_comm").hide();
+        $(".wrap_common").show();
+    });
+    $(".sure_btn").click(function(){
+        var cate;
+        for(i=0;i<each_btn.length;i++){
+            if($(each_btn[i]).hasClass("bg_blue")){
+                cate = $(each_btn[i]).attr("data-type");
+            }
+        }
+        if(search_input.val()){
+            textRecord();
+            console.log("文字筛选中...")
+        }
+        if(cate){
+            codeRecord(cate);
+            console.log("类型筛选中...")
+        }
+        $(".screen_comm").hide();
+        $(".wrap_common").show();
+    });
+    // 文字筛选
+    function textRecord(){
+        console.log(search_input.val().trim());
+        $(".pro_each .name:contains("+search_input.val().trim()+")").parent().show();
+        $(".pro_each .name:not(:contains("+search_input.val().trim()+"))").parent().hide();
+    }
+    // 类型筛选
+    function codeRecord(cate){
+        if(cate == 1){
+            for(i=0;i<pro_each.length;i++){
+                $(pro_each[i]).show();
+            } 
+            return;
+        }
+        for(i=0;i<pro_each.length;i++){
+            if($(pro_each[i]).find("img").attr("data-type") == cate){
+                // if(!$(pro_each[i]).is(":hidden")){
+                    $(pro_each[i]).show();
+                // }
+            }else{
+                $(pro_each[i]).hide();
+            }
+        }
+    }
+</script>
+</html>

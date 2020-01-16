@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./js/jquery.min.js"></script>
+</head>
+<style>
+#header {
+	padding-top: 1px;
+	padding-right: 2px;
+    background-color: #3385FF;
+    width: 99%;
+    height: 40px;
+}
+
+h3 {
+    color: white;
+    text-align: center;
+}
+
+
+.nav ul li {
+    display: block;
+    margin-bottom: 20px;
+    border-bottom: 1px solid white;
+
+}
+.nav ul li a{
+	color: white;
+
+}
+.nav {
+    float: left;
+    width: 12%;
+    height: 92%;
+    background:  #3385FF;
+
+}
+
+#contain {
+    float: left;
+    margin-top: 1px;
+
+    height: 100%;
+    width: 100%;
+
+
+}
+
+#content {
+    float: left;
+    background-color: #123456;
+    margin-left: 2px;
+    width: 87%;
+    height: 100%;
+
+
+}
+
+.iframeContent{
+    position: relative;
+    width: 99.5%;
+    height: 100%;
+}
+#wrapper{
+	width: 100%;
+    height: 100%;
+
+}
+html,body{
+	width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+</style>
+<body>
+        <div id="header">
+                <h3>当前位置：</h3>
+            </div>
+            <div id="contain">
+                <div class="nav">
+                    <ul>
+                        <li><a href="http://www.baidu.com" target="htmlform">作者管理</a></li>
+                        <li><a href="http://www.baidu.com"  target="htmlform">读者管理</a></li>
+                        <li><a href="http://www.baidu.com" target="htmlform">小说管理</a></li>
+                        <li><a href="http://www.baidu.com" target="htmlform">分类管理</a></li>
+                        <li><a href="http://www.baidu.com" target="htmlform">增加分类</a></li>
+                    </ul>
+                </div>
+                <div id="content">
+                    
+                </div>
+            </div>
+</body>
+<script>
+    $("#content").load("http://www.baidu.com");
+</script>
+
+</html>

@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no ">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>账变记录</title>
+    <!-- 网页ico -->
+    <link rel="shortcut icon" href="./favicon.ico">
+    <!-- 导入基础base.css文件 -->
+    <link rel="stylesheet" href="./css/base.css" />
+    <!-- 导入本类.css文件 -->
+    <link rel="stylesheet" href="./css/common.css" />
+    <!-- 导入jquery -->
+    <script src="./js/jquery.min.js"></script>
+    <!-- 导入时间插件 -->
+    <link rel="stylesheet" type="text/css" href="css/date.css" media="all">
+    <script type="text/javascript" src="js/moment.js"></script>
+    <script type="text/javascript" src="js/bootstrap-datetimepicker.js"></script> 
+    <!-- 根据设备宽度，计算html根节点的font-size -->
+    <script>
+        // 获取html根节点要素内容
+        var htmlEle = document.documentElement,
+            // 设备宽度等于客户端宽度
+            deviceWidth = htmlEle.clientWidth;
+        // 750px的屏幕基准像素为100px
+        htmlEle.style.fontSize = 100 * (deviceWidth / 750) + "px";
+
+        // 执行onresize事件，
+        window.onresize = function () {
+            // 获取html根节点要素内容
+            var htmlEle = document.documentElement,
+                // 设备宽度等于客户端宽度
+                deviceWidth = htmlEle.clientWidth;
+            // 750px的屏幕基准像素为100px
+            htmlEle.style.fontSize = 100 * (deviceWidth / 750) + "px";
+        }
+    </script>
+    <style>
+        /* 重置样式 */
+        .pro_each span:first-child{
+            color:black !important;
+            font-weight: bold;
+            font-size: .33rem;
+        }
+        .pro_each span:nth_child(2){
+          margin-left: 0 !important;
+        }
+        .dtPicker th,.dtPicker td{}
+    </style>    
+</head>
+
+<body style="background: #3e7fff;">
+    <!-- 遮罩层 -->
+    <div class="gray_bg"></div>
+    <!-- zdy改成本自定义名称 -->
+    <div class="wrap_common">
+        <!-- 顶部start -->
+        <div class="top_wrap">
+            <div class="top">
+                <!-- 标题 -->
+                <h2>账变记录</h2>
+                <!-- 左边返回样式-->
+                <a href="javascript:history.back(-1)" class="ret"></a>
+                 <!-- 右边筛选样式 -->
+                 <a href="javascript:;" class="screen"></a>
+            </div>
+        </div>
+        <!-- 内容start -->
+        <!-- 将zdy改成自定义名字 -->
+        <div class="content_common">
+            <div class="model_two" style="min-height: 100%; max-height: 100%; margin-top: 1.1rem;">
+                <div class="invitation_code_box">
+                    <div class="pro_each">
+                        <span>-</span>
+                        <span>500</span>
+                        <div class="re fr">
+                            <p>2019-11-11 02:01</p>
+                            <p class="bg_b" data-type="2">人工加款</p>
+                        </div>
+                    </div> 
+                    <div class="pro_each">
+                        <span>-</span>
+                        <span>500</span>
+                        <div class="re fr">
+                            <p>2019-11-11 02:01</p>
+                            <p class="bg_b" data-type="3">人工扣款</p>
+                        </div>
+                    </div> 
+                    <div class="pro_each">
+                        <span>-</span>
+                        <span>500</span>
+                        <div class="re fr">
+                            <p>2019-11-11 02:01</p>
+                            <p class="bg_b" data-type="4">银行存款</p>
+                        </div>
+                    </div> 
+                    <div class="pro_each">
+                        <span>-</span>
+                        <span>500</span>
+                        <div class="re fr">
+                            <p>2019-11-11 02:01</p>
+                            <p class="bg_b" data-type="5">银行提醒</p>
+                        </div>
+                    </div>
+                    <div class="pro_each">
+                        <span>-</span>
+                        <span>500</span>
+                        <div class="re fr">
+                            <p>2019-11-11 02:01</p>
+                            <p class="bg_r" data-type="6">提款失败</p>
+                        </div>
+                    </div>
+                    <div class="pro_each">
+                        <span>-</span>
+                        <span>500</span>
+                        <div class="re fr">
+                            <p>2019-11-11 02:01</p>
+                            <p class="bg_g" data-type="7">确认收款</p>
+                        </div>
+                    </div>
+                    <div class="pro_each">
+                        <span>-</span>
+                        <span>500</span>
+                        <div class="re fr">
+                            <p>2019-11-11 02:01</p>
+                            <p class="bg_g" data-type="8">任务佣金</p>
+                        </div>
+                    </div>
+                    <div class="pro_each">
+                        <span>-</span>
+                        <span>500</span>
+                        <div class="re fr">
+                            <p>2019-11-11 02:01</p>
+                            <p class="bg_g" data-type="9">推广佣金</p>
+                        </div>
+                    </div>
+                    <div class="pro_each">
+                        <span>-</span>
+                        <span>500</span>
+                        <div class="re fr">
+                            <p>2019-11-11 02:01</p>
+                            <p class="bg_g" data-type="10">人工提单</p>
+                        </div>
+                    </div>
+                    <div class="pro_each">
+                        <span>-</span>
+                        <span>500</span>
+                        <div class="re fr">
+                            <p>2019-11-11 02:01</p>
+                            <p class="bg_g" data-type="11">加成佣金</p>
+                        </div>
+                    </div>
+                    <div class="pro_each">
+                        <span>-</span>
+                        <span>500</span>
+                        <div class="re fr">
+                            <p>2019-11-11 02:01</p>
+                            <p class="bg_g" data-type="12">激活账号</p>
+                        </div>
+                    </div>
+                    <div class="pro_each">
+                        <span>-</span>
+                        <span>500</span>
+                        <div class="re fr">
+                            <p>2019-11-11 02:01</p>
+                            <p class="bg_g" data-type="13">直推奖励</p>
+                        </div>
+                    </div>
+                    <div class="pro_each">
+                        <span>-</span>
+                        <span>500</span>
+                        <div class="re fr">
+                            <p>2019-11-11 02:01</p>
+                            <p class="bg_g" data-type="14">拼多多奖励</p>
+                        </div>
+                    </div>
+                    <div class="pro_each">
+                        <span>-</span>
+                        <span>500</span>
+                        <div class="re fr">
+                            <p>2019-11-11 02:01</p>
+                            <p class="bg_g" data-type="15">拼多多补偿金</p>
+                        </div>
+                    </div>
+                    <div class="pro_each">
+                        <span>-</span>
+                        <span>500</span>
+                        <div class="re fr">
+                            <p>2019-11-11 02:01</p>
+                            <p class="bg_r" data-type="16">外挂激活</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 内容end -->
+    </div>
+    <!-- 筛选 -->
+    <div class="screen_comm">
+        <!-- 顶部start -->
+        <div class="top_wrap">
+            <div class="top">
+                <!-- 标题 -->
+                <h2>筛选</h2>
+                <!-- 右边书写样式 -->
+                <a href="javascript:;" class="close"></a>
+            </div>
+        </div>
+        <!-- 顶部end -->
+        <!-- 筛选内容start -->
+        <div class="content_news">
+            <div class="news_each">
+                <h3>起始时间:</h3>
+                <div class="start_time">
+                    <div class="iDate full">
+                        <input type="text" class="date_time">
+                         <button type="button" class="addOn"></button>
+                    </div>
+                </div>
+                <h3>结束时间:</h3>
+                <div class="end_time">
+                    <div class="iDate full">
+                        <input type="text" class="date_time">
+                         <button type="button" class="addOn"></button>
+                    </div>
+                </div>
+                <h3>类型</h3>
+                <div class="cate">
+                    <span class="each_btn" data-type="1">全部</span>
+                    <span class="each_btn" data-type="2">人工加款</span>
+                    <span class="each_btn" data-type="3">人工扣款</span>
+                    <span class="each_btn" data-type="4">银行存款</span>
+                    <span class="each_btn" data-type="5">银行提醒</span>
+                    <span class="each_btn" data-type="6">提款失败</span>
+                    <span class="each_btn" data-type="7">确认收款</span>
+                    <span class="each_btn" data-type="8">任务佣金</span>
+                    <span class="each_btn" data-type="9">推广佣金</span>
+                    <span class="each_btn" data-type="10">人工提单</span>
+                    <span class="each_btn" data-type="11">加成佣金</span>
+                    <span class="each_btn" data-type="12">激活账号</span>
+                    <span class="each_btn" data-type="13">直推奖励</span>
+                    <span class="each_btn" data-type="14">拼多多押金</span>
+                    <span class="each_btn" data-type="15">拼多多补偿金</span>
+                    <span class="each_btn" data-type="16">外挂激活</span>
+                </div>
+                <a href="#" class="sure_btn">确认</a>
+            </div>
+            <!-- 筛选内容end -->
+        </div>
+    </div>
+    <!-- 筛选end -->
+    <div class="notice_box">
+        <div class="notice_content">
+            <h2 class="notice_title">平台提示</h2>
+            <span class="notice_content_text"></span>
+        </div>
+        <a href="javascript:;" class="notice_cancel">朕知道了</a>
+    </div>
+</body>
+<script>
+    // 筛选
+    var cate_btn = $(".cate .each_btn");        //类型按钮
+    $(".screen").click(function(){
+        $(".screen_comm").show();
+        $(".wrap_common").hide();
+    });
+    $(".close").click(function(){
+        $(".screen_comm").hide();
+        $(".wrap_common").show();
+    });
+    $(".cate .each_btn").click(function(){
+        $(this).addClass("bg_blue").siblings().removeClass("bg_blue");
+    });
+    // 确认筛选
+    $(".sure_btn").click(function(){
+        var cate;
+        for(i=0;i<cate_btn.length;i++){
+            if($(cate_btn[i]).hasClass("bg_blue")){
+                cate = $(cate_btn[i]).attr("data-type");
+            }
+        }
+        if(cate){
+            cateRecord(cate);
+        }
+        console.log(cate);
+        var status1 = cate ? 1 : 0;
+        var status2 = timeRecord(cate);
+        if(status1 == 0 && status2 == 0){
+            $(".gray_bg,.notice_box").show();
+            $(".notice_box .notice_content_text").text("随便点个不咯？");
+            $(".notice_cancel").click(function(){$(".gray_bg,.notice_box").hide();});
+        }else if(status2 == 2){
+            $(".gray_bg,.notice_box").show();
+            $(".notice_box .notice_content_text").text("开始时间不能大于结束时间哦");
+            $(".notice_cancel").click(function(){$(".gray_bg,.notice_box").hide();});
+        }else{
+            $(".screen_comm").hide();
+            $(".wrap_common").show();
+        }
+    });
+    // 订单类别筛选函数
+    function cateRecord(type){
+        var status = status ? status : 0;
+        var ele_type = $(".pro_each").find("p:last-child");                      //订单类型
+        // console.log(ele_type);
+        // 全部类型
+        if(type == 1){
+            for(i=0;i<ele_type.length;i++){
+                $(ele_type[i]).parent().parent().show();
+            }
+            return;
+        }
+        // 支付类型和订单类型
+        console.log(type);
+        if(type){
+            console.log("正在筛选");
+            for(i=0;i<ele_type.length;i++){
+                if($(ele_type[i]).attr("data-type") == type){
+                    console.log(i);
+                    console.log(ele_type[i]);
+                    $(ele_type[i]).parent().parent().show();
+                }else{
+                    $(ele_type[i]).parent().parent().hide();
+                }
+            }
+        }
+    }
+    // 时间筛选
+    function timeRecord(){
+        var start_end = $(".date_time");                            //开始时间和结束时间
+        var start_time = new Date($(start_end[0]).val());           //开始时间
+        var end_time = new Date($(start_end[1]).val());             //结束时间
+        var ele_time = $(".pro_each").find("p:first-child");          //目标时间
+        if($(start_end[0]).val() == $(start_end[1]).val()){
+            console.log("没有时间筛选");
+            return status =0;
+        }
+        if(start_time > end_time){
+            return status =2;
+        }
+        console.log(555);
+        for(i=0;i<ele_time.length;i++){
+            if(new Date($(ele_time[i]).text())>=start_time && new Date($(ele_time[i]).text())<=end_time){
+                if(cate){
+                    if(!$(ele_time[i]).parent().parent().is(":hidden")){
+                        $(ele_time[i]).parent().parent().show();
+                    }
+                }else{
+                    $(ele_time[i]).parent().parent().show();
+                }
+            }else{
+                $(ele_time[i]).parent().parent().hide();
+            }
+        } 
+        return status =1;
+    }
+    // 日期插件
+    $(document).ready(function(){
+        // date time picker
+        if($(".iDate.full").length>0){
+            $(".iDate.full").datetimepicker({
+                locale: "zh-cn",
+                // format: "YYYY-MM-DD a hh:mm",
+                format: "YYYY-MM-DD hh:mm",
+                dayViewHeaderFormat: "YYYY年 MMMM"
+            });
+        }
+    })
+</script>
+</html>

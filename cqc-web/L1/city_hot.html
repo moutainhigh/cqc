@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no ">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>base</title>
+    <!-- 网页ico -->
+    <link rel="shortcut icon" href="./favicon.ico">
+    <!-- 导入基础base.css文件 -->
+    <link rel="stylesheet" href="./css/base.css" />
+    <!-- 导入本类.css文件 -->
+    <link rel="stylesheet" href="./css/common.css" />
+    <!-- 导入jquery -->
+    <script src="./js/jquery.min.js"></script>
+    <!-- 根据设备宽度，计算html根节点的font-size -->
+    <script>
+        // 获取html根节点要素内容
+        var htmlEle = document.documentElement,
+            // 设备宽度等于客户端宽度
+            deviceWidth = htmlEle.clientWidth;
+        // 750px的屏幕基准像素为100px
+        htmlEle.style.fontSize = 100 * (deviceWidth / 750) + "px";
+
+        // 执行onresize事件，
+        window.onresize = function () {
+            // 获取html根节点要素内容
+            var htmlEle = document.documentElement,
+                // 设备宽度等于客户端宽度
+                deviceWidth = htmlEle.clientWidth;
+            // 750px的屏幕基准像素为100px
+            htmlEle.style.fontSize = 100 * (deviceWidth / 750) + "px";
+        }
+    </script>
+</head>
+
+<body>
+    <!-- zdy改成本自定义名称 -->
+    <div class="wrap_common">
+        <!-- 顶部start -->
+        <div class="top_wrap">
+            <div class="top">
+                <!-- 标题 -->
+                <h2>热度榜</h2>
+                <!-- 左边返回样式-->
+                <a href="javascript:history.back(-1)" class="ret"></a>
+            </div>
+        </div>
+        <!-- 内容start -->
+        <!-- 将zdy改成自定义名字 -->
+        <div class="content_common">
+            <div class="model_one">
+                <img src="./img/city.jpg" alt="">
+            </div>
+            <div class="model_two">
+                <div class="pro_each">
+                    <span>1</span>
+                    <span>深圳市</span>
+                    <meter min="0" max="10" low="3" high="6" value="10" optimum="2"></meter>
+                </div>
+                <div class="pro_each">
+                    <span>2</span>
+                    <span>北京</span>
+                    <meter min="0" max="10" low="3.33" high="6" value="7" optimum="2"></meter>
+                </div>
+                <div class="pro_each">
+                    <span>3</span>
+                    <span>重庆</span>
+                    <meter min="0" max="10" low="3" high="6" value="5" optimum="2"></meter>
+                </div>
+                <div class="pro_each">
+                    <span>4</span>
+                    <span>广州市</span>
+                    <meter min="0" max="10" low="3" high="6" value="4" optimum="2"></meter>
+                </div>
+                <div class="pro_each">
+                    <span>5</span>
+                    <span>武汉市</span>
+                    <meter min="0" max="10" low="3" high="6" value="3" optimum="2"></meter>
+                </div>
+                <div class="pro_each">
+                    <span>6</span>
+                    <span>东莞市</span>
+                    <meter min="0" max="10" low="3" high="6" value="2" optimum="2"></meter>
+                </div>
+                <div class="pro_each">
+                    <span>6</span>
+                    <span>盐城市</span>
+                    <meter min="0" max="10" low="3" high="6" value="2" optimum="2"></meter>
+                </div>
+                <div class="pro_each">
+                    <span>6</span>
+                    <span>安阳市</span>
+                    <meter min="0" max="10" low="3" high="6" value="2" optimum="2"></meter>
+                </div>
+                <div class="pro_each">
+                    <span>6</span>
+                    <span>上海</span>
+                    <meter min="0" max="10" low="3" high="6" value="2" optimum="2"></meter>
+                </div>
+                <div class="pro_each">
+                    <span>6</span>
+                    <span>泉州市</span>
+                    <meter min="0" max="10" low="3" high="6" value="1" optimum="2"></meter>
+                </div>
+                <div class="pro_each">
+                    <span>6</span>
+                    <span>泉州市</span>
+                    <meter min="0" max="10" low="3" high="6" value="0.3" optimum="2"></meter>
+                </div>
+            </div>
+        </div>
+        <!-- 内容end -->
+    </div>
+</body>
+<script>
+</script>
+</html>

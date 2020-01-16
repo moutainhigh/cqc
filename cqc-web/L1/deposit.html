@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- -->
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no ">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>base</title>
+    <!-- 网页ico -->
+    <link rel="shortcut icon" href="./favicon.ico">
+    <!-- 导入基础base.css文件 -->
+    <link rel="stylesheet" href="./css/base.css" />
+    <!-- 导入本类.css文件 -->
+    <link rel="stylesheet" href="./css/common.css" />
+    <!-- 导入jquery -->
+    <script src="./js/jquery.min.js"></script>
+    <!-- 根据设备宽度，计算html根节点的font-size -->
+    <script>
+        // 获取html根节点要素内容
+        var htmlEle = document.documentElement,
+            // 设备宽度等于客户端宽度
+            deviceWidth = htmlEle.clientWidth;
+        // 750px的屏幕基准像素为100px
+        htmlEle.style.fontSize = 100 * (deviceWidth / 750) + "px";
+
+        // 执行onresize事件，
+        window.onresize = function () {
+            // 获取html根节点要素内容
+            var htmlEle = document.documentElement,
+                // 设备宽度等于客户端宽度
+                deviceWidth = htmlEle.clientWidth;
+            // 750px的屏幕基准像素为100px
+            htmlEle.style.fontSize = 100 * (deviceWidth / 750) + "px";
+        }
+    </script>
+</head>
+
+<body style="background:#3e7fff">
+    <!-- 遮罩层 -->
+    <div class="gray_bg"></div>
+    <!-- zdy改成本自定义名称 -->
+    <div class="wrap_deposit">
+        <!-- 顶部start -->
+        <div class="top_wrap">
+            <div class="top">
+                <!-- 标题 -->
+                <h2>存款</h2>
+                <!-- 右边书写样式 -->
+                <a href="./dep_record.html" class="pen"></a>
+                <!-- 左边返回样式 -->
+                <a href="javascript:history.back(-1)" class="ret"></a>
+            </div>
+        </div>
+        <!-- 顶部end -->
+        <!-- 内容start -->
+        <!-- 将zdy改成自定义名字 -->
+        <div class="content_deposit">
+            <form method="" action="">
+            <div class="one_model_bank">
+               <div class="bank">
+                   <h3>银行</h3>
+                   <img src="./img/ABC.png" alt="">
+                   <span>中国工商银行</span>
+               </div>
+               <div class="common_model">
+                   <h3>收款人姓名</h3>
+                   <p><input type="text" value="" name="dep_name" class="common_input" placeholder="请输入您的姓名"/><em class="copy_btn"></em class=".copy_btn"></p>
+               </div>
+               <div class="common_model">
+                    <h3>银行卡账号</h3>
+                    <p><input type="text" value="" name="user" class="common_input" placeholder="请输入您的银行卡账号"/><em class="copy_btn"></em></p>
+                </div>
+                <div class="common_model">
+                   <h3>开户行</h3>
+                   <p><input type="text" value="" name="cate" class="common_input" placeholder="请填写您的开户行"/><em class="copy_btn"></em></p>
+               </div>
+            </div>
+            <div class="two_model_deposit">
+                <div class="common_model">
+                    <h3>充值(cqc)</h3>
+                    <p><input type="text" value="" name="" class="common_input" placeholder="1000起充"/><em></em></p>
+                </div>
+                <div class="dep">
+                    <p>备注</p>
+                    <input type="text" value="" class="beizhu" />
+                    <input type="submit" value="存款" class="btn_input"/>
+                </div>
+            </div>
+            </form>
+        </div>
+        <!-- 内容end -->
+        <!-- 首页通告 -->
+        <div class="notice_box">
+            <div class="notice_content">
+                <h2 class="notice_title">警告</h2>
+                <span class="notice_content_text">1.平台充值........<br>2.平台充值........<br>3.平台充值........</span>
+            </div>
+            <a href="javascript:void(0);" class="notice_cancel">朕知道了</a>
+        </div>
+    </div>
+    <div class="comm_mes">
+        <p></p>
+    </div>
+</body>
+<script src="./js/clipboard.min.js"></script>
+<script>
+    console.log($(".copy_btn").prev());
+    var clipboard = new Clipboard('.copy_btn', {
+        text: function(e) {
+            return $(e).prev().val();
+        }
+    });
+    clipboard.on('success', function(e) {
+        var msg = '复制成功';
+        $(".comm_mes").show().fadeOut(2000).find("p").text(msg);
+    });
+    clipboard.on('error', function(e) {
+        var msg = '复制失败';
+        $(".comm_mes").show().fadeOut(2000).find("p").text(msg);
+    });
+
+    $(function(){
+        setTimeout(() => {
+            $(".gray_bg,.notice_box").show();    
+        }, 500);
+        var time = 5;
+        function timeDown(){
+            if(time == 0){
+                clearInterval(timer);
+                $(".notice_cancel").text("朕知道了").css("color","aqua");
+                $(".notice_cancel").click(function(){
+                    $(".gray_bg,.notice_box").hide()
+                });
+                return;
+            }
+            $(".notice_cancel").unbind().attr('disabled',false).text("朕知道了"+time).css("color","gray");
+            time--;
+        }
+        console.log(time);
+        timeDown();
+        timer = setInterval(timeDown,1000);
+    })
+</script>
+</html>

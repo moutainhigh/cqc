@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no ">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>添加城市</title>
+    <!-- 网页ico -->
+    <link rel="shortcut icon" href="./favicon.ico">
+    <!-- 导入基础base.css文件 -->
+    <link rel="stylesheet" href="./css/base.css" />
+    <!-- 导入本类.css文件 -->
+    <link rel="stylesheet" href="./css/common.css" />
+    <!-- 导入jquery -->
+    <script src="./js/jquery.min.js"></script>
+    <!-- 导入插件css -->
+    <link rel="stylesheet" href="./lib/city/LArea.css">
+    <!-- 根据设备宽度，计算html根节点的font-size -->
+    <script>
+        // 获取html根节点要素内容
+        var htmlEle = document.documentElement,
+            // 设备宽度等于客户端宽度
+            deviceWidth = htmlEle.clientWidth;
+        // 750px的屏幕基准像素为100px
+        htmlEle.style.fontSize = 100 * (deviceWidth / 750) + "px";
+
+        // 执行onresize事件，
+        window.onresize = function () {
+            // 获取html根节点要素内容
+            var htmlEle = document.documentElement,
+                // 设备宽度等于客户端宽度
+                deviceWidth = htmlEle.clientWidth;
+            // 750px的屏幕基准像素为100px
+            htmlEle.style.fontSize = 100 * (deviceWidth / 750) + "px";
+        }
+    </script>
+</head>
+<style>
+    /* 重置样式 */
+.pro_each span{
+   color: black !important;
+}
+.content-block{
+    display: inline-block;
+}
+.content-block input{
+    border: none;
+    font-size: .3rem;
+}
+</style>
+<body>
+    <!-- 遮罩层 -->
+    <div class="gray_bg"></div>
+    <!-- zdy改成本自定义名称 -->
+    <div class="wrap_common">
+        <!-- 顶部start -->
+        <div class="top_wrap">
+            <div class="top">
+                <!-- 标题 -->
+                <h2>添加城市</h2>
+                <!-- 左边返回样式-->
+                <a href="javascript:history.back(-1)" class="ret"></a>
+            </div>
+        </div>
+        <!-- 内容start -->
+        <!-- 将zdy改成自定义名字 -->
+        <div class="content_common">
+            <div class="model_two" style="min-height: 100%; max-height: 100%; margin-top: 1.1rem;">
+               <!-- <a href="javascript:void(0);"> -->
+                    <div class="pro_each">
+                        <span>无</span>
+                        <div class="opt opt_active">
+                            <span></span>
+                        </div>
+                    </div>
+                <!-- </a> -->
+                <!-- <a href="javascript:void(0);"> -->
+                    <div class="pro_each">
+                        <div class="content-block" style="width:90%">
+                            <input id="demo1" type="text" readonly="" value="所在地区" style="width:100%;">
+                            <input id="value1" type="hidden">
+                        </div>
+                        <div class="opt">
+                            <span></span>
+                        </div>
+                    </div>
+                <!-- </a> -->
+            </div>
+        </div>
+        <!-- 内容end -->
+    </div>
+</body>
+<script src="lib/city/LAreaData1.js"></script>
+<script src="lib/city/LAreaData2.js"></script>
+<script src="lib/city/LArea.js"></script>
+<script>
+    // 插件
+    var area1 = new LArea();
+    area1.init({
+        'trigger': '#demo1', //触发选择控件的文本框，同时选择完毕后name属性输出到该位置
+        'valueTo': '#value1', //选择完毕后id属性输出到该位置
+        'keys': {
+            id: 'id',
+            name: 'name'
+        }, //绑定数据源相关字段 id对应valueTo的value属性输出 name对应trigger的value属性输出
+        'type': 1, //数据源类型
+        'data': LAreaData //数据源
+    });
+    area1.value=[1,13,3];//控制初始位置，注意：该方法并不会影响到input的value
+    // 选择地区
+    var opt = $(".opt");
+    console.log(opt);
+    var pro_each = $(".pro_each");
+    console.log(pro_each);
+    $(pro_each[0]).click(function(){
+        $(opt[0]).addClass("opt_active");
+        $(opt[1]).removeClass("opt_active");
+    });
+    $(pro_each[1]).click(function(){
+        $(opt[1]).addClass("opt_active");
+        $(opt[0]).removeClass("opt_active");
+    });
+</script>
+</html>

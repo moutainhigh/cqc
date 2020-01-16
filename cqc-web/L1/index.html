@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- -->
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no ">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>首页</title>
+    <!-- 网页ico -->
+    <link rel="shortcut icon" href="./favicon.ico">
+    <!-- 导入基础base.css文件 -->
+    <link rel="stylesheet" href="./css/base.css" />
+    <!-- 导入本类.css文件 -->
+    <link rel="stylesheet" href="./css/index.css" />
+    <!-- 导入jquery -->
+    <script src="./js/jquery.min.js"></script>
+    <!-- 根据设备宽度，计算html根节点的font-size -->
+    <script>
+        // 获取html根节点要素内容
+        var htmlEle = document.documentElement,
+            // 设备宽度等于客户端宽度
+            deviceWidth = htmlEle.clientWidth;
+        // 750px的屏幕基准像素为100px
+        htmlEle.style.fontSize = 100 * (deviceWidth / 750) + "px";
+
+        // 执行onresize事件，
+        window.onresize = function () {
+            // 获取html根节点要素内容
+            var htmlEle = document.documentElement,
+                // 设备宽度等于客户端宽度
+                deviceWidth = htmlEle.clientWidth;
+            // 750px的屏幕基准像素为100px
+            htmlEle.style.fontSize = 100 * (deviceWidth / 750) + "px";
+        }
+    </script>
+</head>
+<style>
+    body{
+        background:url(http://img5.imgtn.bdimg.com/it/u=1907116937,604513674&fm=26&gp=0.jpg) no-repeat center;
+        background-size: 100% 100%;
+    }
+</style>
+<body>
+    <!-- 遮罩层 -->
+    <div class="gray_bg"></div>
+    <!-- zdy改成本自定义名称 -->
+    <div class="wrap_index">
+        <!-- 顶部start -->
+        <div class="top_wrap">
+            <div class="top">
+                <!-- 标题 -->
+                <h2>抢单系统</h2>
+                <!-- 右边书写样式 -->
+                <a href="./order_record.html" class="pen"></a>
+                <!-- 左边错误样式 -->
+                <a href="./news.html" class="false"></a>
+                <!-- 左边返回样式
+                <a href="javascript:history.go(-1)" class="ret"></a> -->
+            </div>
+        </div>
+        <!-- 顶部通告start -->
+        <div class="notice">
+            <span></span>
+            <div class="notice_box_top">
+                <a href="./news.html" class="notice_content_text">1黑科技智能音響自動播放最新上架 自動阿薩德按時按時1</a>
+                <a href="./news.html" class="notice_content_text">2黑科技智能音響自動播放最新上架 自動阿薩德按時按時2</a>
+                <a href="./news.html" class="notice_content_text">3黑科技智能音響自動播放最新上架 自動阿薩德按時按時3</a>
+                <a href="./news.html" class="notice_content_text">4黑科技智能音響自動播放最新上架 自動阿薩德按時按時1</a>
+                <a href="./news.html" class="notice_content_text">5黑科技智能音響自動播放最新上架 自動阿薩德按時按時2</a>
+                <a href="./news.html" class="notice_content_text">6黑科技智能音響自動播放最新上架 自動阿薩德按時按時3</a>
+                <a href="./news.html" class="notice_content_text">7黑科技智能音響自動播放最新上架 自動阿薩德按時按時1</a>
+                <a href="./news.html" class="notice_content_text">8黑科技智能音響自動播放最新上架 自動阿薩德按時按時2</a>
+                <a href="./news.html" class="notice_content_text">9黑科技智能音響自動播放最新上架 自動阿薩德按時按時3</a>
+            </div>
+        </div>
+        <!-- 顶部通告end -->
+        <!-- 顶部end -->
+        <!-- 内容start -->
+        <!-- 将zdy改成自定义名字 -->
+        <div class="content_index">
+            <div class="one_model">
+                <div class="city_hot"><a href="./city_hot.html"><img src="./img/hot.png" alt=""></a></div>
+                <div class="go_order">
+                    <div class="go_info">可用 cqc：0.00</div>
+                    <div class="start_btn">
+                        <img src="./img/btn.png" alt="">
+                        <span class="go">开始抢单</span>
+                    </div>
+                </div>
+            </div>
+            <div class="two_model">
+                <ul>
+                    <li>
+                        <img src="./img/Alipay.png" alt="">
+                        <div class="two">
+                            <span>hong44466</span>
+                            <span>0.59</span>
+                            <span>560.0</span>
+                        </div>
+                        <span class="three">等待付款</span>
+                        <a href="javascript:void(0);" class="four">确认付款</a>
+                    </li>
+                    <li>
+                        <img src="./img/WeChat.png" alt="">
+                        <div class="two">
+                            <span>hong44466</span>
+                            <span>0.59</span>
+                            <span>560.0</span>
+                        </div>
+                        <span class="three">等待付款</span>
+                        <a href="javascript:void(0);" class="four">确认付款</a>
+                    </li>
+                    <li>
+                        <img src="./img/Alipay.png" alt="">
+                        <div class="two">
+                            <span>hong44466</span>
+                            <span>0.59</span>
+                            <span>560.0</span>
+                        </div>
+                        <span class="three">等待付款</span>
+                        <a href="javascript:void(0);" class="four">确认付款</a>
+                    </li>
+                    <li>
+                        <img src="./img/WeChat.png" alt="">
+                        <div class="two">
+                            <span>hong44466</span>
+                            <span>0.59</span>
+                            <span>560.0</span>
+                        </div>
+                        <span class="three">等待付款</span>
+                        <a href="javascript:void(0);" class="four">确认付款</a>
+                    </li>
+                    <li>
+                        <img src="./img/Alipay.png" alt="">
+                        <div class="two">
+                            <span>hong44466</span>
+                            <span>0.59</span>
+                            <span>560.0</span>
+                        </div>
+                        <span class="three">等待付款</span>
+                        <a href="javascript:void(0);" class="four">确认付款</a>
+                    </li>
+                    <li>
+                        <img src="./img/WeChat.png" alt="">
+                        <div class="two">
+                            <span>hong44466</span>
+                            <span>0.59</span>
+                            <span>560.0</span>
+                        </div>
+                        <span class="three">等待付款</span>
+                        <a href="javascript:void(0);" class="four">确认付款</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- 内容end -->
+        <!-- 通用通告 -->
+        <div class="notice_box">
+            <div class="notice_img"><img src="./img/bell.png" alt=""></div>
+            <div class="notice_content">
+                <h2 class="notice_title">佣金加提成</h2>
+                <span class="notice_content_text">微信佣金加提成到0.2%</span>
+            </div>
+            <a href="javascript:;" class="notice_cancel">朕知道了</a>
+        </div>
+        <div class="notice_box2">
+            <div class="notice_content">
+                <h2 class="notice_title">确认收款</h2>
+                <p class="notice_content_text">1.如果您已经受到收款请点击确认<br>2.center是测试测试测试测试<br>3.center是测试测试测试测试<br>
+                </p>
+            </div>
+            <div class="btn">
+                <a href="javascript:;" class="notice_cancel" id="close_btn">关闭</a>
+                <a href="javascript:;" class="notice_cancel r-color" id="sure_btn">确认</a>
+            </div>
+        </div>
+        <!-- 底部start -->
+        <div class="footer">
+            <div class="list_btn">
+                <ul>
+                    <li><a href="./index.html">首页</a></li>
+                    <li><a href="./access.html">存取款</a></li>
+                    <li><a href="./problem.html">常见问题</a></li>
+                    <li><a href="./my.html">我的</a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- 底部end -->
+    </div>
+</body>
+<script>
+    // 显示通告
+    // $(function(){
+    //     setTimeout(() => {
+    //         $(".gray_bg ,.notice_box").fadeIn(300);
+    //     }, 500);
+    //     $(".notice_cancel").click(function(){
+    //         $(".gray_bg,.notice_box").hide()
+    //     });
+    // })
+    // 顶部通告
+    var notice_num = $(".notice_content_text");
+    if(notice_num.length > 1){
+        setInterval(function(){
+            $(".notice_box_top").animate({
+                marginTop : "-1.2rem",
+            },500,function(){
+                $(this).css({marginTop :"0"}).find("a:first").appendTo(this);
+            }); 
+        },3000)
+    }   
+    // 开启抢单
+    var order_state = 0;
+    $(".start_btn").click(function(){
+        if(order_state == 0){
+            order_state = 1;
+            $(".start_btn img").attr("src","./img/btn_start.png");
+            $(".start_btn span").text("正在抢单").css("color","red");
+            $(".two_model ul").fadeIn(500);
+            $(".two_model li").css("width","100%");
+        }else if(order_state == 1){
+            order_state = 0;
+            $(".start_btn img").attr("src","./img/btn.png");
+            $(".start_btn span").text("已停止抢单").css("color","#545454");
+            $(".two_model ul").fadeOut(500);
+            $(".two_model li").css("width","60%");
+        }
+    });
+    // 抢单付款
+    var order = $(".two_model li");
+    var four = $(".two_model .four");
+    for(i=0;i<order.length;i++){
+        // order[i].index = i;
+        $(order[i]).click(function(){
+            $(this).find(".three").css("right","2rem");
+            $(this).find(".four").css("width","1.5rem");
+        });
+        $(four[i]).click(function(){
+            $(".gray_bg,.notice_box2").fadeIn(300);
+            $("#close_btn").click(function(){
+                $(".gray_bg,.notice_box2").fadeOut(300);
+            });
+        });
+    }
+</script>
+</html>

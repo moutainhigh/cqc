@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no ">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>收款账号</title>
+    <!-- 网页ico -->
+    <link rel="shortcut icon" href="./favicon.ico">
+    <!-- 导入基础base.css文件 -->
+    <link rel="stylesheet" href="./css/base.css" />
+    <!-- 导入本类.css文件 -->
+    <link rel="stylesheet" href="./css/common.css" />
+    <!-- 导入jquery -->
+    <script src="./js/jquery.min.js"></script>
+    <!-- 根据设备宽度，计算html根节点的font-size -->
+    <script>
+        // 获取html根节点要素内容
+        var htmlEle = document.documentElement,
+            // 设备宽度等于客户端宽度
+            deviceWidth = htmlEle.clientWidth;
+        // 750px的屏幕基准像素为100px
+        htmlEle.style.fontSize = 100 * (deviceWidth / 750) + "px";
+
+        // 执行onresize事件，
+        window.onresize = function () {
+            // 获取html根节点要素内容
+            var htmlEle = document.documentElement,
+                // 设备宽度等于客户端宽度
+                deviceWidth = htmlEle.clientWidth;
+            // 750px的屏幕基准像素为100px
+            htmlEle.style.fontSize = 100 * (deviceWidth / 750) + "px";
+        }
+    </script>
+</head>
+<style>
+     /* 重置样式 */
+    /* .pro_each:first-child span{
+        color: gray !important;
+        font-size: .25rem;
+    } */
+    .pro_each span{
+        color: #b2b2b2 !important;
+        font-size: .33rem;
+        font-weight: bold;
+        letter-spacing: .02rem;
+    }
+    .notice_content_text{
+        min-height: auto !important;
+    }
+    input:nth-child(3){
+        margin: .15rem 0;
+    }
+    input:nth-child(4){
+        margin: .15rem 0;
+    }
+</style>
+<body>
+    <!-- 遮罩层 -->
+    <div class="gray_bg"></div>
+    <!-- zdy改成本自定义名称 -->
+    <div class="wrap_common">
+        <!-- 顶部start -->
+        <div class="top_wrap">
+            <div class="top">
+                <!-- 标题 -->
+                <h2>收款账号</h2>
+                <!-- 左边返回样式-->
+                <a href="javascript:history.back(-1)" class="ret"></a>
+            </div>
+        </div>
+        <!-- 内容start -->
+        <!-- 将zdy改成自定义名字 -->
+        <div class="content_common">
+            <div class="model_two" style="min-height: 100%; margin-top: 1rem;">
+                <a href="pdd_business.html">
+                    <div class="pro_each">
+                        <span>商家</span>
+                    </div>
+                </a>
+                <!-- <a href="pdd_buyer.html">
+                    <div class="pro_each">
+                        <span>买家</span>
+                    </div>
+                </a> -->
+            </div>
+        </div>
+        <!-- 内容end -->
+    </div>
+</body>
+<script>
+</script>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no ">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>base</title>
+    <!-- 网页ico -->
+    <link rel="shortcut icon" href="./favicon.ico">
+    <!-- 导入基础base.css文件 -->
+    <link rel="stylesheet" href="./css/base.css" />
+    <!-- 导入本类.css文件 -->
+    <link rel="stylesheet" href="./css/common.css" />
+    <!-- 导入jquery -->
+    <script src="./js/jquery.min.js"></script>
+    <!-- 根据设备宽度，计算html根节点的font-size -->
+    <script>
+        // 获取html根节点要素内容
+        var htmlEle = document.documentElement,
+            // 设备宽度等于客户端宽度
+            deviceWidth = htmlEle.clientWidth;
+        // 750px的屏幕基准像素为100px
+        htmlEle.style.fontSize = 100 * (deviceWidth / 750) + "px";
+
+        // 执行onresize事件，
+        window.onresize = function () {
+            // 获取html根节点要素内容
+            var htmlEle = document.documentElement,
+                // 设备宽度等于客户端宽度
+                deviceWidth = htmlEle.clientWidth;
+            // 750px的屏幕基准像素为100px
+            htmlEle.style.fontSize = 100 * (deviceWidth / 750) + "px";
+        }
+    </script>
+    <style>
+        .wrap_common{
+            overflow: auto;
+        }
+        .model_one h3{
+            font-size: .48rem !important;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- zdy改成本自定义名称 -->
+    <div class="wrap_common">
+        <!-- 内容start -->
+        <!-- 将zdy改成自定义名字 -->
+        <div class="content_common">
+            <div class="model_one" style="min-height: 20%; max-height: 20%;">
+                <h3>常见问题</h3>
+                <span>这里是一些用户经常遇到的问题，请逐个查看一遍，看能否解决您的问题。如果还存在问题，请联系客服。</span>
+            </div>
+            <div class="model_two" style="min-height: 100%; max-height: 1000%;margin-bottom: 1rem;">
+                <div class="pro_each">
+                    <span>01</span>
+                    <span>注册</span>
+                    <em></em>
+                </div>
+                <div class="common_model_show">
+                    <img src="./img/pro1.png" alt="">
+                    <div class="explain">
+                        <p><em></em>邀请码有效期十分钟，请在拿到邀请码后第一时间注册</p>
+                        <p><em></em>手机一天只能接收3次验证码</p>
+                        <p><em></em>注册手机号码必须和实名制手机号码一致</p>
+                    </div>
+                </div>
+                <div class="pro_each">
+                    <span>02</span>
+                    <span>实名认证</span>
+                    <em></em>
+                </div>
+                <div class="common_model_show">
+                    <img src="./img/pro1.png" alt="">
+                    <div class="explain">
+                        <p><em></em>实名信息必须要真实，一旦确认无法更改</p>
+                        <p><em></em>手机号码必须和注册号码一致</p>
+                    </div>
+                </div>
+                <div class="pro_each">
+                    <span>03</span>
+                    <span>添加银行卡</span>
+                    <em></em>
+                </div>
+                <div class="common_model_show">
+                    <img src="./img/pro1.png" alt="">
+                    <div class="explain">
+                        <p><em></em>绑定的银行卡必须和实名制的信息相符</p>
+                        <p><em></em>一个账户可以绑定多张银行卡</p>
+                    </div>
+                </div>
+                <div class="pro_each">
+                    <span>04</span>
+                    <span>绑定二维码</span>
+                    <em></em>
+                </div>
+                <div class="common_model_show">
+                    <img src="./img/pro1.png" alt="">
+                    <div class="explain">
+                        <p><em></em>收款账号名称的格式只允许是数字加字幕组合，且要以字母开头</p>
+                        <p><em></em>设置收款账号的时候一定要记得对应收款二维码是哪个账号</p>
+                        <p><em></em>上传二维码之后要自己查看二维码是否正确</p>
+                    </div>
+                </div>
+                <div class="pro_each">
+                    <span>05</span>
+                    <span>充值</span>
+                    <em></em>
+                </div>
+                <div class="common_model_show">
+                    <img src="./img/pro1.png" alt="">
+                    <div class="explain">
+                        <p><em></em>每次充值需要打开充值页面查看最新的银行卡账号，不能保存账号存款</p>
+                        <p><em></em>不可以代充，您付款的账号和平台绑定的账号必须一致的</p>
+                        <p><em></em>存款金额必须和提交订单的金额一致，否则无法到账</p>
+                    </div>
+                </div>
+                <div class="pro_each">
+                    <span>06</span>
+                    <span>做单</span>
+                    <em></em>
+                </div>
+                <div class="common_model_show">
+                    <img src="./img/pro1.png" alt="">
+                    <div class="explain">
+                        <p><em></em>您在抢单的过程中，如果有出现重复扫码、提交但是修改了金额或者超市支付的，一定要在第一时间联系在线客服帮你处理</p>
+                        <p><em></em>您必须时刻检查自己的二维码是否异常，及时更换，以便于能收到款</p>
+                        <p><em></em>不能回复付款方留言，一旦发现，您的会员账号将永久冻结，您的会员余额将不予出款</p>
+                        <p><em></em>如果付款方给收款方留言没有到账问题，一律不回，也不要退款给会员，要第一时间向导师反馈，并且配合处理问题</p>
+                        <p><em></em>必须在清醒时抢单，避免在情绪不稳定，喝酒后等时间段抢单，否则会导致平台出现损失或严重平台运行，情况严重会冻结您的会员账号</p>
+                        <p><em></em>受到款项，必须及时点击确认收款，不给平台设置不必要的阻碍</p>
+                    </div>
+                </div>
+                <div class="pro_each">
+                    <span>07</span>
+                    <span>提现</span>
+                    <em></em>
+                </div>
+                <div class="common_model_show">
+                    <img src="./img/pro1.png" alt="">
+                    <div class="explain">
+                        <p><em></em>除出款高峰期外，提现十分钟内到账</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 内容end -->
+        <!-- 底部start -->
+        <div class="footer">
+            <div class="list_btn">
+                <ul>
+                    <li><a href="./index.html">首页</a></li>
+                    <li><a href="./access.html">存取款</a></li>
+                    <li><a href="./problem.html">常见问题</a></li>
+                    <li><a href="./my.html">我的</a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- 底部end -->
+    </div>
+</body>
+<script>
+    // 常见问题开关
+    var pro_each = $(".pro_each");
+    var common_model_show = $(".common_model_show");
+    for(i=0; i<pro_each.length; i++){
+        pro_each[i].index = i;
+        $(pro_each[i]).click(function(){
+            for(i=0; i<pro_each.length; i++){
+                if(pro_each[i] == pro_each[this.index]){
+
+                }else{
+                    $(pro_each[i]).find("span:first-child").css("color","blue");
+                    $(pro_each[i]).find("em").removeClass("em_active");
+                    $(common_model_show[i]).hide(); 
+                }
+            }
+            if($(common_model_show[this.index]).is(":hidden")){
+                $(pro_each[this.index]).find("span:first-child").css("color","orangered");
+                $(common_model_show[this.index]).show();
+                $(pro_each[this.index]).find("em").addClass("em_active");
+            }else{
+                $(pro_each[this.index]).find("span:first-child").css("color","blue");
+                $(pro_each[this.index]).find("em").removeClass("em_active");
+                $(common_model_show[this.index]).hide();
+            }   
+        });
+    }
+</script>
+</html>

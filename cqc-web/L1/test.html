@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no ">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>登录</title>
+    <!-- 网页ico -->
+    <link rel="shortcut icon" href="./favicon.ico">
+    <!-- 导入基础base.css文件 -->
+    <link rel="stylesheet" href="./css/base.css" />
+    <!-- 导入本类.css文件 -->
+    <link rel="stylesheet" href="./css/common.css" />
+    <!-- 导入jquery -->
+    <script src="./js/jquery.min.js"></script>
+    <!-- 根据设备宽度，计算html根节点的font-size -->
+    <script>
+        // 获取html根节点要素内容
+        var htmlEle = document.documentElement,
+            // 设备宽度等于客户端宽度
+            deviceWidth = htmlEle.clientWidth;
+        // 750px的屏幕基准像素为100px
+        htmlEle.style.fontSize = 100 * (deviceWidth / 750) + "px";
+
+        // 执行onresize事件，
+        window.onresize = function () {
+            // 获取html根节点要素内容
+            var htmlEle = document.documentElement,
+                // 设备宽度等于客户端宽度
+                deviceWidth = htmlEle.clientWidth;
+            // 750px的屏幕基准像素为100px
+            htmlEle.style.fontSize = 100 * (deviceWidth / 750) + "px";
+        }
+    </script>
+    <style>
+        /* 重置样式 */
+        .pro_each{
+            /* border-bottom: none !important; */
+            border: none !important;
+        }
+        .pro_each .input_comm{
+          width: 100%;
+          height: .6rem;
+          background: none;
+          border-bottom: 1px solid white !important;
+          border-left: none;
+          border-right: none;
+          border-top: none;
+          color:white;
+        }
+        input::-webkit-input-placeholder{ color: white;}
+        input::-moz-input-placeholder{ color: white;}
+        input::-ms-input-placeholder{ color: white;}
+        .wrap_common{
+            background: #135a54 !important;
+        }
+        .model_two{ background: none !important; margin-top: 4rem !important;}
+    </style>
+</head>
+
+<body>
+    
+</body>
+<script>
+	function timeCountDown(){
+		console.log(1);
+	}
+	timeCountDown();
+	// var timer = setInterval(timeCountDown,1000);
+</script>
+</html>

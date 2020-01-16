@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no ">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>base</title>
+    <!-- 网页ico -->
+    <link rel="shortcut icon" href="./favicon.ico">
+    <!-- 导入基础base.css文件 -->
+    <link rel="stylesheet" href="./css/base.css" />
+    <!-- 导入本类.css文件 -->
+    <link rel="stylesheet" href="./css/common.css" />
+    <!-- 导入jquery -->
+    <script src="./js/jquery.min.js"></script>
+    <!-- 根据设备宽度，计算html根节点的font-size -->
+    <script>
+        // 获取html根节点要素内容
+        var htmlEle = document.documentElement,
+            // 设备宽度等于客户端宽度
+            deviceWidth = htmlEle.clientWidth;
+        // 750px的屏幕基准像素为100px
+        htmlEle.style.fontSize = 100 * (deviceWidth / 750) + "px";
+
+        // 执行onresize事件，
+        window.onresize = function () {
+            // 获取html根节点要素内容
+            var htmlEle = document.documentElement,
+                // 设备宽度等于客户端宽度
+                deviceWidth = htmlEle.clientWidth;
+            // 750px的屏幕基准像素为100px
+            htmlEle.style.fontSize = 100 * (deviceWidth / 750) + "px";
+        }
+    </script>
+</head>
+
+<body>
+    <!-- zdy改成本自定义名称 -->
+    <div class="wrap_common">
+        <!-- 内容start -->
+        <!-- 将zdy改成自定义名字 -->
+        <div class="content_common">
+            <div class="model_one">
+                <h1>cqc</h1>
+                <span>cqc积分为本平台通用积分，cqc与人民币等等价兑换cqc=1RMB，cqc积分仅限本平台充值。</span>
+            </div>
+            <div class="model_two">
+                <a href="./deposit.html" class="btn_one">cqc充值</a>
+                <a href="./take.html" class="btn_two">cqc提现</a>
+            </div>
+        </div>
+        <!-- 内容end -->
+        <!-- 底部start -->
+        <div class="footer">
+            <div class="list_btn">
+                <ul>
+                    <li><a href="./index.html">首页</a></li>
+                    <li><a href="./access.html">存取款</a></li>
+                    <li><a href="./problem.html">常见问题</a></li>
+                    <li><a href="./my.html">我的</a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- 底部end -->
+    </div>
+</body>
+<script>
+</script>
+</html>

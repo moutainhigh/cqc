@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no ">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>拼多多商家</title>
+    <!-- 网页ico -->
+    <link rel="shortcut icon" href="./favicon.ico">
+    <!-- 导入基础base.css文件 -->
+    <link rel="stylesheet" href="./css/base.css" />
+    <!-- 导入本类.css文件 -->
+    <link rel="stylesheet" href="./css/common.css" />
+    <!-- 导入jquery -->
+    <script src="./js/jquery.min.js"></script>
+    <!-- 根据设备宽度，计算html根节点的font-size -->
+    <script>
+        // 获取html根节点要素内容
+        var htmlEle = document.documentElement,
+            // 设备宽度等于客户端宽度
+            deviceWidth = htmlEle.clientWidth;
+        // 750px的屏幕基准像素为100px
+        htmlEle.style.fontSize = 100 * (deviceWidth / 750) + "px";
+
+        // 执行onresize事件，
+        window.onresize = function () {
+            // 获取html根节点要素内容
+            var htmlEle = document.documentElement,
+                // 设备宽度等于客户端宽度
+                deviceWidth = htmlEle.clientWidth;
+            // 750px的屏幕基准像素为100px
+            htmlEle.style.fontSize = 100 * (deviceWidth / 750) + "px";
+        }
+    </script>
+</head>
+<style>
+     /* 重置样式 */
+    /* .pro_each:first-child span{
+        color: gray !important;
+        font-size: .25rem;
+    } */
+    .pro_each span{
+        color: gray !important;
+        font-size: .3rem;
+        color: black !important;
+        font-weight: bold;
+        letter-spacing: .02rem;
+    }
+    .notice_content_text{
+        min-height: auto !important;
+    }
+    input:nth-child(3){
+        margin: .15rem 0;
+    }
+    input:nth-child(4){
+        margin: .15rem 0;
+    }
+</style>
+<body>
+    <!-- 遮罩层 -->
+    <div class="gray_bg"></div>
+    <!-- zdy改成本自定义名称 -->
+    <div class="wrap_common">
+        <!-- 顶部start -->
+        <div class="top_wrap">
+            <div class="top">
+                <!-- 标题 -->
+                <h2>拼多多商家</h2>
+                <!-- 左边返回样式-->
+                <a href="javascript:history.back(-1)" class="ret"></a>
+            </div>
+        </div>
+        <!-- 内容start -->
+        <!-- 将zdy改成自定义名字 -->
+        <div class="content_common">
+            <div class="model_one" style="height:10%; padding-top: .5rem;">
+                <a href="javascript:;" class="add_bank">添加卖家</a>
+            </div>
+            <div class="model_two" style="min-height: 90%; max-height: 90%;">
+                <div class="pro_each">
+                    <span>Sxy502</span>
+                </div>
+            </div>
+        </div>
+        <!-- 内容end -->
+        <!-- 内容通告 -->
+        <div class="notice_box">
+            <div class="notice_content">
+                <h2 class="notice_title">拼多多商家</h2>
+                <span class="notice_content_text">请输入拼多多商家账号或者手机号码<br><br>注意：我们会保存拼多多商家账号和密码，以便账号失效后任然能自动使用</span>
+            </div>
+            <div class="pin_form">
+                <form action method>
+                    <input type="text" name="number" value="" placeholder="拼多多账号或手机号" class="text_user">
+                    <input type="password" name="pass" value="" placeholder="拼多多密码" class="text_pass">
+                    <input type="submit" value="确定" class="btn_input bg_b">
+                    <input type="button" value="取消" class="btn_input bg_r" id="cancel">
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    $(".add_bank").click(function(){
+        $(".gray_bg,.notice_box").show();
+        $("#cancel").click(function(){
+            $(".gray_bg,.notice_box").hide();
+        }); 
+    });
+</script>
+</html>

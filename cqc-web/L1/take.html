@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- -->
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no ">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>提现</title>
+    <!-- 网页ico -->
+    <link rel="shortcut icon" href="./favicon.ico">
+    <!-- 导入基础base.css文件 -->
+    <link rel="stylesheet" href="./css/base.css" />
+    <!-- 导入本类.css文件 -->
+    <link rel="stylesheet" href="./css/common.css" />
+    <!-- 导入jquery -->
+    <script src="./js/jquery.min.js"></script>
+    <!-- 根据设备宽度，计算html根节点的font-size -->
+    <script>
+        // 获取html根节点要素内容
+        var htmlEle = document.documentElement,
+            // 设备宽度等于客户端宽度
+            deviceWidth = htmlEle.clientWidth;
+        // 750px的屏幕基准像素为100px
+        htmlEle.style.fontSize = 100 * (deviceWidth / 750) + "px";
+
+        // 执行onresize事件，
+        window.onresize = function () {
+            // 获取html根节点要素内容
+            var htmlEle = document.documentElement,
+                // 设备宽度等于客户端宽度
+                deviceWidth = htmlEle.clientWidth;
+            // 750px的屏幕基准像素为100px
+            htmlEle.style.fontSize = 100 * (deviceWidth / 750) + "px";
+        }
+    </script>
+</head>
+
+<body style="background:#3e7fff">
+    <!-- 遮罩层 -->
+    <div class="gray_bg"></div>
+    <!-- zdy改成本自定义名称 -->
+    <div class="wrap_deposit">
+        <!-- 顶部start -->
+        <div class="top_wrap">
+            <div class="top">
+                <!-- 标题 -->
+                <h2>提现</h2>
+                <!-- 右边书写样式 -->
+                <a href="./take_record.html" class="pen"></a>
+                <!-- 左边返回样式 -->
+                <a href="javascript:history.back(-1)" class="ret"></a>
+            </div>
+        </div>
+        <!-- 顶部end -->
+        <!-- 内容start -->
+        <!-- 将zdy改成自定义名字 -->
+        <div class="content_deposit">
+            <form method="" action="">
+            <div class="one_model_bank">
+               <div class="bank_tx">
+                   <h3>转到账银行卡</h3>
+                   <img src="./img/ABC.png">
+                    <span onclick="bank()">中国农业银行</span>
+               </div>
+               <div class="common_model">
+                   <h3>提现cqc(最多可提现：0.51)</h3>
+                   <input type="text" value="" name="" class="tx_input" placeholder="提现"/>
+               </div>
+               <div class="common_model">
+                    <input type="submit" value="提现" class="btn_input"/>
+               </div>
+            </div>
+            <div class="two_model_deposit">
+                <div class="cqc_dep">
+                   <h3>还需收取(cqc)任务金，可提现</h3>
+                </div>
+                <div class="tixian">0.00</div>
+            </div>
+            </form>
+        </div>
+        <!-- 内容end -->
+        <!-- 银行卡 -->
+        <div class="add_each">
+            <ul>
+                <li>
+                    <h1>选择到账的银行卡</h1>
+                    <h3>请留意个银行到账时间</h3>
+                </li>
+                <li style="position: relative;">
+                    <a href="#" >
+                        <img src="./img/ABC.png" alt="">
+                        <span>中国农业银行</span>
+                        <div class="opt opt_active"></div>
+                    </a>
+                </li>
+                <li id="cancel_add"><a href="./add_bank.html">添加银行卡</a></li>
+            </ul>
+        </div>
+    </div>
+</body>
+<script>
+     // 切换银行卡
+     function bank(){
+        $(".gray_bg").show();
+        $(".add_each").animate({"height":"3rem"});
+        if($(".gray_bg").is(":visible")){
+            $(".gray_bg,#cancel_add").click(function(){
+                $(".add_each").animate({"height":"0rem"});
+                $(".gray_bg").hide();
+            });
+        }
+    }
+</script>
+</html>

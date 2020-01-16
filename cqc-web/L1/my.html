@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- -->
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no ">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>base</title>
+    <!-- 网页ico -->
+    <link rel="shortcut icon" href="./favicon.ico">
+    <!-- 导入基础base.css文件 -->
+    <link rel="stylesheet" href="./css/base.css" />
+    <!-- 导入本类.css文件 -->
+    <link rel="stylesheet" href="./css/common.css" />
+    <!-- 导入jquery -->
+    <!-- <script src="./js/jquery.min.js"></script> -->
+    <!-- 导入swiper -->
+    <link rel="stylesheet" href="./lib/swiper/swiper.min.css">
+    <script src="./lib/swiper/swiper.min.js"></script>
+    <!-- 根据设备宽度，计算html根节点的font-size -->
+    <script>
+        // 获取html根节点要素内容
+        var htmlEle = document.documentElement,
+            // 设备宽度等于客户端宽度
+            deviceWidth = htmlEle.clientWidth;
+        // 750px的屏幕基准像素为100px
+        htmlEle.style.fontSize = 100 * (deviceWidth / 750) + "px";
+
+        // 执行onresize事件，
+        window.onresize = function () {
+            // 获取html根节点要素内容
+            var htmlEle = document.documentElement,
+                // 设备宽度等于客户端宽度
+                deviceWidth = htmlEle.clientWidth;
+            // 750px的屏幕基准像素为100px
+            htmlEle.style.fontSize = 100 * (deviceWidth / 750) + "px";
+        }
+    </script>
+    <style>
+        .swiper-container {
+            width: 90%;
+            overflow: hidden;
+        }
+        .swiper-pagination{
+            width: 100%;
+            position: relative !important;
+        }
+        .swiper-pagination span{
+            margin-right: .2rem;
+            margin-top: .2rem;
+            width: .1rem;
+            height: .1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- zdy改成本自定义名称 -->
+    <div class="wrap_common"  style="overflow: auto;">
+        <div class="top_wrap">
+            <div class="top">
+                <!-- 标题 -->
+                <h2></h2>
+                <!-- 右边客服样式 -->
+                <a href="tel:8888888" class="link">客服</a>
+                <!-- 左边设置样式 -->
+                <a href="./set.html" class="set"></a>
+                <!-- 左边返回样式
+                <a href="javascript:history.go(-1)" class="ret"></a> -->
+            </div>
+        </div>
+        <!-- 内容start -->
+        <!-- 将zdy改成自定义名字 -->
+        <div class="content_common">
+            <div class="model_my">
+                <div class="user_info">
+                    <h1>xiaodai</h1>
+                    <span>3c认证</span>
+                </div>
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <div class="pla_info">
+                                <h3>可抢cqc</h3>
+                                <h1>0.35</h1>
+                                <ul>
+                                    <li>
+                                        <h4>当前cqc</h4>
+                                        <span>0.51</span>
+                                    </li>
+                                    <li>
+                                        <h4>待入cqc</h4>
+                                        <span>0.00</span>
+                                    </li>
+                                    <li>
+                                        <h4>今日收益</h4>
+                                        <span>0.00</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="pla_info">
+                                <h3>拼多多商家押金</h3>
+                                <h1>0.00</h1>
+                                <a href="#">缴纳押金</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 如果需要分页器 -->
+                <div class="swiper-pagination"></div>
+            </div>
+            <div class="model_two" style="max-height: 100%; min-height: 100%;">
+                <a href="./invitation_code.html">
+                    <div class="pro_each">
+                        <img src="./img/yaoqing.png" alt="">
+                        <span>我的邀请码</span>
+                        <em class="comm"></em>
+                    </div>
+                </a>
+                <a href="./safe.html">
+                    <div class="pro_each">
+                        <img src="./img/safe.png" alt="">
+                        <span>安全中心</span>
+                        <em class="comm"></em>
+                    </div>
+                </a>
+                <a href="./bank_card.html">
+                    <div class="pro_each">
+                        <img src="./img/bank.png" alt="">
+                        <span>银行卡管理</span>
+                        <em class="comm"></em>
+                    </div>
+                </a>
+                <a href="pay_code.html">
+                    <div class="pro_each">
+                        <img src="./img/pay_code.png" alt="">
+                        <span>收款账号</span>
+                        <em class="comm"></em>
+                    </div>
+                </a>
+                <a href="./record.html">
+                    <div class="pro_each">
+                        <img src="./img/jilu.png" alt="">
+                        <span>账变记录</span>
+                        <em class="comm"></em>
+                    </div>
+                </a>
+                <a href="./agent.html">
+                    <div class="pro_each">
+                        <img src="./img/tj.png" alt="">
+                        <span>代理统计</span>
+                        <em class="comm"></em>
+                    </div>
+                </a>
+                <a href="./rate.html">
+                    <div class="pro_each">
+                        <img src="./img/yj.png" alt="">
+                        <span>佣金费率</span>
+                        <em class="comm"></em>
+                    </div>
+                </a>
+                <a href="./network.html">
+                    <div class="pro_each">
+                        <img src="./img/network.png" alt="">
+                        <span>切换网络</span>
+                        <em class="comm"></em>
+                    </div>
+                </a>
+                <a href="./pinduoduo.html">
+                    <div class="pro_each">
+                        <img src="./img/pinduoduo.png" alt="">
+                        <span>拼多多</span>
+                        <em class="comm"></em>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <!-- 内容end -->
+        <!-- 底部start -->
+        <div class="footer">
+            <div class="list_btn">
+                <ul>
+                    <li><a href="./index.html">首页</a></li>
+                    <li><a href="./access.html">存取款</a></li>
+                    <li><a href="./problem.html">常见问题</a></li>
+                    <li><a href="./my.html">我的</a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- 底部end -->
+    </div>
+</body>
+<script>
+    var mySwiper = new Swiper('.swiper-container', {
+        // 左右方向
+        direction: 'horizontal',
+        // 如果需要分页器
+        pagination: {
+            el: '.swiper-pagination',
+        },
+        // 如果需要滚动条
+        scrollbar: '.swiper-scrollbar',
+        effect : 'fade',
+    })  
+</script>
+
+</html>
