@@ -12,6 +12,20 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
+    <dependencies>
+        <!-- cqc-common -->
+        <dependency>
+            <groupId>com.cqc</groupId>
+            <artifactId>cqc-common</artifactId>
+        </dependency>
+
+        <!-- cqc-mbg -->
+        <dependency>
+            <groupId>com.cqc</groupId>
+            <artifactId>cqc-mbg</artifactId>
+        </dependency>
+
+    </dependencies>
 
 
 </project>

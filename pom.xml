@@ -47,6 +47,7 @@
         <cqc-common.version>1.0-SNAPSHOT</cqc-common.version>
         <cqc-mbg.version>1.0-SNAPSHOT</cqc-mbg.version>
         <cqc-security.version>1.0-SNAPSHOT</cqc-security.version>
+        <cqc-portal.version>1.0-SNAPSHOT</cqc-portal.version>
         <mybatis.plus.version>3.1.2</mybatis.plus.version>
     </properties>
 
@@ -95,6 +96,12 @@
                 <artifactId>cqc-mbg</artifactId>
                 <version>${cqc-mbg.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.cqc</groupId>
+                <artifactId>cqc-portal</artifactId>
+                <version>${cqc-portal.version}</version>
+            </dependency>
+
 
             <!--集成druid连接池-->
             <dependency>
