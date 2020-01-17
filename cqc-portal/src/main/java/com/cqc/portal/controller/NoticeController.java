@@ -1,6 +1,7 @@
 package com.cqc.portal.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cqc.common.api.Result;
 import com.cqc.model.Notice;
@@ -9,11 +10,13 @@ import com.cqc.portal.service.NoticeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * <p>
@@ -34,9 +37,12 @@ public class NoticeController {
 
     @ApiOperation("获取最新公告")
     @GetMapping("/list")
-    public Result<Page<Notice>> noticeList(@NotNull(message="type不能为空")Integer type) {
+    public Result<List<Notice>> noticeList(@NotNull(message="type不能为空")Integer type) {
 
-        return Result.success();
+        List<Notice> list = noticeService.list(new QueryWrapper<Notice>().
+                eq(StringUtils.isEmpty(type), "type", type)
+                .eq("status", 1));
+        return Result.success(list);
     }
 
 

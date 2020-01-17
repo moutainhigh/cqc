@@ -1,6 +1,8 @@
 package com.cqc.model;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+
 import java.time.LocalDateTime;
 import java.io.Serializable;
 import java.util.Date;
@@ -13,6 +15,8 @@ import java.util.Date;
  * @author ${author}
  * @since 2020-01-16
  */
+
+@Data
 @TableName("notice")
 public class Notice implements Serializable {
 

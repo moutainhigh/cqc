@@ -70,7 +70,7 @@ public class UserController {
 
 
     @ApiOperation(value = "修改登录密码")
-    @RequestMapping(value = "/modifyLoginPwd", method = RequestMethod.POST)
+    @PostMapping("/modifyLoginPwd")
     public Result<Boolean> modifyLoginPwd(@RequestBody ModifyPasswordParam param) {
         String userId = PortalUserUtil.getCurrentUserId();
         if (StringUtils.isEmpty(userId)) {
@@ -85,7 +85,7 @@ public class UserController {
 
 
     @ApiOperation(value = "修改支付密码")
-    @RequestMapping(value = "/modifyPayPwd", method = RequestMethod.POST)
+    @PostMapping("/modifyPayPwd")
     public Result<Boolean> modifyPayPwd(@RequestBody ModifyPasswordParam param) {
         String userId = PortalUserUtil.getCurrentUserId();
         if (StringUtils.isEmpty(userId)) {

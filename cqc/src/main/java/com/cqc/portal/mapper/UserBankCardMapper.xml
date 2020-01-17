@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cqc.portal.mapper.UserBankCardMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.cqc.portal.api.model.UserBankCard">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="bank_name" property="bankName" />
+        <result column="bank_code" property="bankCode" />
+        <result column="bank_logo" property="bankLogo" />
+        <result column="card_type" property="cardType" />
+        <result column="card_no" property="cardNo" />
+        <result column="real_name" property="realName" />
+        <result column="account_type" property="accountType" />
+        <result column="mobile" property="mobile" />
+        <result column="create_time" property="createTime" />
+        <result column="status" property="status" />
+    </resultMap>
+
+</mapper>
