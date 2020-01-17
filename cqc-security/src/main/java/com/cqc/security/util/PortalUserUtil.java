@@ -1,5 +1,7 @@
 package com.cqc.security.util;
 
+import com.cqc.model.User;
+
 /**
  * @Description：
  * @author： wanglz

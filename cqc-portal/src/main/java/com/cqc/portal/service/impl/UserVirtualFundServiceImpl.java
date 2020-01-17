@@ -1,9 +1,9 @@
-package com.cqc.portal.service.impl.impl;
+package com.cqc.portal.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.cqc.admin.mapper.UserVirtualFundMapper;
-import com.cqc.admin.service.UserVirtualFundService;
 import com.cqc.model.UserVirtualFund;
+import com.cqc.portal.mapper.UserVirtualFundMapper;
+import com.cqc.portal.service.UserVirtualFundService;
 import org.springframework.stereotype.Service;
 
 /**

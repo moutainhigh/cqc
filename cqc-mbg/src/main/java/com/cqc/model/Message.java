@@ -1,8 +1,11 @@
 package com.cqc.model;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+
 import java.time.LocalDateTime;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -12,6 +15,7 @@ import java.io.Serializable;
  * @author ${author}
  * @since 2020-01-16
  */
+@Data
 @TableName("message")
 public class Message implements Serializable {
 
@@ -45,12 +49,12 @@ public class Message implements Serializable {
     /**
      * 创建时间
      */
-    private LocalDateTime createTime;
+    private Date createTime;
 
     /**
      * 状态：0-无效 1-通过
      */
-    private Boolean status;
+    private Integer status;
 
 
 

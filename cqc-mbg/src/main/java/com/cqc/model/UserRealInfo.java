@@ -57,6 +57,13 @@ public class UserRealInfo implements Serializable {
      */
     private String img2;
 
+    private String qq;
+
+    private String email;
+
+    private String telephone;
+
+
     /**
      * 状态 -1删除 0 禁用 1 正常 
      */

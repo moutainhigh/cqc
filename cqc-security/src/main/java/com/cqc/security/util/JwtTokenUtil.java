@@ -3,6 +3,7 @@ package com.cqc.security.util;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.cqc.security.bean.AdminUserDetails;
+import com.cqc.security.bean.PortalUserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -30,6 +31,8 @@ public class JwtTokenUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(JwtTokenUtil.class);
     private static final String CLAIM_KEY_USERNAME = "sub";
     private static final String CLAIM_KEY_CREATED = "created";
+    private static final String GRANT_TYPE = "grant_type";
+
 
     @Value("${jwt.secret}")
     private String secret;
@@ -153,9 +156,30 @@ public class JwtTokenUtil {
         claims.put(CLAIM_KEY_USERNAME, userDetails.getUsername());
         claims.put(CLAIM_KEY_CREATED, new Date());
         claims.put("user_id", adminUserDetails.getUmsAdmin().getId());
-
+        claims.put(GRANT_TYPE, "refresh");
 
         return generateRefreshToken(claims);
+    }
+
+    public String generatePortalToken(UserDetails userDetails) {
+        PortalUserDetails portalUserDetails = (PortalUserDetails) userDetails;
+        Map<String, Object> claims = new HashMap<>();
+        claims.put(CLAIM_KEY_USERNAME, userDetails.getUsername());
+        claims.put(CLAIM_KEY_CREATED, new Date());
+        claims.put("user_id", portalUserDetails.getUser().getId());
+
+
+        return generateToken(claims);
+    }
+
+    public String generatePortalRefresh(UserDetails userDetails) {
+        PortalUserDetails portalUserDetails = (PortalUserDetails) userDetails;
+        Map<String, Object> claims = new HashMap<>();
+        claims.put(CLAIM_KEY_USERNAME, userDetails.getUsername());
+        claims.put(CLAIM_KEY_CREATED, new Date());
+        claims.put("user_id", portalUserDetails.getUser().getId());
+        claims.put(GRANT_TYPE, "refresh");
+        return generateToken(claims);
     }
 
 

@@ -1,8 +1,19 @@
 package com.cqc.portal.controller;
 
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.cqc.common.api.Result;
+import com.cqc.model.Notice;
 import com.cqc.portal.service.FaqService;
 import com.cqc.portal.service.NoticeService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * <p>
@@ -12,6 +23,8 @@ import com.cqc.portal.service.NoticeService;
  * @author wanglz
  * @since 2020-01-16
  */
+
+@Api(tags = "公告API")
 @RestController
 @RequestMapping("/notice")
 public class NoticeController {
@@ -23,7 +36,7 @@ public class NoticeController {
     @GetMapping("/list")
     public Result<Page<Notice>> noticeList(@NotNull(message="type不能为空")Integer type) {
 
-        return Result.success(page);
+        return Result.success();
     }
 
 

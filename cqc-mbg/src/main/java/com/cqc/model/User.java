@@ -1,5 +1,6 @@
 package com.cqc.model;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -9,6 +10,8 @@ import java.util.Date;
 /**
  * @author wanglz
  */
+
+@TableName("user")
 @Data
 public class User implements Serializable {
 
@@ -17,11 +20,15 @@ public class User implements Serializable {
     @ApiModelProperty(value = "ID,主键")
     private String id;
 
+    private String refUserId;
+
     @ApiModelProperty(value = "账号")
     private String account;
 
     @ApiModelProperty(value = "密码")
     private String password;
+
+    private String payPassword;
 
     @ApiModelProperty(value = "昵称")
     private String nickName;
@@ -56,32 +63,13 @@ public class User implements Serializable {
     @ApiModelProperty(value = "封号时间")
     private Date closeTime;
 
+    private String country;
+
+    private String province;
+
+    private String city;
+
+    private String region;
 
 
-
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", account=").append(account);
-        sb.append(", password=").append(password);
-        sb.append(", nickName=").append(nickName);
-        sb.append(", realName=").append(realName);
-        sb.append(", sex=").append(sex);
-        sb.append(", mobile=").append(mobile);
-        sb.append(", imgUrl=").append(imgUrl);
-        sb.append(", email=").append(email);
-        sb.append(", birthdate=").append(birthdate);
-        sb.append(", status=").append(status);
-        sb.append(", createTime=").append(createTime);
-        sb.append(", delTime=").append(delTime);
-        sb.append(", closeTime=").append(closeTime);
-        sb.append(", serialVersionUID=").append(serialVersionUID);
-        sb.append("]");
-        return sb.toString();
-    }
 }

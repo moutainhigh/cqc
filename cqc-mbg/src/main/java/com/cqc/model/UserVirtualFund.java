@@ -2,6 +2,8 @@ package com.cqc.model;
 
 import java.math.BigDecimal;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+
 import java.io.Serializable;
 
 /**
@@ -12,6 +14,8 @@ import java.io.Serializable;
  * @author ${author}
  * @since 2020-01-16
  */
+
+@Data
 @TableName("user_virtual_fund")
 public class UserVirtualFund implements Serializable {
 
@@ -30,81 +34,28 @@ public class UserVirtualFund implements Serializable {
     /**
      * 资产类型 1-cqc
      */
-    private Boolean type;
+    private Integer type;
 
     /**
      * 余额
      */
-    private BigDecimal balance;
+    private BigDecimal balance = BigDecimal.ZERO;
 
     /**
      * 冻结金额
      */
-    private BigDecimal freezeBalance;
+    private BigDecimal freezeBalance = BigDecimal.ZERO;
 
     /**
      * 可用金额
      */
-    private BigDecimal availableBalance;
+    private BigDecimal availableBalance = BigDecimal.ZERO;
 
-
-    public String getId() {
-        return id;
+    public UserVirtualFund() {
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
+    public UserVirtualFund(String userId, Integer type) {
         this.userId = userId;
-    }
-
-    public Boolean getType() {
-        return type;
-    }
-
-    public void setType(Boolean type) {
         this.type = type;
-    }
-
-    public BigDecimal getBalance() {
-        return balance;
-    }
-
-    public void setBalance(BigDecimal balance) {
-        this.balance = balance;
-    }
-
-    public BigDecimal getFreezeBalance() {
-        return freezeBalance;
-    }
-
-    public void setFreezeBalance(BigDecimal freezeBalance) {
-        this.freezeBalance = freezeBalance;
-    }
-
-    public BigDecimal getAvailableBalance() {
-        return availableBalance;
-    }
-
-    public void setAvailableBalance(BigDecimal availableBalance) {
-        this.availableBalance = availableBalance;
-    }
-
-    @Override
-    public String toString() {
-        return "UserVirtualFund{" +
-        "id=" + id +
-        ", userId=" + userId +
-        ", type=" + type +
-        ", balance=" + balance +
-        ", freezeBalance=" + freezeBalance +
-        ", availableBalance=" + availableBalance +
-        "}";
     }
 }

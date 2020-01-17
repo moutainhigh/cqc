@@ -1,9 +1,9 @@
 package com.cqc.portal.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.cqc.admin.mapper.NoticeMapper;
-import com.cqc.admin.service.NoticeService;
 import com.cqc.model.Notice;
+import com.cqc.portal.mapper.NoticeMapper;
+import com.cqc.portal.service.NoticeService;
 import org.springframework.stereotype.Service;
 
 /**
