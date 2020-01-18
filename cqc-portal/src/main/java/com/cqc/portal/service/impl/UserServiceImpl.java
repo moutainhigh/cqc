@@ -98,4 +98,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             return false;
         }
     }
+
+    @Override
+    public boolean openCloseAutoOrder(String userId, int autoOrder) {
+        // 更改表状态
+        try {
+            userMapper.updateAutoOrder(userId, autoOrder);
+            return true;
+        } catch (Exception e) {
+            log.error("开启/关闭自动抢单错误 : \n {} ", e.getMessage());
+            return false;
+        }
+
+    }
+
 }

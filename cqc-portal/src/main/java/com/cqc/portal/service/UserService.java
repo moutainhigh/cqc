@@ -42,4 +42,12 @@ public interface UserService extends IService<User> {
      * @return
      */
     boolean modifyArea(String userId, ModifyAreaParam param);
+
+    /**
+     * 开启/关闭自动抢单
+     * @param userId
+     * @param autoOrder
+     * @return
+     */
+    boolean openCloseAutoOrder(String userId, int autoOrder);
 }

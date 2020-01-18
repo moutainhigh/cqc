@@ -19,6 +19,9 @@ public class UserInfo {
 
     private String realName;
 
+    private boolean autoOrderStatus;
+
     private BigDecimal cqc = BigDecimal.ZERO;
+
 
 }

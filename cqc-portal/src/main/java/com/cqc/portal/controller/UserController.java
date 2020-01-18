@@ -1,17 +1,14 @@
 package com.cqc.portal.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.cqc.common.api.PageQuery;
 import com.cqc.common.api.Result;
 import com.cqc.common.api.ResultCode;
 import com.cqc.common.exception.BaseException;
-import com.cqc.model.Message;
+import com.cqc.model.User;
 import com.cqc.model.UserRealInfo;
 import com.cqc.model.UserVirtualFund;
 import com.cqc.portal.dto.ModifyAreaParam;
 import com.cqc.portal.dto.ModifyPasswordParam;
-import com.cqc.portal.dto.UserRealInfoAddParam;
 import com.cqc.portal.dto.resp.UserInfo;
 import com.cqc.portal.service.UserRealInfoService;
 import com.cqc.portal.service.UserService;
@@ -100,7 +97,7 @@ public class UserController {
 
 
     @ApiOperation(value = "修改地区")
-    @RequestMapping(value = "/modifyArea", method = RequestMethod.POST)
+    @PostMapping("/modifyArea")
     public Result<Boolean> modifyArea(@RequestBody ModifyAreaParam param) {
         String userId = PortalUserUtil.getCurrentUserId();
         if (StringUtils.isEmpty(userId)) {
@@ -111,6 +108,49 @@ public class UserController {
             return Result.failed("修改地区失败");
         }
         return Result.success();
+    }
+
+
+    @ApiOperation(value = "开启自动抢单")
+    @GetMapping("/startAutoOrder")
+    public Result<Boolean> startAutoOrder() {
+        String userId = PortalUserUtil.getCurrentUserId();
+        if (StringUtils.isEmpty(userId)) {
+            throw new BaseException(ResultCode.UNAUTHORIZED);
+        }
+        boolean b = userService.openCloseAutoOrder(userId, 1);
+        if (!b) {
+            return Result.failed("开启自动抢单失败");
+        }
+        return Result.success();
+    }
+
+    @ApiOperation(value = "关闭自动抢单")
+    @GetMapping("/stopAutoOrder")
+    public Result<Boolean> stopAutoOrder() {
+        String userId = PortalUserUtil.getCurrentUserId();
+        if (StringUtils.isEmpty(userId)) {
+            throw new BaseException(ResultCode.UNAUTHORIZED);
+        }
+        boolean b = userService.openCloseAutoOrder(userId, 0);
+        if (!b) {
+            return Result.failed("关闭自动抢单失败");
+        }
+        return Result.success();
+    }
+
+    @ApiOperation(value = "查询是否在自动抢单中")
+    @GetMapping("/getAutoOrderStatus")
+    public Result<Boolean> getAutoOrderStatus() {
+        String userId = PortalUserUtil.getCurrentUserId();
+        if (StringUtils.isEmpty(userId)) {
+            throw new BaseException(ResultCode.UNAUTHORIZED);
+        }
+        User user = userService.getById(userId);
+        if (user == null) {
+            return Result.failed("用户被删除，请重新登录");
+        }
+        return Result.success(user.getAutoOrderStatus());
     }
 
 }

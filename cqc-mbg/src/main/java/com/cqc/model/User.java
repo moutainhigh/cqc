@@ -71,5 +71,10 @@ public class User implements Serializable {
 
     private String region;
 
+    /**
+     * 自动抢单状态
+     */
+    private Boolean autoOrderStatus;
+
 
 }
