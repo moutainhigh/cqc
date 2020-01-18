@@ -42,7 +42,7 @@ public class UserBankCardController {
     private UserBankCardService service;
 
 
-    @ApiOperation(value = "修改支付密码")
+    @ApiOperation(value = "添加银行卡")
     @PostMapping("/add")
     public Result<Boolean> add(@Validated @RequestBody BankCardAddParam param) {
         String userId = PortalUserUtil.getCurrentUserId();

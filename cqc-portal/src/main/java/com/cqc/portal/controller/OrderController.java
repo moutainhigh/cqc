@@ -36,7 +36,7 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    @ApiOperation("已放单列表")
+    @ApiOperation("我的订单")
     @GetMapping("/list")
     public Result<Page<Order>> list(PageQuery pageQuery, String status) {
         String userId = PortalUserUtil.getCurrentUserId();
