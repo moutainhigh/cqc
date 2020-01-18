@@ -13,6 +13,10 @@ import com.cqc.model.Order;
  */
 public interface OrderService extends IService<Order> {
 
-
+    /**
+     * 自动抢单
+     * @param userId
+     */
+    void autoOrder(String userId);
 
 }

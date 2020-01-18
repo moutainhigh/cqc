@@ -9,6 +9,7 @@ import com.cqc.model.UserRealInfo;
 import com.cqc.model.UserVirtualFund;
 import com.cqc.portal.dto.ModifyAreaParam;
 import com.cqc.portal.dto.ModifyPasswordParam;
+import com.cqc.portal.dto.resp.UserFundDto;
 import com.cqc.portal.dto.resp.UserInfo;
 import com.cqc.portal.service.UserRealInfoService;
 import com.cqc.portal.service.UserService;
@@ -122,6 +123,9 @@ public class UserController {
         if (!b) {
             return Result.failed("开启自动抢单失败");
         }
+        // todo 开启自动抢单异步任务
+
+
         return Result.success();
     }
 
@@ -139,9 +143,9 @@ public class UserController {
         return Result.success();
     }
 
-    @ApiOperation(value = "查询是否在自动抢单中")
+    @ApiOperation(value = "查询用户资金")
     @GetMapping("/getAutoOrderStatus")
-    public Result<Boolean> getAutoOrderStatus() {
+    public Result<UserFundDto> getAutoOrderStatus() {
         String userId = PortalUserUtil.getCurrentUserId();
         if (StringUtils.isEmpty(userId)) {
             throw new BaseException(ResultCode.UNAUTHORIZED);
@@ -150,7 +154,16 @@ public class UserController {
         if (user == null) {
             return Result.failed("用户被删除，请重新登录");
         }
-        return Result.success(user.getAutoOrderStatus());
+        UserFundDto userFundDto = new UserFundDto();
+        // 查余额
+        UserVirtualFund fund = userVirtualFundService.getOne(new QueryWrapper<UserVirtualFund>().eq("user_id", userId)
+                .eq("type", 1));
+        if (fund != null) {
+            userFundDto.setCqc(fund.getAvailableBalance());
+        }
+        userFundDto.setAutoOrderStatus(user.getAutoOrderStatus());
+        return Result.success(userFundDto);
     }
+
 
 }
