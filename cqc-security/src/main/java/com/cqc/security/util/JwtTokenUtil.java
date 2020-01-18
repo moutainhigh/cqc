@@ -2,6 +2,7 @@ package com.cqc.security.util;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
+import com.cqc.security.bean.AccessToken;
 import com.cqc.security.bean.AdminUserDetails;
 import com.cqc.security.bean.PortalUserDetails;
 import io.jsonwebtoken.Claims;
@@ -50,20 +51,21 @@ public class JwtTokenUtil {
     /**
      * 根据负责生成JWT的token
      */
-    private String generateToken(Map<String, Object> claims) {
-        return Jwts.builder()
+    private AccessToken generateToken(Map<String, Object> claims) {
+
+        String token = Jwts.builder()
                 .setClaims(claims)
                 .setExpiration(generateExpirationDate(expiration))
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
-    }
 
-    private String generateRefreshToken(Map<String, Object> claims) {
-        return Jwts.builder()
+        String refreshToken = Jwts.builder()
                 .setClaims(claims)
                 .setExpiration(generateExpirationDate(refreshExpiration))
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
+
+        return new AccessToken(token, refreshToken, tokenHead, expiration);
     }
 
     /**
@@ -133,14 +135,14 @@ public class JwtTokenUtil {
     /**
      * 根据用户信息生成token
      */
-    public String generateToken(UserDetails userDetails) {
+    public AccessToken generateToken(UserDetails userDetails) {
 
         AdminUserDetails adminUserDetails = (AdminUserDetails) userDetails;
 
         Map<String, Object> claims = new HashMap<>();
         claims.put(CLAIM_KEY_USERNAME, userDetails.getUsername());
         claims.put(CLAIM_KEY_CREATED, new Date());
-        //claims.put("user_id", adminUserDetails.getUmsAdmin().getId());
+        claims.put("user_id", adminUserDetails.getUmsAdmin().getId());
 
 
         return generateToken(claims);
@@ -149,7 +151,7 @@ public class JwtTokenUtil {
     /**
      * 根据用户信息生成token
      */
-    public String generateRefreshToken(UserDetails userDetails) {
+    public AccessToken generateRefreshToken(UserDetails userDetails) {
         AdminUserDetails adminUserDetails = (AdminUserDetails) userDetails;
 
         Map<String, Object> claims = new HashMap<>();
@@ -158,10 +160,10 @@ public class JwtTokenUtil {
         claims.put("user_id", adminUserDetails.getUmsAdmin().getId());
         claims.put(GRANT_TYPE, "refresh");
 
-        return generateRefreshToken(claims);
+        return generateToken(claims);
     }
 
-    public String generatePortalToken(UserDetails userDetails) {
+    public AccessToken generatePortalToken(UserDetails userDetails) {
         PortalUserDetails portalUserDetails = (PortalUserDetails) userDetails;
         Map<String, Object> claims = new HashMap<>();
         claims.put(CLAIM_KEY_USERNAME, userDetails.getUsername());
@@ -172,7 +174,7 @@ public class JwtTokenUtil {
         return generateToken(claims);
     }
 
-    public String generatePortalRefresh(UserDetails userDetails) {
+    public AccessToken generatePortalRefresh(UserDetails userDetails) {
         PortalUserDetails portalUserDetails = (PortalUserDetails) userDetails;
         Map<String, Object> claims = new HashMap<>();
         claims.put(CLAIM_KEY_USERNAME, userDetails.getUsername());
@@ -188,7 +190,7 @@ public class JwtTokenUtil {
      *
      * @param oldToken 带tokenHead的token
      */
-    public String refreshHeadToken(String oldToken) {
+    public AccessToken refreshHeadToken(String oldToken) {
         if(StrUtil.isEmpty(oldToken)){
             return null;
         }
@@ -205,13 +207,8 @@ public class JwtTokenUtil {
         if(isTokenExpired(token)){
             return null;
         }
-        //如果token在30分钟之内刚刷新过，返回原token
-        if(tokenRefreshJustBefore(token,30*60)){
-            return token;
-        }else{
-            claims.put(CLAIM_KEY_CREATED, new Date());
-            return generateToken(claims);
-        }
+        claims.put(CLAIM_KEY_CREATED, new Date());
+        return generateToken(claims);
     }
 
     /**

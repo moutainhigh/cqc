@@ -51,7 +51,7 @@ public class UserController {
             throw new BaseException(ResultCode.UNAUTHORIZED);
         }
         UserInfo userInfo = new UserInfo();
-        userInfo.setAccount(PortalUserUtil.getCurrentUser().getAccount());
+        userInfo.setAccount(PortalUserUtil.getCurrentUsername());
         // 查实名信息
         UserRealInfo realInfo = userRealInfoService.getRealInfo(userId);
         if (realInfo != null) {

@@ -7,6 +7,7 @@ import com.cqc.admin.dto.UmsAdminParam;
 import com.cqc.admin.service.UmsAdminService;
 import com.cqc.common.api.Result;
 import com.cqc.model.UmsAdmin;
+import com.cqc.security.bean.AccessToken;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,30 +50,24 @@ public class UmsAdminController {
     @ApiOperation(value = "登录以后返回token")
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public Result login(@RequestBody UmsAdminLoginParam umsAdminLoginParam, BindingResult result) {
-        String token = adminService.login(umsAdminLoginParam.getUsername(), umsAdminLoginParam.getPassword());
+    public Result<AccessToken> login(@RequestBody UmsAdminLoginParam umsAdminLoginParam, BindingResult result) {
+        AccessToken token = adminService.login(umsAdminLoginParam.getUsername(), umsAdminLoginParam.getPassword());
         if (token == null) {
             return Result.validateFailed("用户名或密码错误");
         }
-        Map<String, String> tokenMap = new HashMap<>();
-        tokenMap.put("token", token);
-        tokenMap.put("tokenHead", tokenHead);
-        return Result.success(tokenMap);
+        return Result.success(token);
     }
 
     @ApiOperation(value = "刷新token")
     @RequestMapping(value = "/refreshToken", method = RequestMethod.GET)
     @ResponseBody
-    public Result refreshToken(HttpServletRequest request) {
+    public Result<AccessToken> refreshToken(HttpServletRequest request) {
         String token = request.getHeader(tokenHeader);
-        String refreshToken = adminService.refreshToken(token);
+        AccessToken refreshToken = adminService.refreshToken(token);
         if (refreshToken == null) {
             return Result.failed("token已经过期！");
         }
-        Map<String, String> tokenMap = new HashMap<>();
-        tokenMap.put("token", refreshToken);
-        tokenMap.put("tokenHead", tokenHead);
-        return Result.success(tokenMap);
+        return Result.success(refreshToken);
     }
 
     @ApiOperation(value = "获取当前登录用户信息")

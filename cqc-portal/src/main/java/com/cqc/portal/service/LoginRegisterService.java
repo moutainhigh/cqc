@@ -60,12 +60,7 @@ public class LoginRegisterService {
             }
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            String token = jwtTokenUtil.generatePortalToken(userDetails);
-            //String refreshToken = jwtTokenUtil.generatePortalRefresh(userDetails);
-
-            accessToken = new AccessToken();
-            accessToken.setToken(token);
-            //accessToken.setRefreshToken(refreshToken);
+            accessToken = jwtTokenUtil.generatePortalToken(userDetails);
             accessToken.setTokenHead(tokenHeader);
         } catch (AuthenticationException e) {
             log.warn("登录异常： " + e.getMessage());

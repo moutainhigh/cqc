@@ -17,7 +17,18 @@ public class AccessToken {
 
     private String tokenHead;
 
-    private String refreshTokenHead;
+    private Long expiresIn;
 
+    private String username;
+
+    public AccessToken() {
+    }
+
+    public AccessToken(String token, String refreshToken, String tokenHead, Long expiresIn) {
+        this.token = token;
+        this.refreshToken = refreshToken;
+        this.tokenHead = tokenHead;
+        this.expiresIn = expiresIn;
+    }
 
 }

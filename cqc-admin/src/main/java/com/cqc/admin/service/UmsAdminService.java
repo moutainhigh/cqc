@@ -6,6 +6,7 @@ import com.cqc.admin.dto.UpdateAdminPasswordParam;
 import com.cqc.model.UmsAdmin;
 import com.cqc.model.UmsPermission;
 import com.cqc.model.UmsRole;
+import com.cqc.security.bean.AccessToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,13 +33,13 @@ public interface UmsAdminService {
      * @param password 密码
      * @return 生成的JWT的token
      */
-    String login(String username, String password);
+    AccessToken login(String username, String password);
 
     /**
      * 刷新token的功能
      * @param oldToken 旧的token
      */
-    String refreshToken(String oldToken);
+    AccessToken refreshToken(String oldToken);
 
     /**
      * 根据用户id获取用户

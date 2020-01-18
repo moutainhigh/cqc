@@ -8,6 +8,7 @@ import com.cqc.admin.mapper.UmsAdminLoginLogMapper;
 import com.cqc.admin.mapper.UmsAdminMapper;
 import com.cqc.admin.service.UmsAdminService;
 import com.cqc.model.*;
+import com.cqc.security.bean.AccessToken;
 import com.cqc.security.bean.AdminUserDetails;
 import com.cqc.security.util.JwtTokenUtil;
 import org.slf4j.Logger;
@@ -78,8 +79,8 @@ public class UmsAdminServiceImpl implements UmsAdminService {
     }
 
     @Override
-    public String login(String username, String password) {
-        String token = null;
+    public AccessToken login(String username, String password) {
+        AccessToken token = null;
         //密码需要客户端加密后传递
         try {
             UserDetails userDetails = loadUserByUsername(username);
@@ -89,8 +90,6 @@ public class UmsAdminServiceImpl implements UmsAdminService {
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
             token = jwtTokenUtil.generateToken(userDetails);
-//            updateLoginTimeByUsername(username);
-            //insertLoginLog(username);
         } catch (AuthenticationException e) {
             LOGGER.warn("登录异常:{}", e.getMessage());
         }
@@ -123,7 +122,7 @@ public class UmsAdminServiceImpl implements UmsAdminService {
     }
 
     @Override
-    public String refreshToken(String oldToken) {
+    public AccessToken refreshToken(String oldToken) {
         return jwtTokenUtil.refreshHeadToken(oldToken);
     }
 
