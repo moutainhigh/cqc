@@ -106,10 +106,12 @@
                         var text = card.isDefault == 1 ? "默认" : "";
                         var bankName = card.bankName + '  ' +card.cardNo;
                         html += '<a href="javascript:void(0);" onclick="setBank(this)">'+
+                            '<input hidden value="'+card.id+'"></hidden>'+
                             '<div class="pro_each">'+
                             '<img src="'+card.logo+'" alt="">'+
                             '<span>'+bankName+'</span>'+
                             '<span class="text">'+text+'</span>'+
+
                             '</div>'+
                             '</a>';
                     }
@@ -132,19 +134,40 @@
             ele = undefined;
         });
         $("#del").click(function(){
-            $(".gray_bg").fadeOut(300);
-            $(".comm_show").fadeOut(300);
-            $(".comm_mes").show().fadeOut(1500).find("p").text("删除成功");
-            $(ele).remove();
-            ele = undefined;
+            var id = $(ele).find('input').val();
+            var uri = bank_card_remove_uri + "?id="+id
+            getForAuth(host + uri, null, function(result){
+                handleResult(result);
+                if (result.code == 200) {
+                    $(".gray_bg").fadeOut(300);
+                    $(".comm_show").fadeOut(300);
+                    $(".comm_mes").show().fadeOut(1500).find("p").text("删除成功");
+                    $(ele).remove();
+                    ele = undefined;
+                }else{
+                    $(".comm_mes").show().fadeOut(1500).find("p").text(result.message);
+                }
+            });
+
         });
         $("#def").click(function(){
-            $(".pro_each").find("span:last-child").text(' ');
-            $(ele).find("span:last-child").text("默认");
-            $(".gray_bg").fadeOut(300);
-            $(".comm_show").fadeOut(300);
-            $(".comm_mes").show().fadeOut(1500).find("p").text("设置成功");
-            ele = undefined;
+            var id = $(ele).find('input').val();
+            var uri = bank_card_set_default_uri + "?id="+id
+            getForAuth(host + uri, null, function(result){
+                handleResult(result);
+                if (result.code == 200) {
+                    $(".pro_each").find("span:last-child").text(' ');
+                    $(ele).find("span:last-child").text("默认");
+                    $(".gray_bg").fadeOut(300);
+                    $(".comm_show").fadeOut(300);
+                    $(".comm_mes").show().fadeOut(1500).find("p").text("设置成功");
+                    ele = undefined;
+                }else {
+                    $(".comm_mes").show().fadeOut(1500).find("p").text(result.message);
+                }
+            });
+
+
         });
     }
 

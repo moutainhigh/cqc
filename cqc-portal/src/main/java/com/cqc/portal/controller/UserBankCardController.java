@@ -42,6 +42,8 @@ public class UserBankCardController {
     private UserBankCardService service;
 
 
+
+
     @ApiOperation(value = "添加银行卡")
     @PostMapping("/add")
     public Result<Boolean> add(@Validated @RequestBody BankCardAddParam param) {
@@ -113,6 +115,8 @@ public class UserBankCardController {
         }
         return Result.success();
     }
+
+
 
 }
 

@@ -14,6 +14,9 @@
     <link rel="stylesheet" href="./css/common.css" />
     <!-- 导入jquery -->
     <script src="./js/jquery.min.js"></script>
+    <script src="./js/config.js"></script>
+    <script src="./js/request.js"></script>
+
     <!-- 根据设备宽度，计算html根节点的font-size -->
     <script>
         // 获取html根节点要素内容
@@ -61,30 +64,12 @@
                <div class="pro_each" style="border: none;">
                     <input type="text" class="search_input" placeholder="输入银行卡名称搜索，例如：农业银行"/>
                 </div>
-                <a href="#" class="add_bank">
+                <!--<a href="#" class="add_bank">
                     <div class="pro_each">
                         <img src="./img/ABC.png" alt="">
                         <span>中国农业银行</span>
                     </div>
-                </a>
-                <a href="#" class="add_bank">
-                    <div class="pro_each">
-                        <img src="./img/js.png" alt="">
-                        <span>中国建设银行</span>
-                    </div>
-                </a>
-                <a href="#" class="add_bank">
-                    <div class="pro_each">
-                        <img src="./img/China.png" alt="">
-                        <span>中国银行</span>
-                    </div>
-                </a>
-                <a href="#" class="add_bank">
-                    <div class="pro_each">
-                        <img src="./img/zs.png" alt="">
-                        <span>招商银行</span>
-                    </div>
-                </a>
+                </a>-->
             </div>
         </div>
         <!-- 内容end -->
@@ -94,25 +79,95 @@
             <div class="bank_tx">
                 <h3>银行</h3>
                 <span></span>
+                <input id="bank_id" hidden />
             </div>
             <div class="common_model">
                 <h3>银行卡号</h3>
-                <input type="text" value="" name="" class="tx_input" placeholder="请输入正确的银行卡号">
+                <input id="card_no" type="text" value="" name="" class="tx_input" placeholder="请输入正确的银行卡号">
             </div>
             <div class="common_model">
-                 <input type="submit" value="确定" class="btn_input">
+                 <input type="button" value="确定" class="btn_input" id="add">
                  <input type="submit" value="取消" class="btn_input bg_or" id="cancel">
             </div>
          </div>
     </div>
+    <div class="wrap_common"  style="overflow: auto;">
+        <!-- 内容end -->
+        <div class="comm_mes">
+            <p></p>
+        </div>
+    </div>
+
 </body>
 <script>
-    $(".add_bank").click(function(){
-        $(".one_model_bank span").text($(this).find("span").text());
-        $(".gray_bg,.one_model_bank").show();
-        $("#cancel,.gray_bg").click(function(){
-            $(".gray_bg,.one_model_bank").hide();
-        });
+
+    $(function(){
+        banklist();
     });
+
+    function banklist() {
+        getForAuth(host + bank_list_uri, null, function(result){
+            handleResult(result);
+            if (result.code == '200') {
+                var html = '';
+                var list = result.data;
+                if (list){
+                    var len = list.length;
+                    for (var i = 0; i < len; i++) {
+                        var bank = list[i];
+                        var bankName = bank.name;
+                        var logo = bank.logo ? bank.logo : "";
+                        html += '<a href="#" class="add_bank">'+
+                            '<div class="pro_each">'+
+                            '<img src="'+logo+'" alt="">'+
+                            '<span class="bank_name">'+bankName+'</span>'+
+                            '<input hidden value="'+bank.id+'"></hidden>'+
+                            '</div>'+
+                            '</a>';
+                    }
+                    $('.model_two').append(html);
+
+                    $(".model_two .add_bank").click(function(){
+                        $(".one_model_bank span").text($(this).find("span").text());
+                        var bankId = $(this).find("input").val();
+                        $("#bank_id").val(bankId);
+                        $(".gray_bg,.one_model_bank").show();
+                        $("#cancel,.gray_bg").click(function(){
+                            $(".gray_bg,.one_model_bank").hide();
+                        });
+                    });
+                }
+
+            }
+        });
+    }
+
+    $("#add").click(function () {
+        var cardNo = $("#card_no").val();
+        if (!cardNo) {
+            $(".comm_mes").show().fadeOut(1000).find("p").text("请输入卡号");
+            return;
+        }
+        var data = {
+            "bankId": $("#bank_id").val(),
+            "cardNo": cardNo
+        }
+        postForAuth(host + bank_card_add_uri, data, function (result) {
+            handleResult(result);
+            console.log(result);
+            if (result.code == '200') {
+                $(".gray_bg,.one_model_bank").hide();
+                $(".comm_mes").show().fadeOut(2000).find("p").text("添加成功");
+                // 添加成功
+                setTimeout(function(){
+                    window.location.href = "bank_card.html";
+                },500);
+            }else {
+                $(".comm_mes").show().fadeOut(2000).find("p").text(result.message);
+            }
+        });
+
+    });
+
 </script>
 </html>

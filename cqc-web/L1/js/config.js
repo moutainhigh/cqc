@@ -16,4 +16,9 @@ const bank_card_set_default_uri = "/bankCard/setDefault";
 
 const bank_card_remove_uri = "/bankCard/remove";
 
+const bank_list_uri = "/bank/list";
+
+// 佣金费率
+const rate_list_uri = "/userRate/list";
+
 

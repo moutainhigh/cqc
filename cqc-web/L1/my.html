@@ -86,11 +86,11 @@
                         <div class="swiper-slide">
                             <div class="pla_info">
                                 <h3>可抢cqc</h3>
-                                <h1>0.35</h1>
+                                <h1 id="cqc">0.35</h1>
                                 <ul>
                                     <li>
                                         <h4>当前cqc</h4>
-                                        <span>0.51</span>
+                                        <span id="cqc_total">0.51</span>
                                     </li>
                                     <li>
                                         <h4>待入cqc</h4>
@@ -228,6 +228,9 @@
                 // 成功 展示数据
                 var userInfo = result.data;
                 $(".user_info h1").text(userInfo.account);
+                $("#cqc").text(userInfo.cqc);
+                $("#cqc_total").text(userInfo.cqcTotal);
+
                 if (userInfo.real == 1){
                     $(".user_info span").text("3c认证");
                 }

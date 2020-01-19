@@ -21,10 +21,10 @@ function postForAuth(url, param, callback) {
     var token = localStorage.getItem("token")
     var tokenHead = localStorage.getItem("tokenHead");
     $.ajax({
-        type: "get",
+        type: "post",
         url: url,
-        data: param,
-        contentType: "application/json",
+        data: JSON.stringify(param),
+        contentType: "application/json;charset=UTF-8",
         headers: {
             'Authorization': tokenHead + ' ' + token
         },
