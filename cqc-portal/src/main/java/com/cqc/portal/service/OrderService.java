@@ -19,4 +19,11 @@ public interface OrderService extends IService<Order> {
      */
     void autoOrder(String userId);
 
+    /**
+     * 确认付款
+     * @param id
+     * @return
+     */
+    boolean confirmPay(String userId, String id);
+
 }

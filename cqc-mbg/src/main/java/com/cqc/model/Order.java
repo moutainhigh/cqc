@@ -31,6 +31,8 @@ public class Order implements Serializable {
 
     private String orderSn;
 
+    private String sellerUserId;
+
     /**
      * 发布者昵称
      */
@@ -72,5 +74,9 @@ public class Order implements Serializable {
      */
     private Date payTime;
 
+    /**
+     * 佣金
+     */
+    private BigDecimal commission;
 
 }

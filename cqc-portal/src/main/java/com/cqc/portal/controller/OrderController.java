@@ -19,6 +19,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotBlank;
+import java.util.List;
+
 /**
  * <p>
  * 订单 前端控制器
@@ -52,9 +55,34 @@ public class OrderController {
         return Result.success(page);
     }
 
+    @ApiOperation("获取新订单")
+    @GetMapping("/getNew")
+    public Result<List<Order>> getNew(OrderQuery param) {
+        String userId = PortalUserUtil.getCurrentUserId();
+        if (StringUtils.isEmpty(userId)) {
+            throw new BaseException(ResultCode.UNAUTHORIZED);
+        }
+        List<Order> list = orderService.list(new QueryWrapper<Order>()
+                .eq("user_id", userId)
+                .eq("status", 0)
+                .orderByDesc("create_time"));
+        return Result.success(list);
+    }
 
 
-
+    @ApiOperation("确认付款")
+    @GetMapping("/confirmPay")
+    public Result<List<Order>> confirmPay(@NotBlank(message = "id不能为空") String id) {
+        String userId = PortalUserUtil.getCurrentUserId();
+        if (StringUtils.isEmpty(userId)) {
+            throw new BaseException(ResultCode.UNAUTHORIZED);
+        }
+        boolean rs = orderService.confirmPay(userId, id);
+        if (!rs) {
+            return Result.failed("确认失败");
+        }
+        return Result.success();
+    }
 
 }
 

@@ -8,21 +8,21 @@ import java.io.Serializable;
 
 /**
  * <p>
- * 用户-虚拟币资产
+ * 用户金额
  * </p>
  *
  * @author ${author}
- * @since 2020-01-16
+ * @since 2020-01-19
  */
 
 @Data
-@TableName("user_virtual_fund")
-public class UserVirtualFund implements Serializable {
+@TableName("user_fund")
+public class UserFund implements Serializable {
 
     private static final long serialVersionUID=1L;
 
     /**
-     * ID， 主键
+     * ID，主键
      */
     private String id;
 
@@ -30,11 +30,6 @@ public class UserVirtualFund implements Serializable {
      * 用户id
      */
     private String userId;
-
-    /**
-     * 资产类型 1-cqc
-     */
-    private Integer type;
 
     /**
      * 余额
@@ -51,12 +46,10 @@ public class UserVirtualFund implements Serializable {
      */
     private BigDecimal availableBalance = BigDecimal.ZERO;
 
-    public UserVirtualFund() {
-        this.type = 1;
+    public UserFund() {
     }
 
-    public UserVirtualFund(String userId, Integer type) {
+    public UserFund(String userId) {
         this.userId = userId;
-        this.type = type;
     }
 }

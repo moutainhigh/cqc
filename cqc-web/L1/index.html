@@ -96,56 +96,6 @@
             <div class="two_model">
                 <ul>
                     <li>
-                        <img src="./img/Alipay.png" alt="">
-                        <div class="two">
-                            <span>hong44466</span>
-                            <span>0.59</span>
-                            <span>560.0</span>
-                        </div>
-                        <span class="three">等待付款</span>
-                        <a href="javascript:void(0);" class="four">确认付款</a>
-                    </li>
-                    <li>
-                        <img src="./img/WeChat.png" alt="">
-                        <div class="two">
-                            <span>hong44466</span>
-                            <span>0.59</span>
-                            <span>560.0</span>
-                        </div>
-                        <span class="three">等待付款</span>
-                        <a href="javascript:void(0);" class="four">确认付款</a>
-                    </li>
-                    <li>
-                        <img src="./img/Alipay.png" alt="">
-                        <div class="two">
-                            <span>hong44466</span>
-                            <span>0.59</span>
-                            <span>560.0</span>
-                        </div>
-                        <span class="three">等待付款</span>
-                        <a href="javascript:void(0);" class="four">确认付款</a>
-                    </li>
-                    <li>
-                        <img src="./img/WeChat.png" alt="">
-                        <div class="two">
-                            <span>hong44466</span>
-                            <span>0.59</span>
-                            <span>560.0</span>
-                        </div>
-                        <span class="three">等待付款</span>
-                        <a href="javascript:void(0);" class="four">确认付款</a>
-                    </li>
-                    <li>
-                        <img src="./img/Alipay.png" alt="">
-                        <div class="two">
-                            <span>hong44466</span>
-                            <span>0.59</span>
-                            <span>560.0</span>
-                        </div>
-                        <span class="three">等待付款</span>
-                        <a href="javascript:void(0);" class="four">确认付款</a>
-                    </li>
-                    <li>
                         <img src="./img/WeChat.png" alt="">
                         <div class="two">
                             <span>hong44466</span>
@@ -171,8 +121,9 @@
         <div class="notice_box2">
             <div class="notice_content">
                 <h2 class="notice_title">确认收款</h2>
-                <p class="notice_content_text">1.如果您已经受到收款请点击确认<br>2.center是测试测试测试测试<br>3.center是测试测试测试测试<br>
+                <p class="notice_content_text">1.如果您已经受到收款请点击确认<br><br>
                 </p>
+                <input hidden id="order_id"/>
             </div>
             <div class="btn">
                 <a href="javascript:;" class="notice_cancel" id="close_btn">关闭</a>
@@ -212,8 +163,9 @@
             order_state = 1;
             $(".start_btn img").attr("src","./img/btn_start.png");
             $(".start_btn span").text("正在抢单").css("color","red");
-            $(".two_model ul").fadeIn(500);
-            $(".two_model li").css("width","100%");
+            getNewOrder();
+
+
         }else if(order_state == 1){
             order_state = 0;
             $(".start_btn img").attr("src","./img/btn.png");
@@ -222,25 +174,36 @@
             $(".two_model li").css("width","60%");
         }
     });
-    // 抢单付款
-    var order = $(".two_model li");
-    var four = $(".two_model .four");
-    for(i=0;i<order.length;i++){
-        // order[i].index = i;
-        $(order[i]).click(function(){
-            $(this).find(".three").css("right","2rem");
-            $(this).find(".four").css("width","1.5rem");
-        });
-        $(four[i]).click(function(){
-            $(".gray_bg,.notice_box2").fadeIn(300);
-            $("#close_btn").click(function(){
-                $(".gray_bg,.notice_box2").fadeOut(300);
+
+    function addClick(){
+        // 抢单付款
+        var order = $(".two_model li");
+        var four = $(".two_model .four");
+        for(i=0;i<order.length;i++){
+            // order[i].index = i;
+            $(order[i]).click(function(){
+                $(this).find(".three").css("right","2rem");
+                $(this).find(".four").css("width","1.5rem");
             });
-        });
+            $(four[i]).click(function(){
+                $(".gray_bg,.notice_box2").fadeIn(300);
+                $("#close_btn").click(function(){
+                    $(".gray_bg,.notice_box2").fadeOut(300);
+                });
+                $("#order_id").val($(this).attr("datatype"));
+            });
+        }
     }
 
     $(function () {
+        addClick();
         getNoticeList();
+        // 确认付款
+        $("#sure_btn").click(function () {
+            var orderId = $("#order_id").val();
+            confirmPayOrder(orderId);
+        });
+
     });
 
     function getNoticeList(){
@@ -268,6 +231,86 @@
                 },3000)
             }
         });
+    }
+
+    function getNewOrder(){
+        getForAuth(host + my_order_new_list, null, function(result){
+            var html = '';
+            var list = result.data;
+            if (!list) {
+                return;
+            }
+            var len = list.length;
+            for (let i = 0; i < len; i++) {
+                var item = list[i];
+                html +=
+                    '<li>' +
+                    '<img src="'+getChannelImg(item.channel)+'" alt="" data-type="2">' +
+                    '<div class="two">' +
+                    '<span>'+item.publisher+'</span>' +
+                    '<span></span>' +
+                    '<span>'+item.amount.toFixed(2)+'</span>' +
+                    '</div>' +
+                    '<span class="three" data-type="'+item.status+'">'+getStatus(item.status)+'</span>' +
+                    '<a href="javascript:void(0);" class="four" datatype="'+item.id+'">确认付款</a>' +
+                    '</li>';
+            }
+            $(".two_model ul").html(html);
+            $(".two_model ul").fadeIn(500);
+            $(".two_model li").css("width","100%");
+
+            addClick();
+        });
+    }
+
+
+
+
+    function confirmPayOrder(orderId) {
+        var uri = order_confirm_pay_uri +"?id="+orderId
+        getForAuth(host + uri, null, function(result){
+            handleResult(result);
+            if (result.code == 200) {
+                //确认成功
+                getNewOrder();
+            } else {
+
+            }
+        });
+
+    }
+
+    function getChannelImg(channel) {
+        var logo = "";
+        if (channel == 1) {
+            logo = "img/Alipay.png";
+        } else if (channel == 2) {
+            logo = "img/WeChat.png";
+        }
+        return logo;
+    }
+
+    function getStatus(status) {
+        var text = "";
+        // 0 代付款 1已付款 2已入账 3订单取消 4异常 5已过期 6金额不符 7付款失败
+        if (status == 0) {
+            text = "等待付款";
+        } else if (status == 1) {
+            text = "已付款";
+        } else if (status == 2) {
+            text = "已入账";
+        } else if (status == 3) {
+            text = "订单取消";
+        } else if (status == 4) {
+            text = "异常";
+        } else if (status == 5) {
+            text = "已过期";
+        } else if (status == 6) {
+            text = "金额不符";
+        } else if (status == 7) {
+            text = "付款失败";
+        }
+        return text;
     }
 
 

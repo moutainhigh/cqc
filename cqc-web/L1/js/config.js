@@ -44,3 +44,12 @@ const msg_list_uri = "/message/getNew";
 
 const my_order_list = "/order/list";
 
+const my_order_new_list = "/order/getNew";
+
+const order_confirm_pay_uri = "/order/confirmPay";
+
+// 收款码列表
+const receive_list = "/receiveCode/list";
+//缴纳押金
+const pay_deposit_uri = "/user/payDeposit";
+

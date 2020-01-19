@@ -15,4 +15,5 @@ public class OrderQuery extends PageQuery {
     private Integer type;
 
     private Integer status;
+
 }

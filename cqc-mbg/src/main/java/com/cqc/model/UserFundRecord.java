@@ -12,12 +12,12 @@ import java.io.Serializable;
  * </p>
  *
  * @author ${author}
- * @since 2020-01-16
+ * @since 2020-01-19
  */
 
 @Data
-@TableName("user_virtual_fund_record")
-public class UserVirtualFundRecord implements Serializable {
+@TableName("user_fund_record")
+public class UserFundRecord implements Serializable {
 
     private static final long serialVersionUID=1L;
 
@@ -37,7 +37,7 @@ public class UserVirtualFundRecord implements Serializable {
     private BigDecimal amount;
 
     /**
-     * 资产类型 1 cqc
+     * 业务类型 1-任务佣金
      */
     private Integer type;
 
@@ -51,5 +51,6 @@ public class UserVirtualFundRecord implements Serializable {
      */
     private BigDecimal balance;
 
+    private String remark;
 
 }

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cqc.portal.mapper.UserFundMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.cqc.portal.api.model.UserFund">
+        <id column="id" property="id" />
+        <result column="usre_id" property="usreId" />
+        <result column="balance" property="balance" />
+        <result column="freeze_balance" property="freezeBalance" />
+        <result column="available_balance" property="availableBalance" />
+    </resultMap>
+
+</mapper>
