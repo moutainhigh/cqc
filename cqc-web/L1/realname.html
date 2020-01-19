@@ -14,6 +14,9 @@
     <link rel="stylesheet" href="./css/common.css" />
     <!-- 导入jquery -->
     <script src="./js/jquery.min.js"></script>
+
+    <script src="./js/config.js"></script>
+    <script src="./js/request.js"></script>
     <!-- 根据设备宽度，计算html根节点的font-size -->
     <script>
         // 获取html根节点要素内容
@@ -81,31 +84,31 @@
                 <form action="aa.html" method="POST">
                     <div class="pro_each">
                         <span>真实姓名</span>
-                        <input type="text" class="pass_input" placeholder="例：张三" />
+                        <input type="text" class="pass_input" id="name" placeholder="例：张三" />
                         <span></span>
                     </div>
                     <div class="pro_each">
                         <span>身份证号码</span>
-                        <input type="text" class="pass_input" placeholder="例：440302*******5514" />
+                        <input type="text" class="pass_input" id="sf_number" placeholder="例：440302*******5514" />
                         <span></span>
                     </div>
                     <div class="pro_each">
                         <span>QQ</span>
-                        <input type="text" class="pass_input" placeholder="例：263****10"/>
+                        <input type="text" class="pass_input" id="qq" placeholder="例：263****10"/>
                         <span></span>
                     </div>
                     <div class="pro_each">
                         <span>邮箱</span>
-                        <input type="text" class="pass_input" placeholder="例：263****@qq.com"/>
+                        <input type="text" class="pass_input" id="email" placeholder="例：263****@qq.com"/>
                         <span></span>
                     </div>
                     <div class="pro_each">
                         <span>电话号码</span>
-                        <input type="text" class="pass_input" placeholder="例：157***23312" />
+                        <input type="text" class="pass_input" id="mobile"  placeholder="例：157***23312" />
                         <span></span>
                     </div>
                     <div class="pro_each" style="margin-top: 1rem;">
-                        <input type="submit" value="提交" class="btn_input"/>
+                        <input type="button" value="提交" class="btn_input"/>
                     </div>
                 </form>
             </div>
@@ -118,5 +121,25 @@
     // 修改密码验证
     var ele_data = $(".pass_input");
     realName('资料已提交，请耐心等待审核','./safe.html',ele_data[0],ele_data[1],ele_data[2],ele_data[3],ele_data[4],$(".btn_input"));
+
+
+    $(function(){
+        // 获取实名信息
+        getForAuth(host + realInfo_get_uri, null, function(result){
+            handleResult(result);
+            if (result.code == 200) {
+                // 显示实名
+                var realInfo = result.data;
+                $("#name").val(realInfo.realName);
+                $("#sf_number").val(realInfo.idNumber);
+                $("#qq").val(realInfo.qq);
+                $("#email").val(realInfo.email);
+                $("#mobile").val(realInfo.telephone);
+            } else {
+
+            }
+        });
+
+    });
 </script>
 </html>

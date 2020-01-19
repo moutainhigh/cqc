@@ -17,6 +17,7 @@ import com.cqc.portal.service.UserVirtualFundService;
 import com.cqc.security.util.PortalUserUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -64,6 +65,23 @@ public class UserController {
             userInfo.setCqc(fund.getAvailableBalance());
         }
 
+        return Result.success(userInfo);
+    }
+
+    @ApiOperation("获取用户数据")
+    @GetMapping("/userInfo")
+    public Result<UserInfo> userInfo() {
+        String userId = PortalUserUtil.getCurrentUserId();
+        if (StringUtils.isEmpty(userId)) {
+            throw new BaseException(ResultCode.UNAUTHORIZED);
+        }
+        UserInfo userInfo = new UserInfo();
+        User user = userService.getUser(userId);
+
+        if (user == null) {
+            return Result.failed();
+        }
+        BeanUtils.copyProperties(user, userInfo);
         return Result.success(userInfo);
     }
 
@@ -143,6 +161,9 @@ public class UserController {
         }
         return Result.success();
     }
+
+
+
 
     @ApiOperation(value = "查询用户资金")
     @GetMapping("/getAutoOrderStatus")

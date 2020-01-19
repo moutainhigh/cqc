@@ -9,6 +9,7 @@
 // sub_btn：提交按钮
 // url：跳转的地址
 // 传递参数为空时，不验证
+
 function valiData(mes,url,user,mobile,code,va_code,pass,pass_c,email,sub_btn){
     // 验证布尔值
     var user_Boolean = false;           //用户名
@@ -185,13 +186,27 @@ function valiData(mes,url,user,mobile,code,va_code,pass,pass_c,email,sub_btn){
 // sub_btn:按钮
 // url:地址
 // mes:信息
-function valiPass(mes,url,pass,pass_c,safe,sub_btn){
+function valiPass(mes,url, old_pass, pass,pass_c,safe,sub_btn){
+    var old_pass_Boolean = false;
     var password_Boolean = false;       //密码
     var varconfirm_Boolean = false;     //二次密码
     var safe_Boolean = false;
     // 密码验证
     if(!pass){
         password_Boolean = true;
+    }
+    if(old_pass){
+        console.log(0,$(old_pass));
+        // 验证规则：/^[A-Za-z0-9_-]{4,8}$/
+        $(old_pass).blur(function(){
+            if ((/^[A-Za-z0-9_-]{6,16}$/).test($(old_pass).val())){
+                $(old_pass).css("border-bottom","1px solid green").next().text("✔").css("color","green");
+                old_pass_Boolean = true;
+            }else {
+                $(old_pass).css("border-bottom","1px solid red").next().text("×").css("color","red");
+                old_pass_Boolean = false;
+            }
+        });
     }
     if(pass){
         console.log(1,$(pass));
@@ -250,15 +265,36 @@ function valiPass(mes,url,pass,pass_c,safe,sub_btn){
     // 提交
     console.log(4,sub_btn);
     $(sub_btn).click(function(){
-        if(password_Boolean && varconfirm_Boolean && safe_Boolean){
-            if(mes){
-                $(".comm_mes").show().fadeOut(2000).find("p").text(mes);
+        if(old_pass_Boolean && password_Boolean && varconfirm_Boolean && safe_Boolean){
+
+            var data = {
+                "password": $(old_pass).val(),
+                "newPassword": $(pass).val(),
+                "confirmPassword":$(pass_c).val(),
+                "code":$(safe).val()
             }
-            if(url){
-                setTimeout(() => {
-                    window.location.href = url;
-                }, 2000);
+            console.log(data);
+
+            var uri = modify_login_pwd_uri;
+            if ($(sub_btn).attr("id") == "modify_pay_pass_btn") {
+                uri = modify_pay_pwd_uri;
             }
+            postForAuth(host + uri, data, function(result){
+                if (result.code == 200) {
+                    if(mes){
+                        $(".comm_mes").show().fadeOut(2000).find("p").text(mes);
+                    }
+                    if(url){
+                        setTimeout(() => {
+                            window.location.href = url;
+                        }, 2000);
+                    }
+                } else {
+                    $(".comm_mes").show().fadeOut(2000).find("p").text(result.message);
+                }
+            });
+
+
         }else{
             $(".comm_mes").show().fadeOut(2000).find("p").text("请完善信息");
         }
@@ -368,14 +404,31 @@ function realName(mes,url,name,sf_number,qq,email,mobile,sub_btn){
     console.log(6,$(sub_btn));
     $(sub_btn).click(function(){
         if(name_Boolean && sf_Boolean && qq_Boolean && emaile_Boolean && Mobile_Boolean == true){
-            if(mes){
-                $(".comm_mes").show().fadeOut(2000).find("p").text(mes);
+            var params = {
+                "realName":$(name).val(),
+                "idNumber":$(sf_number).val(),
+                "qq":$(qq).val(),
+                "email": $(email).val(),
+                "telephone": $(mobile).val()
             }
-            if(url){
-                setTimeout(() => {
-                    window.location.href = url;
-                }, 2000);
-            }
+            postForAuth(host + realInfo_apply_uri, params, function(result){
+                handleResult(result);
+                if (result.code == 200) {
+                    if(mes){
+                        $(".comm_mes").show().fadeOut(2000).find("p").text(mes);
+                    }
+                    if(url){
+                        setTimeout(() => {
+                            window.location.href = url;
+                        }, 1000);
+                    }
+                } else {
+                    $(".comm_mes").show().fadeOut(2000).find("p").text(result.message);
+                }
+            });
+
+
+
           }else {
             $(".comm_mes").show().fadeOut(2000).find("p").text("请完善信息");
         }

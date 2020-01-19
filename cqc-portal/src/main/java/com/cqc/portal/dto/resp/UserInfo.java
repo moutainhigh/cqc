@@ -25,4 +25,9 @@ public class UserInfo {
 
     private BigDecimal cqcTotal = BigDecimal.ZERO;
 
+    private String province;
+
+    private String city;
+
+    private String region;
 }

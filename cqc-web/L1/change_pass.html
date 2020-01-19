@@ -14,6 +14,10 @@
     <link rel="stylesheet" href="./css/common.css" />
     <!-- 导入jquery -->
     <script src="./js/jquery.min.js"></script>
+
+    <script src="./js/config.js"></script>
+    <script src="./js/request.js"></script>
+
     <!-- 根据设备宽度，计算html根节点的font-size -->
     <script>
         // 获取html根节点要素内容
@@ -81,6 +85,7 @@
                     <div class="pro_each">
                         <span>旧密码</span>
                         <input type="password" class="pass_input" />
+                        <span></span>
                     </div>
                     <div class="pro_each">
                         <span>新密码</span>
@@ -98,7 +103,7 @@
                         <span></span>
                     </div>
                     <div class="pro_each" style="margin-top: 1rem;">
-                        <input type="submit" value="提交" class="btn_input"/>
+                        <input type="button" id="modify_login_pass_btn" value="提交" class="btn_input"/>
                     </div>
                 </form>
             </div>
@@ -110,6 +115,6 @@
 <script>
     // 修改密码
     var ele_data = $(".pass_input");
-    valiPass('修改成功','./safe.html',ele_data[1],ele_data[2],ele_data[3],$(".btn_input"));
+    valiPass('修改成功','./safe.html',ele_data[0],ele_data[1],ele_data[2],ele_data[3],$(".btn_input"));
 </script>
 </html>

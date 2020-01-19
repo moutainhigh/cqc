@@ -14,6 +14,9 @@
     <link rel="stylesheet" href="./css/common.css" />
     <!-- 导入jquery -->
     <script src="./js/jquery.min.js"></script>
+    <script src="./js/config.js"></script>
+    <script src="./js/request.js"></script>
+
     <!-- 导入插件css -->
     <link rel="stylesheet" href="./lib/city/LArea.css">
     <!-- 根据设备宽度，计算html根节点的font-size -->
@@ -78,7 +81,8 @@
                 <!-- <a href="javascript:void(0);"> -->
                     <div class="pro_each">
                         <div class="content-block" style="width:90%">
-                            <input id="demo1" type="text" readonly="" value="所在地区" style="width:100%;">
+                            <input hidden id="type" value="0">
+                            <input id="demo1" type="text" readonly="" value="请选择地区" style="width:100%;">
                             <input id="value1" type="hidden">
                         </div>
                         <div class="opt">
@@ -86,9 +90,17 @@
                         </div>
                     </div>
                 <!-- </a> -->
+                <div class="pro_each" style="margin-top: 1rem;">
+                    <input type="button" id="modify_area" value="确定" class="btn_input"/>
+                </div>
             </div>
         </div>
         <!-- 内容end -->
+
+        <div class="comm_mes">
+            <p>888888</p>
+        </div>
+
     </div>
 </body>
 <script src="lib/city/LAreaData1.js"></script>
@@ -116,10 +128,70 @@
     $(pro_each[0]).click(function(){
         $(opt[0]).addClass("opt_active");
         $(opt[1]).removeClass("opt_active");
+        $("#type").val(0);
     });
     $(pro_each[1]).click(function(){
         $(opt[1]).addClass("opt_active");
         $(opt[0]).removeClass("opt_active");
+        $("#type").val(1);
     });
+
+    $(function () {
+        getUserInfo();
+
+        $("#modify_area").click(function () {
+            var type = $("#type").val();
+            if (type == 1) {
+                var text = $("#demo1").val();
+                if (text == "请选择地区") {
+                    $(".comm_mes").show().fadeOut(2000).find("p").text("请选择地区");
+                    return;
+                }
+                var areas = text.split(',');
+                var province = areas[0];
+                var city = areas[1];
+                var region = areas[2];
+
+                var data = {
+                    "province": province,
+                    "city" : city,
+                    "region" : region
+                }
+                postForAuth(host + modify_area_uri, data, function(result){
+                    if (result.code == 200) {
+
+                    $(".comm_mes").show().fadeOut(2000).find("p").text("修改成功");
+
+                    } else {
+                        $(".comm_mes").show().fadeOut(2000).find("p").text(result.message);
+                    }
+                });
+            }
+
+        });
+
+
+
+    });
+
+    function getUserInfo() {
+        getForAuth(host + "/user/userInfo", null, function(result){
+            if (result.code == 200) {
+                var data = result.data;
+                var text = data.province;
+                if (data.city) {
+                    text += "," + data.city;
+                }
+                if (data.area) {
+                    text += "," + data.area;
+                }
+                $("#demo1").val(text);
+                $(opt[1]).addClass("opt_active");
+                $(opt[0]).removeClass("opt_active");
+                $("#type").val(1);
+            }
+        });
+    }
+
 </script>
 </html>

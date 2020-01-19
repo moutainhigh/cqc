@@ -34,7 +34,7 @@ public class UserRealInfoServiceImpl extends ServiceImpl<UserRealInfoMapper, Use
     @Override
     public boolean apply(UserRealInfoAddParam param) {
         UserRealInfo realInfo = getRealInfo(param.getUserId());
-        if (realInfo == null) {
+        if (realInfo != null) {
             throw new BaseException("", "已经提交实名信息");
         }
         realInfo = new UserRealInfo();

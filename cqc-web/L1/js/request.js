@@ -32,9 +32,8 @@ function postForAuth(url, param, callback) {
             callback(result);
         },
         error: function (e) {
-            console.log(e.status);
-            console.log(e.responseText);
-            return undefined;
+            console.log(e);
+            alert("服务器错误");
         }
     });
 }

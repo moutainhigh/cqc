@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 /**
  * @author wanglz
@@ -46,8 +47,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         // 首先校验旧密码
         User user = this.getUser(userId);
         String password = user.getPassword();
-        if (!passwordEncoder.matches(password, param.getPassword())) {
-            throw new BadCredentialsException("旧登录密码不正确");
+        if (!passwordEncoder.matches(param.getPassword(), password)) {
+            throw new BaseException("500","旧登录密码不正确");
         }
         User entity = new User();
         entity.setId(userId);
@@ -63,11 +64,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public boolean modifyPayPwd(String userId, ModifyPasswordParam param) {
-
         User user = this.getUser(userId);
-        String payPwd = user.getPayPassword();
-        if (!passwordEncoder.matches(payPwd, param.getPassword())) {
-            throw new BadCredentialsException("旧支付密码不正确");
+
+        // 如果有旧密码  需要校验旧密码
+        if (!StringUtils.isEmpty(user.getPayPassword())) {
+            String payPwd = user.getPayPassword();
+            if (!passwordEncoder.matches(param.getPassword(), payPwd)) {
+                throw new BadCredentialsException("旧支付密码不正确");
+            }
         }
         User entity = new User();
         entity.setId(userId);

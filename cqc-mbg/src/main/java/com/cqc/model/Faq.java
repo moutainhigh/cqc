@@ -62,6 +62,8 @@ public class Faq implements Serializable {
      */
     private Integer status;
 
-    private Integer order;
+    private Integer displayOrder;
+
+    private String img;
 
 }
