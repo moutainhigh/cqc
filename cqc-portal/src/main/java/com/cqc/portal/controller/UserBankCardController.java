@@ -68,13 +68,13 @@ public class UserBankCardController {
 
 
     @ApiOperation(value = "我的银行卡")
-    @PostMapping("/myCardList")
+    @GetMapping("/myCardList")
     public Result<List<UserBankCard>> myCardList(){
         String userId = PortalUserUtil.getCurrentUserId();
         if (StringUtils.isEmpty(userId)) {
             throw new BaseException(ResultCode.UNAUTHORIZED);
         }
-        List<UserBankCard> list = service.list();
+        List<UserBankCard> list = service.list(new QueryWrapper<UserBankCard>().eq("user_id", userId));
         return Result.success(list);
     }
 

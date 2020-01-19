@@ -60,6 +60,7 @@ public class UserController {
         UserVirtualFund fund = userVirtualFundService.getOne(new QueryWrapper<UserVirtualFund>().eq("user_id", userId)
                 .eq("type", 1));
         if (fund != null) {
+            userInfo.setCqcTotal(fund.getBalance());
             userInfo.setCqc(fund.getAvailableBalance());
         }
 

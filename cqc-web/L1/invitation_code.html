@@ -16,6 +16,9 @@
     <script src="./js/jquery.min.js"></script>
     <!-- 导入clipboard -->
     <script src="./js/clipboard.min.js"></script>
+
+    <script src="./js/config.js"></script>
+    <script src="./js/request.js"></script>
     <!-- 根据设备宽度，计算html根节点的font-size -->
     <script>
         // 获取html根节点要素内容
@@ -138,19 +141,53 @@
     </div>
 </body>
 <script>
-// new ClipboardJS;
-var clipboard = new Clipboard('.copy');
-// 随机生成邀请码
-var code_box = $(".invitation_code_box");
+
+    // new ClipboardJS;
+    var clipboard = new Clipboard('.copy');
+    // 随机生成邀请码
+    var code_box = $(".invitation_code_box");
+    $(function(){
+        getForAuth(host + inviteCode_uri, null, function(result){
+            handleResult(result);
+            if (result.code == '401') {
+                // 页面内容更改
+                return;
+            }
+            if (result.code == '200') {
+                // 成功 展示数据
+                $(code_box[1]).hide();
+                $(code_box[0]).show();
+                $("#code").val( result.data);
+                // 10分钟后刷新
+                setTimeout(function(){
+                    $(code_box[0]).hide();
+                    $(code_box[1]).show();
+                },100000);
+            }
+        });
+    });
 $("#get_code").click(function(){
-    $(code_box[1]).hide();
-    $(code_box[0]).show();
-    $("#code").val( _getRandomString(10));
-    // 10分钟后刷新
-    setTimeout(function(){
-        $(code_box[0]).hide();
-        $(code_box[1]).show();  
-    },100000);
+
+    getForAuth(host + invite_create_uri, null, function(result){
+        handleResult(result);
+        if (result.code == '401') {
+            // 页面内容更改
+            return;
+        }
+        if (result.code == '200') {
+            // 成功 展示数据
+            $(code_box[1]).hide();
+            $(code_box[0]).show();
+            $("#code").val( result.data);
+            // 10分钟后刷新
+            setTimeout(function(){
+                $(code_box[0]).hide();
+                $(code_box[1]).show();
+            },100000);
+        }
+    });
+
+
 });
 // 获取长度为len的随机字符串
 function _getRandomString(len) {

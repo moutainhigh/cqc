@@ -23,5 +23,6 @@ public class UserInfo {
 
     private BigDecimal cqc = BigDecimal.ZERO;
 
+    private BigDecimal cqcTotal = BigDecimal.ZERO;
 
 }

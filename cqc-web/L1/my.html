@@ -15,7 +15,9 @@
     <!-- 导入本类.css文件 -->
     <link rel="stylesheet" href="./css/common.css" />
     <!-- 导入jquery -->
-    <!-- <script src="./js/jquery.min.js"></script> -->
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/config.js"></script>
+    <script src="./js/request.js"></script>
     <!-- 导入swiper -->
     <link rel="stylesheet" href="./lib/swiper/swiper.min.css">
     <script src="./lib/swiper/swiper.min.js"></script>
@@ -76,8 +78,8 @@
         <div class="content_common">
             <div class="model_my">
                 <div class="user_info">
-                    <h1>xiaodai</h1>
-                    <span>3c认证</span>
+                    <h1>未登录</h1>
+                    <span>未认证</span>
                 </div>
                 <div class="swiper-container">
                     <div class="swiper-wrapper">
@@ -192,6 +194,10 @@
             </div>
         </div>
         <!-- 底部end -->
+        <!-- 内容end -->
+        <div class="comm_mes">
+            <p></p>
+        </div>
     </div>
 </body>
 <script>
@@ -205,7 +211,32 @@
         // 如果需要滚动条
         scrollbar: '.swiper-scrollbar',
         effect : 'fade',
-    })  
+    });
+    // 等页面加载完毕
+    $(function(){
+        getUserInfo();
+    });
+
+    function getUserInfo() {
+        getForAuth(host + getInfo_url, null, function(result){
+            handleResult(result);
+            if (result.code == '401') {
+                // 页面内容更改
+
+            }
+            if (result.code == '200') {
+                // 成功 展示数据
+                var userInfo = result.data;
+                $(".user_info h1").text(userInfo.account);
+                if (userInfo.real == 1){
+                    $(".user_info span").text("3c认证");
+                }
+
+            }
+        });
+    }
+
+
 </script>
 
 </html>

@@ -47,10 +47,6 @@ public class LoginRegisterService {
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
-
-    @Value("${jwt.tokenHeader}")
-    private String tokenHeader;
-
     public AccessToken login(String username, String password) {
         AccessToken accessToken = null;
         try {
@@ -61,7 +57,6 @@ public class LoginRegisterService {
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
             accessToken = jwtTokenUtil.generatePortalToken(userDetails);
-            accessToken.setTokenHead(tokenHeader);
         } catch (AuthenticationException e) {
             log.warn("登录异常： " + e.getMessage());
         }

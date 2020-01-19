@@ -14,6 +14,9 @@
     <link rel="stylesheet" href="./css/common.css" />
     <!-- 导入jquery -->
     <script src="./js/jquery.min.js"></script>
+
+    <script src="./js/config.js"></script>
+    <script src="./js/request.js"></script>
     <!-- 根据设备宽度，计算html根节点的font-size -->
     <script>
         // 获取html根节点要素内容
@@ -59,20 +62,7 @@
                 <a href="add_bank.html" class="add_bank">添加银行卡</a>
             </div>
             <div class="model_two" style="min-height: 90%; max-height: 90%;">
-               <a href="javascript:void(0);" onclick="setBank(this)">
-                    <div class="pro_each">
-                        <img src="./img/ABC.png" alt="">
-                        <span>中国农业银行</span>
-                        <span class="text">默认</span>
-                    </div>
-                </a>
-                <a href="javascript:void(0);" onclick="setBank(this)">
-                    <div class="pro_each">
-                        <img src="./img/js.png" alt="">
-                        <span>中国建设银行</span>
-                        <span class="text"></span>
-                    </div>
-                </a>
+
             </div>
         </div>
         <!-- 内容end -->
@@ -95,6 +85,43 @@
     </div>
 </body>
 <script>
+    $(function(){
+        mylist();
+    });
+
+    function mylist() {
+        getForAuth(host + bank_card_list_uri, null, function(result){
+            handleResult(result);
+            if (result.code == '401') {
+                // 页面内容更改
+                return;
+            }
+            if (result.code == '200') {
+                var html = '';
+                var list = result.data;
+                if (list){
+                    var len = list.length;
+                    for (var i = 0; i < len; i++) {
+                        var card = list[i];
+                        var text = card.isDefault == 1 ? "默认" : "";
+                        var bankName = card.bankName + '  ' +card.cardNo;
+                        html += '<a href="javascript:void(0);" onclick="setBank(this)">'+
+                            '<div class="pro_each">'+
+                            '<img src="'+card.logo+'" alt="">'+
+                            '<span>'+bankName+'</span>'+
+                            '<span class="text">'+text+'</span>'+
+                            '</div>'+
+                            '</a>';
+                    }
+                    $('.model_two').html(html);
+                }
+
+
+            }
+        });
+    }
+
+
     function setBank(obj){
         var ele = obj;
         $(".gray_bg").fadeIn(300);
@@ -120,5 +147,8 @@
             ele = undefined;
         });
     }
+
+
+
 </script>
 </html>

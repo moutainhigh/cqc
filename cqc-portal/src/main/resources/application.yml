@@ -27,7 +27,7 @@ mybatis-plus:
 jwt:
   tokenHeader: Authorization #JWT存储的请求头
   secret: cqc-portal-secret #JWT加解密使用的密钥
-  expiration: 600 #JWT的超期限时间(60*60*24)
+  expiration: 86400 #JWT的超期限时间(60*60*24)
   tokenHead: Bearer  #JWT负载中拿到开头
   refreshExpiration: 864000
 

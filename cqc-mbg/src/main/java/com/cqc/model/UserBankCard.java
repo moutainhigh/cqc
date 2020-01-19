@@ -2,6 +2,7 @@ package com.cqc.model;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.io.Serializable;
@@ -83,4 +84,15 @@ public class UserBankCard implements Serializable {
     private Integer status;
 
     private Boolean isDefault;
+
+    public String getCardNo() {
+        if (!StringUtils.isEmpty(cardNo)) {
+            if (cardNo.length() >= 4) {
+                return "**** " + cardNo.substring(cardNo.length() - 4);
+            } else {
+                return "**** " + cardNo;
+            }
+        }
+        return cardNo;
+    }
 }
