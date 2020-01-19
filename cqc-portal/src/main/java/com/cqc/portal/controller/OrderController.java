@@ -8,6 +8,7 @@ import com.cqc.common.api.Result;
 import com.cqc.common.api.ResultCode;
 import com.cqc.common.exception.BaseException;
 import com.cqc.model.Order;
+import com.cqc.portal.dto.OrderQuery;
 import com.cqc.portal.service.OrderService;
 import com.cqc.security.util.PortalUserUtil;
 import io.swagger.annotations.Api;
@@ -38,15 +39,15 @@ public class OrderController {
 
     @ApiOperation("我的订单")
     @GetMapping("/list")
-    public Result<Page<Order>> list(PageQuery pageQuery, String status) {
+    public Result<Page<Order>> list(OrderQuery param) {
         String userId = PortalUserUtil.getCurrentUserId();
         if (StringUtils.isEmpty(userId)) {
             throw new BaseException(ResultCode.UNAUTHORIZED);
         }
-        Page<Order> page = new Page<>(pageQuery.getPageNum(), pageQuery.getPageSize());
+        Page<Order> page = new Page<>(param.getPageNum(), param.getPageSize());
         orderService.page(page, new QueryWrapper<Order>()
                 .eq("user_id", userId)
-                .eq(!StringUtils.isEmpty(status), "status", status)
+                .eq(!StringUtils.isEmpty(param.getStatus()), "status", param.getStatus())
                 .orderByDesc("create_time"));
         return Result.success(page);
     }

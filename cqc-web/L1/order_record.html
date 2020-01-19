@@ -4,21 +4,25 @@
     <meta charset="UTF-8">
     <!-- -->
     <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no ">
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no ">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>base</title>
     <!-- 网页ico -->
     <link rel="shortcut icon" href="./favicon.ico">
     <!-- 导入基础base.css文件 -->
-    <link rel="stylesheet" href="./css/base.css" />
+    <link rel="stylesheet" href="./css/base.css"/>
     <!-- 导入本类.css文件 -->
-    <link rel="stylesheet" href="./css/index.css" />
+    <link rel="stylesheet" href="./css/index.css"/>
     <!-- 导入jquery -->
     <script src="./js/jquery.min.js"></script>
     <!-- 导入时间插件 -->
     <link rel="stylesheet" type="text/css" href="css/date.css" media="all">
     <script type="text/javascript" src="js/moment.js"></script>
-    <script type="text/javascript" src="js/bootstrap-datetimepicker.js"></script> 
+    <script type="text/javascript" src="js/bootstrap-datetimepicker.js"></script>
+
+    <script src="./js/config.js"></script>
+    <script src="./js/request.js"></script>
+
     <!-- 根据设备宽度，计算html根节点的font-size -->
     <script>
         // 获取html根节点要素内容
@@ -39,325 +43,330 @@
         }
     </script>
     <style>
-        .two span:nth-child(1){
+        .two span:nth-child(1) {
             width: 100% !important;
         }
     </style>
 </head>
 <body>
-    <div class="gray_bg"></div>
-    <!-- zdy改成本自定义名称 -->
-    <div class="wrap_news">
-        <!-- 顶部start -->
-        <div class="top_wrap">
-            <div class="top">
-                <!-- 标题 -->
-                <h2>订单记录</h2>
-                <!-- 左边返回样式 -->
-                <a href="javascript:history.back(-1)" class="ret"></a>
-                <!-- 右边筛选样式 -->
-                <a href="javascript:;" class="screen"></a>
-            </div>
-        </div>
-        <!-- 顶部end -->
-        <!-- 内容start -->
-        <!-- 将zdy改成自定义名字 -->
-        <div class="content_news">
-            <div class="two_model">
-                <ul>
-                    <li>
-                        <img src="./img/WeChat.png" alt="" data-type="2">
-                        <div class="two">
-                            <span>2019-12-18 03:05</span>
-                            <span> </span>
-                            <span>560.0</span>
-                        </div>
-                        <span class="three" data-type="2">等待付款</span>
-                        <a href="javascript:void(0);" class="four">删除</a>
-                    </li>
-                    <li>
-                        <img src="./img/Alipay.png" alt="" data-type="1">
-                        <div class="two">
-                            <span>2019-12-18 03:05</span>
-                            <span> </span>
-                            <span>560.0</span>
-                        </div>
-                        <span class="three bg_g" data-type="3">付款成功</span>
-                        <a href="javascript:void(0);" class="four">删除</a>
-                    </li>
-                    <li>
-                        <img src="./img/WeChat.png" alt="" data-type="2">
-                        <div class="two">
-                            <span>2019-12-18 03:05</span>
-                            <span> </span>
-                            <span>560.0</span>
-                        </div>
-                        <span class="three bg_g" data-type="4">已入账</span>
-                        <a href="javascript:void(0);" class="four">删除</a>
-                    </li>
-                    <li>
-                        <img src="./img/WeChat.png" alt="" data-type="2">
-                        <div class="two">
-                            <span>2019-12-18 03:05</span>
-                            <span> </span>
-                            <span>560.0</span>
-                        </div>
-                        <span class="three bg_r" data-type="5">订单异常</span>
-                        <a href="javascript:void(0);" class="four">删除</a>
-                    </li>
-                    <li>
-                        <img src="./img/Alipay.png" alt="" data-type="1">
-                        <div class="two">
-                            <span>2019-12-18 03:05</span>
-                            <span> </span>
-                            <span>560.0</span>
-                        </div>
-                        <span class="three bg_r" data-type="6">订单已过期</span>
-                        <a href="javascript:void(0);" class="four">删除</a>
-                    </li>
-                    <li>
-                        <img src="./img/WeChat.png" alt="" data-type="2">
-                        <div class="two">
-                            <span>2019-12-30 14:16</span>
-                            <span></span>
-                            <span>560.0</span>
-                        </div>
-                        <span class="three bg_r" data-type="7">金额不符</span>
-                        <a href="javascript:void(0);" class="four">删除</a>
-                    </li>
-                    <li>
-                        <img src="./img/Alipay.png" alt="" data-type="1">
-                        <div class="two">
-                            <span>2019-12-30 03:05</span>
-                            <span> </span>
-                            <span>560.0</span>
-                        </div>
-                        <span class="three bg_r" data-type="8">付款失败</span>
-                        <a href="javascript:void(0);" class="four">删除</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <!-- 底部end -->
-    </div>
-    <!-- 筛选 -->
-    <div class="wrap_news" style="display: none;">
-        <!-- 顶部start -->
-        <div class="top_wrap">
-            <div class="top">
-                <!-- 标题 -->
-                <h2>筛选</h2>
-                <!-- 右边书写样式 -->
-                <a href="javascript:;" class="close"></a>
-            </div>
-        </div>
-        <!-- 顶部end -->
-        <!-- 筛选内容start -->
-        <div class="content_news">
-            <div class="news_each">
-                <h3>起始时间:</h3>
-                <div class="start_time">
-                    <div class="iDate full">
-                        <input type="text">
-                         <button type="button" class="addOn"></button>
-                    </div>
-                    <!-- <span class="day">2019-11-25</span> -->
-                    <!-- <span class="time">00:01</span> -->
-                </div>
-                <h3>结束时间:</h3>
-                <div class="end_time">
-                    <div class="iDate full">
-                        <input type="text">
-                         <button type="button" class="addOn"></button>
-                    </div>
-                    <!-- <span class="day">2019-11-25</span> -->
-                    <!-- <span class="time">23:59</span> -->
-                </div>
-                <h3>支付类型:</h3>
-                <div class="pay_cate">
-                    <span href="#" class="each_btn" data-type="1">支付宝</span>
-                    <span href="#" class="each_btn" data-type="2">微信</span>
-                </div>
-                <h3>类型:</h3>
-                <div class="cate">
-                    <span class="each_btn" data-type="1">全部</span>
-                    <span class="each_btn" data-type="2">等待付款</span>
-                    <span class="each_btn" data-type="3">付款成功</span>
-                    <span class="each_btn" data-type="4">已入账</span>
-                    <span class="each_btn" data-type="5">异常订单</span>
-                    <span class="each_btn" data-type="6">订单已过期</span>
-                    <span class="each_btn" data-type="7">金额不符</span>
-                    <span class="each_btn" data-type="8">付款失败</span>
-                </div>
-                <a href="javascript:void(0);" class="sure_btn">确认</a>
-            </div>
+<div class="gray_bg"></div>
+<!-- zdy改成本自定义名称 -->
+<div class="wrap_news">
+    <!-- 顶部start -->
+    <div class="top_wrap">
+        <div class="top">
+            <!-- 标题 -->
+            <h2>订单记录</h2>
+            <!-- 左边返回样式 -->
+            <a href="javascript:history.back(-1)" class="ret"></a>
+            <!-- 右边筛选样式 -->
+            <a href="javascript:;" class="screen"></a>
         </div>
     </div>
-    <!-- 筛选内容end -->
-    <div class="notice_box">
-        <div class="notice_content">
-            <h2 class="notice_title">平台提示</h2>
-            <span class="notice_content_text"></span>
+    <!-- 顶部end -->
+    <!-- 内容start -->
+    <!-- 将zdy改成自定义名字 -->
+    <div class="content_news">
+        <div class="two_model">
+            <ul>
+
+            </ul>
         </div>
-        <a href="javascript:;" class="notice_cancel">朕知道了</a>
     </div>
+    <!-- 底部end -->
+</div>
+<!-- 筛选 -->
+<div class="wrap_news" style="display: none;">
+    <!-- 顶部start -->
+    <div class="top_wrap">
+        <div class="top">
+            <!-- 标题 -->
+            <h2>筛选</h2>
+            <!-- 右边书写样式 -->
+            <a href="javascript:;" class="close"></a>
+        </div>
+    </div>
+    <!-- 顶部end -->
+    <!-- 筛选内容start -->
+    <div class="content_news">
+        <div class="news_each">
+            <h3>起始时间:</h3>
+            <div class="start_time">
+                <div class="iDate full">
+                    <input type="text">
+                    <button type="button" class="addOn"></button>
+                </div>
+                <!-- <span class="day">2019-11-25</span> -->
+                <!-- <span class="time">00:01</span> -->
+            </div>
+            <h3>结束时间:</h3>
+            <div class="end_time">
+                <div class="iDate full">
+                    <input type="text">
+                    <button type="button" class="addOn"></button>
+                </div>
+                <!-- <span class="day">2019-11-25</span> -->
+                <!-- <span class="time">23:59</span> -->
+            </div>
+            <h3>支付类型:</h3>
+            <div class="pay_cate">
+                <span href="#" class="each_btn" data-type="1">支付宝</span>
+                <span href="#" class="each_btn" data-type="2">微信</span>
+            </div>
+            <h3>类型:</h3>
+            <div class="cate">
+                <span class="each_btn" data-type="">全部</span>
+                <span class="each_btn" data-type="0">等待付款</span>
+                <span class="each_btn" data-type="1">付款成功</span>
+                <span class="each_btn" data-type="2">已入账</span>
+                <span class="each_btn" data-type="3">已取消</span>
+                <span class="each_btn" data-type="4">异常订单</span>
+                <span class="each_btn" data-type="5">订单已过期</span>
+                <span class="each_btn" data-type="6">金额不符</span>
+                <span class="each_btn" data-type="7">付款失败</span>
+            </div>
+            <a href="javascript:void(0);" class="sure_btn">确认</a>
+        </div>
+    </div>
+</div>
+<!-- 筛选内容end -->
+<div class="notice_box">
+    <div class="notice_content">
+        <h2 class="notice_title">平台提示</h2>
+        <span class="notice_content_text"></span>
+    </div>
+    <a href="javascript:;" class="notice_cancel">朕知道了</a>
+</div>
 </body>
 <script>
     // 筛选显示data-type属性判断
     var wrap_news = $(".wrap_news");
     var cate_btn = $(".cate .each_btn");        //类型按钮
-    var pay_btn =  $(".pay_cate .each_btn");    //支付类型按钮
+    var pay_btn = $(".pay_cate .each_btn");    //支付类型按钮
     // var status = 0;
-    $(".screen").click(function(){
+    $(".screen").click(function () {
         $(wrap_news[1]).show();
         $(wrap_news[0]).hide();
     });
-    $(".close").click(function(){
+    $(".close").click(function () {
         $(wrap_news[1]).hide();
         $(wrap_news[0]).show();
     });
     // 筛选功能
     // 确认筛选
-    $(".sure_btn").click(function(){
+    $(".sure_btn").click(function () {
+        sure();
+    });
+    function sure(){
         var cate;
         var pay_cate;
-        for(i=0;i<pay_btn.length;i++){
-            if($(pay_btn[i]).hasClass("bg_blue")){
+        for (i = 0; i < pay_btn.length; i++) {
+            if ($(pay_btn[i]).hasClass("bg_blue")) {
                 pay_cate = $(pay_btn[i]).attr("data-type");
             }
         }
-        for(i=0;i<cate_btn.length;i++){
-            if($(cate_btn[i]).hasClass("bg_blue")){
+        for (i = 0; i < cate_btn.length; i++) {
+            if ($(cate_btn[i]).hasClass("bg_blue")) {
                 cate = $(cate_btn[i]).attr("data-type");
             }
         }
-        if(cate||pay_cate){
-            cateRecord(cate,pay_cate);
+        if (cate || pay_cate) {
+            cateRecord(cate, pay_cate);
         }
-        var status1 = (cate||pay_cate) ? 1 : 0;
-        var status2 = timeRecord(cate,pay_cate);
-        if(status1 == 0 && status2 == 0){
+        var status1 = (cate || pay_cate) ? 1 : 0;
+        var status2 = timeRecord(cate, pay_cate);
+        if (status1 == 0 && status2 == 0) {
             $(".gray_bg,.notice_box").show();
             $(".notice_box .notice_content_text").text("随便点个不咯？");
-            $(".notice_cancel").click(function(){$(".gray_bg,.notice_box").hide();});
-        }else if(status2 == 2){
+            $(".notice_cancel").click(function () {
+                $(".gray_bg,.notice_box").hide();
+            });
+        } else if (status2 == 2) {
             $(".gray_bg,.notice_box").show();
             $(".notice_box .notice_content_text").text("开始时间不能大于结束时间哦");
-            $(".notice_cancel").click(function(){$(".gray_bg,.notice_box").hide();});
-        }else{
+            $(".notice_cancel").click(function () {
+                $(".gray_bg,.notice_box").hide();
+            });
+        } else {
             $(wrap_news[1]).hide();
             $(wrap_news[0]).show();
         }
-    });
+    }
     // 支付类型选择
-    $(".pay_cate .each_btn").click(function(){
+    $(".pay_cate .each_btn").click(function () {
         $(this).addClass("bg_blue").siblings().removeClass("bg_blue");
     });
     // 订单类型选择
-    $(".cate .each_btn").click(function(){
+    $(".cate .each_btn").click(function () {
         $(this).addClass("bg_blue").siblings().removeClass("bg_blue");
     });
+
     // 订单类别筛选函数
-    function cateRecord(type,pay_type){
+    function cateRecord(type, pay_type) {
         var status = status ? status : 0;
         var ele_type = $(".two_model .three");                      //订单类型
         var pay_ele_type = $(".two_model img");                     //支付类型
-        console.log(type,pay_type);
+        console.log(type, pay_type);
         // 微信全部类型
-        if(type == 1 && pay_type ==1){
-            for(i=0;i<ele_type.length;i++){
-                if($(pay_ele_type[i]).attr("data-type") == pay_type){
+        if (type == 1 && pay_type == 1) {
+            for (i = 0; i < ele_type.length; i++) {
+                if ($(pay_ele_type[i]).attr("data-type") == pay_type) {
                     $(ele_type[i]).parent().show();
-                }else{
-                     $(ele_type[i]).parent().hide();
+                } else {
+                    $(ele_type[i]).parent().hide();
                 }
             }
             return;
         }
         // 支付宝全部类型
-        if(type == 1 && pay_type ==2){
-            for(i=0;i<ele_type.length;i++){
-                if($(pay_ele_type[i]).attr("data-type") == pay_type){
+        if (type == 1 && pay_type == 2) {
+            for (i = 0; i < ele_type.length; i++) {
+                if ($(pay_ele_type[i]).attr("data-type") == pay_type) {
                     $(ele_type[i]).parent().show();
-                }else{
-                     $(ele_type[i]).parent().hide();
+                } else {
+                    $(ele_type[i]).parent().hide();
                 }
             }
             return;
         }
         // 全部类型
-        if(type == 1 && pay_type == undefined){
-            for(i=0;i<ele_type.length;i++){
+        if (type == 1 && pay_type == undefined) {
+            for (i = 0; i < ele_type.length; i++) {
                 $(ele_type[i]).parent().show();
             }
             return;
         }
         // 支付类型和订单类型
-        console.log(type,pay_type);
-        if(type&&pay_type){
+        console.log(type, pay_type);
+        if (type && pay_type) {
             console.log(1);
-            for(i=0;i<ele_type.length;i++){
-                if($(ele_type[i]).attr("data-type") == type && $(pay_ele_type[i]).attr("data-type") == pay_type){
+            for (i = 0; i < ele_type.length; i++) {
+                if ($(ele_type[i]).attr("data-type") == type && $(pay_ele_type[i]).attr("data-type") == pay_type) {
                     $(ele_type[i]).parent().show();
-                }else{
+                } else {
                     $(ele_type[i]).parent().hide();
                 }
             }
-        }else{
+        } else {
             console.log(2);
-            for(i=0;i<ele_type.length;i++){
-                if($(ele_type[i]).attr("data-type") == type || $(pay_ele_type[i]).attr("data-type") == pay_type){
+            for (i = 0; i < ele_type.length; i++) {
+                if ($(ele_type[i]).attr("data-type") == type || $(pay_ele_type[i]).attr("data-type") == pay_type) {
                     $(ele_type[i]).parent().show();
-                }else{
+                } else {
                     $(ele_type[i]).parent().hide();
                 }
             }
         }
     }
+
     // 时间筛选
-    function timeRecord(cate,pay_cate){
+    function timeRecord(cate, pay_cate) {
         var start_end = $("input[type=text]");                      //开始时间和结束时间
         var start_time = new Date($(start_end[0]).val());           //开始时间
         var end_time = new Date($(start_end[1]).val());             //结束时间
         var ele_time = $(".two").find("span:first-child");          //目标时间
-        if($(start_end[0]).val() == $(start_end[1]).val()){
+        if ($(start_end[0]).val() == $(start_end[1]).val()) {
             console.log("没有时间筛选");
-            return status =0;
+            return status = 0;
         }
-        if(start_time > end_time){
-            return status =2;
+        if (start_time > end_time) {
+            return status = 2;
         }
         console.log(555);
-        for(i=0;i<ele_time.length;i++){
-            if(new Date($(ele_time[i]).text())>=start_time && new Date($(ele_time[i]).text())<=end_time){
-                console.log(cate,pay_cate);
-                if(cate||pay_cate){
-                    if(!$(ele_time[i]).parent().parent().is(":hidden")){
+        for (i = 0; i < ele_time.length; i++) {
+            if (new Date($(ele_time[i]).text()) >= start_time && new Date($(ele_time[i]).text()) <= end_time) {
+                console.log(cate, pay_cate);
+                if (cate || pay_cate) {
+                    if (!$(ele_time[i]).parent().parent().is(":hidden")) {
                         $(ele_time[i]).parent().parent().show();
                         console.log("时间成功筛选了");
                     }
-                }else{
+                } else {
                     $(ele_time[i]).parent().parent().show();
                 }
-            }else{
+            } else {
                 $(ele_time[i]).parent().parent().hide();
             }
-        } 
-        return status =1;
+        }
+        return status = 1;
     }
 </script>
 <script type="text/javascript">
-// 日期插件
-$(document).ready(function(){
-    // date time picker
-    if($(".iDate.full").length>0){
-        $(".iDate.full").datetimepicker({
-            locale: "zh-cn",
-            // format: "YYYY-MM-DD a hh:mm",
-            format: "YYYY-MM-DD hh:mm",
-            dayViewHeaderFormat: "YYYY年 MMMM"
+    // 日期插件
+    $(document).ready(function () {
+        // date time picker
+        if ($(".iDate.full").length > 0) {
+            $(".iDate.full").datetimepicker({
+                locale: "zh-cn",
+                // format: "YYYY-MM-DD a hh:mm",
+                format: "YYYY-MM-DD hh:mm",
+                dayViewHeaderFormat: "YYYY年 MMMM"
+            });
+        }
+
+        orderList();
+    });
+
+
+    function orderList() {
+        getForAuth(host + my_order_list, null, function (result) {
+            var html = '';
+            var list = result.data.records;
+            if (!list) {
+                return;
+            }
+            var len = list.length;
+            for (let i = 0; i < len; i++) {
+                var item = list[i];
+                html +=
+                    '<li>' +
+                    '<img src="'+getChannelImg(item.channel)+'" alt="" data-type="2">' +
+                    '<div class="two">' +
+                    '<span>'+item.createTime+'</span>' +
+                    '<span> </span>' +
+                    '<span>'+item.amount.toFixed(2)+'</span>' +
+                    '</div>' +
+                    '<span class="three" data-type="'+item.status+'">'+getStatus(item.status)+'</span>' +
+                    '<a href="javascript:void(0);" class="four">删除</a>' +
+                    '</li>';
+            }
+            $(".two_model ul").append(html);
+
         });
     }
-})
+
+    function getChannelImg(channel) {
+        var logo = "";
+        if (channel == 1) {
+            logo = "img/Alipay.png";
+        } else if (channel == 2) {
+            logo = "img/WeChat.png";
+        }
+        return logo;
+    }
+
+    function getStatus(status) {
+        var text = "";
+        // 0 代付款 1已付款 2已入账 3订单取消 4异常 5已过期 6金额不符 7付款失败
+        if (status == 0) {
+            text = "待付款";
+        } else if (status == 1) {
+            text = "已付款";
+        } else if (status == 2) {
+            text = "已入账";
+        } else if (status == 3) {
+            text = "订单取消";
+        } else if (status == 4) {
+            text = "异常";
+        } else if (status == 5) {
+            text = "已过期";
+        } else if (status == 6) {
+            text = "金额不符";
+        } else if (status == 7) {
+            text = "付款失败";
+        }
+        return text;
+    }
+
 </script>
 </html>

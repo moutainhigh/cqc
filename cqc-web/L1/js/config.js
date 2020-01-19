@@ -37,6 +37,10 @@ const modify_area_uri = "/user/modifyArea";
 
 //获取常见问题
 const faq_list_uri = "/faq/list";
+// 获取公告
+const notice_list_uri = "/notice/list";
+// 获取消息
+const msg_list_uri = "/message/getNew";
 
-
+const my_order_list = "/order/list";
 

@@ -4,15 +4,19 @@
     <meta charset="UTF-8">
     <!-- -->
     <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no ">
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no ">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>base</title>
     <!-- 网页ico -->
     <link rel="shortcut icon" href="./favicon.ico">
     <!-- 导入基础base.css文件 -->
-    <link rel="stylesheet" href="./css/base.css" />
+    <link rel="stylesheet" href="./css/base.css"/>
     <!-- 导入jquery -->
     <script src="./js/jquery.min.js"></script>
+    <script src="./js/config.js"></script>
+    <script src="./js/request.js"></script>
+
+
     <!-- 根据设备宽度，计算html根节点的font-size -->
     <script>
         // 获取html根节点要素内容
@@ -34,122 +38,147 @@
     </script>
 </head>
 <body>
-    <div class="gray_bg"></div>
-    <!-- zdy改成本自定义名称 -->
-    <div class="wrap_news">
-        <!-- 顶部start -->
-        <div class="top_wrap">
-            <div class="top">
-                <!-- 标题 -->
-                <h2>消息提醒</h2>
-                <!-- 左边返回样式 -->
-                <a href="javascript:history.back(-1)" class="ret"></a>
-            </div>
-        </div>
-        <!-- 顶部end -->
-        <!-- 内容start -->
-        <!-- 将zdy改成自定义名字 -->
-        <div class="content_news">
-            <div class="news_each">
-                <a href="javascript:void(0);">
-                    <h2>报备</h2>
-                    <p>这是一个测试测试测试 001</p>
-                    <span class="time">20191123</span>
-                </a>
-            </div>
-            <div class="news_each">
-                <a href="javascript:void(0);">
-                   <h2>最新通告</h2>
-                    <p>这是一个测试测试测试 002</p>
-                    <span class="time">20191123</span>
-                </a>
-            </div>
-            <div class="news_each">
-                <a href="javascript:void(0);">
-                    <h2>啦啦啦</h2>
-                    <p>这是一个测试测试测试 003</p>
-                    <span class="time">20191123</span>
-                </a>
-            </div>
-            <div class="news_each">
-                <a href="javascript:void(0);">
-                    <h2>平台通知</h2>
-                    <p>这是一个测试测试测试 123</p>
-                    <span class="time">20191123</span>
-                </a>
-            </div>
-            <div class="news_each">
-                <a href="javascript:void(0);">
-                    <h2>报备</h2>
-                    <p>这是一个测试测试测试 456</p>
-                    <span class="time">20191123</span>
-                </a>
-            </div>
-            <div class="news_each">
-                <a href="javascript:void(0);">
-                    <h2>报备</h2>
-                    <p>这是一个测试测试测试 789</p>
-                    <span class="time">20191123</span>
-                </a>
-            </div>
-            <div class="news_each">
-                <a href="javascript:void(0);">
-                    <h2>报备</h2>
-                    <p>这是一个测试测试测试 1011</p>
-                    <span class="time">20191123</span>
-                </a>
-            </div>
-            <div class="news_each">
-                <a href="javascript:void(0);">
-                    <h2>报备</h2>
-                    <p>这是一个测试测试测试 1012</p>
-                    <span class="time">20191123</span>
-                </a>
-            </div>
-            <div class="news_each">
-                <a href="javascript:void(0);">
-                    <h2>报备</h2>
-                    <p>这是一个测试测试测试 1013</p>
-                    <span class="time">20191123</span>
-                </a>
-            </div>
-            <div class="news_each">
-                <a href="javascript:void(0);">
-                    <h2>报备</h2>
-                    <p>这是一个测试测试测试 1014</p>
-                    <span class="time">20191123</span>
-                </a>
-            </div>
-        </div>
-        <!-- 内容end -->
-        <!-- 通用通告 -->
-        <div class="notice_box">
-            <div class="notice_img"><img src="./img/bell.png" alt=""></div>
-            <div class="notice_content">
-                <h2 class="notice_title"></h2>
-                <span class="notice_content_text"></span>
-            </div>
-            <a href="javascript:;" class="notice_cancel">朕知道了</a>
+<div class="gray_bg"></div>
+<!-- zdy改成本自定义名称 -->
+<div class="wrap_news">
+    <!-- 顶部start -->
+    <div class="top_wrap">
+        <div class="top">
+            <!-- 标题 -->
+            <h2>消息提醒</h2>
+            <!-- 左边返回样式 -->
+            <a href="javascript:history.back(-1)" class="ret"></a>
         </div>
     </div>
+    <!-- 顶部end -->
+    <!-- 内容start -->
+    <!-- 将zdy改成自定义名字 -->
+    <div class="content_news">
+        <div class="news_each">
+            <a href="javascript:void(0);">
+                <h2>报备</h2>
+                <p>这是一个测试测试测试 001</p>
+                <span class="time">20191123</span>
+            </a>
+        </div>
+        <div class="news_each">
+            <a href="javascript:void(0);">
+                <h2>最新通告</h2>
+                <p>这是一个测试测试测试 002</p>
+                <span class="time">20191123</span>
+            </a>
+        </div>
+        <div class="news_each">
+            <a href="javascript:void(0);">
+                <h2>啦啦啦</h2>
+                <p>这是一个测试测试测试 003</p>
+                <span class="time">20191123</span>
+            </a>
+        </div>
+        <div class="news_each">
+            <a href="javascript:void(0);">
+                <h2>平台通知</h2>
+                <p>这是一个测试测试测试 123</p>
+                <span class="time">20191123</span>
+            </a>
+        </div>
+        <div class="news_each">
+            <a href="javascript:void(0);">
+                <h2>报备</h2>
+                <p>这是一个测试测试测试 456</p>
+                <span class="time">20191123</span>
+            </a>
+        </div>
+        <div class="news_each">
+            <a href="javascript:void(0);">
+                <h2>报备</h2>
+                <p>这是一个测试测试测试 789</p>
+                <span class="time">20191123</span>
+            </a>
+        </div>
+        <div class="news_each">
+            <a href="javascript:void(0);">
+                <h2>报备</h2>
+                <p>这是一个测试测试测试 1011</p>
+                <span class="time">20191123</span>
+            </a>
+        </div>
+        <div class="news_each">
+            <a href="javascript:void(0);">
+                <h2>报备</h2>
+                <p>这是一个测试测试测试 1012</p>
+                <span class="time">20191123</span>
+            </a>
+        </div>
+        <div class="news_each">
+            <a href="javascript:void(0);">
+                <h2>报备</h2>
+                <p>这是一个测试测试测试 1013</p>
+                <span class="time">20191123</span>
+            </a>
+        </div>
+        <div class="news_each">
+            <a href="javascript:void(0);">
+                <h2>报备</h2>
+                <p>这是一个测试测试测试 1014</p>
+                <span class="time">20191123</span>
+            </a>
+        </div>
+    </div>
+    <!-- 内容end -->
+    <!-- 通用通告 -->
+    <div class="notice_box">
+        <div class="notice_img"><img src="./img/bell.png" alt=""></div>
+        <div class="notice_content">
+            <h2 class="notice_title"></h2>
+            <span class="notice_content_text"></span>
+        </div>
+        <a href="javascript:;" class="notice_cancel">朕知道了</a>
+    </div>
+</div>
 </body>
 <script>
     // 显示通告赋值
     var news_each = $(".news_each");
-    for(i=0;i<news_each.length; i++){
-        $(news_each[i]).click(function(){
-            var notice_title = $(this).find("h2").text();
-            var notice_content_text = $(this).find("p").text();
-            console.log(notice_title,notice_content_text);
-            $(".notice_box").find(".notice_title").text(notice_title);
-            $(".notice_box").find(".notice_content_text").text(notice_content_text);
-            $(".gray_bg,.notice_box").fadeIn(300);
-            $(".notice_cancel").click(function(){
-                $(".gray_bg,.notice_box").fadeOut(300);
-             });
+
+    // 滚动
+
+    $(function () {
+        getNoticeList();
+    })
+
+    function getNoticeList() {
+        var uri = msg_list_uri;
+        getForAuth(host + uri, null, function (result) {
+            var html = '';
+            var list = result.data;
+            if (!list) {
+                return;
+            }
+            var len = list.length;
+            for (let i = 0; i < len; i++) {
+                var item = list[i];
+                html += '<div class="news_each">' +
+                    '<a href="javascript:void(0);">' +
+                    '<h2>'+item.title+'</h2>' +
+                    '<p>'+item.content+'</p>' +
+                    '<span class="time">'+item.createTime+'</span>' +
+                    '</a></div>'
+                ;
+            }
+            $(news_each[i]).click(function () {
+                var notice_title = $(this).find("h2").text();
+                var notice_content_text = $(this).find("p").text();
+                console.log(notice_title, notice_content_text);
+                $(".notice_box").find(".notice_title").text(notice_title);
+                $(".notice_box").find(".notice_content_text").text(notice_content_text);
+                $(".gray_bg,.notice_box").fadeIn(300);
+                $(".notice_cancel").click(function () {
+                    $(".gray_bg,.notice_box").fadeOut(300);
+                });
+            });
         });
     }
-    // 滚动
-    
+
 </script>
 </html>

@@ -15,6 +15,10 @@
     <link rel="stylesheet" href="./css/index.css" />
     <!-- 导入jquery -->
     <script src="./js/jquery.min.js"></script>
+
+    <script src="./js/config.js"></script>
+    <script src="./js/request.js"></script>
+
     <!-- 根据设备宽度，计算html根节点的font-size -->
     <script>
         // 获取html根节点要素内容
@@ -200,16 +204,7 @@
     //     });
     // })
     // 顶部通告
-    var notice_num = $(".notice_content_text");
-    if(notice_num.length > 1){
-        setInterval(function(){
-            $(".notice_box_top").animate({
-                marginTop : "-1.2rem",
-            },500,function(){
-                $(this).css({marginTop :"0"}).find("a:first").appendTo(this);
-            }); 
-        },3000)
-    }   
+
     // 开启抢单
     var order_state = 0;
     $(".start_btn").click(function(){
@@ -243,5 +238,38 @@
             });
         });
     }
+
+    $(function () {
+        getNoticeList();
+    });
+
+    function getNoticeList(){
+        var uri = notice_list_uri + "?type=2"
+        getForAuth(host + uri, null, function(result){
+            var html = '';
+            var list = result.data;
+            if (!list) {
+                return;
+            }
+            var len = list.length;
+            for (let i = 0; i < len; i++) {
+                var item = list[i];
+                html += '<a href="./news.html" class="notice_content_text">'+item.title+'</a>';
+            }
+            $('.notice_box_top').html(html);
+            var notice_num = $(".notice_content_text");
+            if(notice_num.length > 1){
+                setInterval(function(){
+                    $(".notice_box_top").animate({
+                        marginTop : "-1.2rem",
+                    },500,function(){
+                        $(this).css({marginTop :"0"}).find("a:first").appendTo(this);
+                    });
+                },3000)
+            }
+        });
+    }
+
+
 </script>
 </html>

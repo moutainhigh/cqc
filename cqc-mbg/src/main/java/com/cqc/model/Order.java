@@ -2,6 +2,7 @@ package com.cqc.model;
 
 import java.math.BigDecimal;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -18,7 +19,7 @@ import java.util.Date;
  */
 
 @Data
-@TableName("order")
+@TableName("`order`")
 public class Order implements Serializable {
 
     private static final long serialVersionUID=1L;
@@ -48,7 +49,7 @@ public class Order implements Serializable {
     /**
      * 金额
      */
-    private BigDecimal amount;
+    private BigDecimal amount = BigDecimal.ZERO;
 
     /**
      * 0 代付款 1已支付 2已入账 3订单已过期
@@ -58,6 +59,7 @@ public class Order implements Serializable {
     /**
      * 发布时间
      */
+    @JsonFormat( pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
     /**
@@ -69,11 +71,6 @@ public class Order implements Serializable {
      * 付款时间
      */
     private Date payTime;
-
-    /**
-     * 抢单时间
-     */
-    private Date buyTime;
 
 
 }
