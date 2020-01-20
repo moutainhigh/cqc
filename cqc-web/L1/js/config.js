@@ -43,12 +43,24 @@ const faq_list_uri = "/faq/list";
 const notice_list_uri = "/notice/list";
 // 获取消息
 const msg_list_uri = "/message/getNew";
-
+// 我的订单
 const my_order_list = "/order/list";
-
+// 抢单后获取新订单
 const my_order_new_list = "/order/getNew";
+// 开启自动下单
+const open_auto_buy_uri = "/user/openAutoBuy";
+// 关闭自动下单
+const close_auto_buy_uri = "/user/closeAutoBuy";
+// 获取抢单状态
+const get_auto_order_status = "/user/getAutoOrderStatus";
 
+// 下单接口
+const buy_order_uri = "/order/buyOrder";
+
+// 确认收款
 const order_confirm_pay_uri = "/order/confirmPay";
+// 我的账变记录
+const my_fund_list = "/userFund/myList";
 
 // 收款码列表
 const receive_list = "/receiveCode/list";

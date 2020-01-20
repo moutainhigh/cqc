@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cqc.portal.mapper.UserFundMapper">
+
+    <update id="addCommission">
+        update user_fund set balance = balance + #{amount},
+        available_balance = available_balance + #{amount}
+        where user_id = #{userId}
+    </update>
+
+    <update id="cutBalance">
+        update user_fund set balance = balance - #{amount},
+            available_balance = available_balance - #{amount}
+            where user_id = #{userId}
+            and balance >= #{amount} and available_balance >= #{amount}
+    </update>
+
+    <update id="freezeBalance">
+        update user_fund set freeze_balance = freeze_balance + #{amount},
+            available_balance = available_balance - #{amount}
+             where user_id = #{userId} and  available_balance >= #{amount}
+    </update>
+</mapper>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cqc.portal.mapper.OrderMapper">
+
+    <update id="buyOrder">
+        update  `order` set user_id = #{userId}, `status` = 0, buy_time =#{buyTime},
+        commission= #{commission}
+        where id = #{orderId} and status = -1
+    </update>
+
+    <select id="selectNewOrder" parameterType="java.math.BigDecimal" resultType="com.cqc.model.Order">
+        select * from `order`
+        where `status` = -1 and amount &lt;= #{balance}
+         order by create_time desc limit 1
+    </select>
+
+</mapper>

@@ -43,7 +43,7 @@ public class UserFundServiceImpl extends ServiceImpl<UserFundMapper, UserFund> i
     @Transactional(rollbackFor = Throwable.class)
     @Override
     public boolean addBalance(String userId, BigDecimal amount, int type, String remark) {
-        userFundMapper.addAmount(userId, amount);
+        userFundMapper.addCommission(userId, amount);
 
         UserFund userFund = userFundMapper.selectOne(new QueryWrapper<UserFund>().eq("user_id", userId));
         if (userFund == null) {
@@ -62,5 +62,33 @@ public class UserFundServiceImpl extends ServiceImpl<UserFundMapper, UserFund> i
         return true;
     }
 
+    @Transactional(rollbackFor = Throwable.class)
+    @Override
+    public boolean cutFreezeBalance(String userId, BigDecimal amount, int type, String remark) {
+        int i = userFundMapper.cutBalance(userId, amount);
+        if (i <= 0) {
+            return false;
+        }
+        UserFund userFund = userFundMapper.selectOne(new QueryWrapper<UserFund>().eq("user_id", userId));
+        if (userFund == null) {
+            userFund = new UserFund(userId);
+        }
+        // 保存记录
+        UserFundRecord record = new UserFundRecord();
+        record.setUserId(userId);
+        record.setType(type);
+        record.setAmount(amount);
+        record.setDirect(1);
+        record.setBalance(userFund.getBalance());
+        record.setRemark(remark);
+        userFundRecordMapper.insert(record);
+        return true;
+    }
 
+    @Transactional(rollbackFor = Throwable.class)
+    @Override
+    public boolean freezeBalance(String userId, BigDecimal amount) {
+        int i = userFundMapper.freezeBalance(userId, amount);
+        return i == 1;
+    }
 }

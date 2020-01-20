@@ -2,6 +2,7 @@ package com.cqc.portal.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.cqc.model.Order;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -26,10 +27,9 @@ public interface OrderMapper extends BaseMapper<Order> {
      * @param userId
      * @return
      */
-    @Update("update order set user_id = #{userId}, status = 1, buy_time =#{buyTime}, commission= #{commission}" +
-            "where id = #{orderId} and status = 0")
-    int buyOrder(String orderId, String userId, Date buyTime, BigDecimal commission);
 
-    @Select("select * from order where status = 0 order by create_time desc limit 1")
-    Order selectNewOrder();
+    int buyOrder(@Param("orderId") String orderId, @Param("userId")String userId,
+                 @Param("buyTime")Date buyTime, @Param("commission")BigDecimal commission);
+
+    Order selectNewOrder(@Param("balance") BigDecimal balance);
 }

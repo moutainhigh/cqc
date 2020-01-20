@@ -130,10 +130,9 @@ public class UserController {
         return Result.success();
     }
 
-
-    @ApiOperation(value = "开启自动抢单")
-    @GetMapping("/startAutoOrder")
-    public Result<Boolean> startAutoOrder() {
+    @ApiOperation(value = "关闭自动抢单")
+    @GetMapping("/openAutoBuy")
+    public Result<Boolean> openAutoBuy() {
         String userId = PortalUserUtil.getCurrentUserId();
         if (StringUtils.isEmpty(userId)) {
             throw new BaseException(ResultCode.UNAUTHORIZED);
@@ -142,15 +141,12 @@ public class UserController {
         if (!b) {
             return Result.failed("开启自动抢单失败");
         }
-        // todo 开启自动抢单异步任务
-
-
         return Result.success();
     }
 
     @ApiOperation(value = "关闭自动抢单")
-    @GetMapping("/stopAutoOrder")
-    public Result<Boolean> stopAutoOrder() {
+    @GetMapping("/closeAutoBuy")
+    public Result<Boolean> closeAutoBuy() {
         String userId = PortalUserUtil.getCurrentUserId();
         if (StringUtils.isEmpty(userId)) {
             throw new BaseException(ResultCode.UNAUTHORIZED);
@@ -161,9 +157,6 @@ public class UserController {
         }
         return Result.success();
     }
-
-
-
 
     @ApiOperation(value = "查询用户资金")
     @GetMapping("/getAutoOrderStatus")
@@ -177,7 +170,6 @@ public class UserController {
             return Result.failed("用户被删除，请重新登录");
         }
         UserFundDto userFundDto = new UserFundDto();
-        // 查余额
         // 查余额
         UserFund fund = userFundService.getFund(userId);
         userFundDto.setCqc(fund.getAvailableBalance());

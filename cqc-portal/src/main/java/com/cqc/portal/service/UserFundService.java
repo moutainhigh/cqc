@@ -32,4 +32,22 @@ public interface UserFundService extends IService<UserFund> {
      */
     boolean addBalance(String userId, BigDecimal amount, int type, String remark);
 
+    /**
+     *
+     * @param userId
+     *
+     * @param amount
+     * @param type
+     * @param remark
+     * @return
+     */
+    boolean cutFreezeBalance(String userId, BigDecimal amount, int type, String remark);
+
+    /**
+     * 冻结金额
+     * @param userId
+     * @param amount
+     * @return
+     */
+    boolean freezeBalance(String userId, BigDecimal amount);
 }

@@ -2,9 +2,11 @@ package com.cqc.model;
 
 import java.math.BigDecimal;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -52,5 +54,8 @@ public class UserFundRecord implements Serializable {
     private BigDecimal balance;
 
     private String remark;
+
+    @JsonFormat( pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date createTime;
 
 }

@@ -86,7 +86,7 @@
             <div class="one_model">
                 <div class="city_hot"><a href="./city_hot.html"><img src="./img/hot.png" alt=""></a></div>
                 <div class="go_order">
-                    <div class="go_info">可用 cqc：0.00</div>
+                    <div class="go_info">可用 cqc：<span id="cqc_balance">0.00</span></div>
                     <div class="start_btn">
                         <img src="./img/btn.png" alt="">
                         <span class="go">开始抢单</span>
@@ -156,24 +156,52 @@
     // })
     // 顶部通告
 
+
     // 开启抢单
     var order_state = 0;
     $(".start_btn").click(function(){
         if(order_state == 0){
-            order_state = 1;
-            $(".start_btn img").attr("src","./img/btn_start.png");
-            $(".start_btn span").text("正在抢单").css("color","red");
-            getNewOrder();
-
-
+            start();
+            openAutoBuy();
         }else if(order_state == 1){
-            order_state = 0;
-            $(".start_btn img").attr("src","./img/btn.png");
-            $(".start_btn span").text("已停止抢单").css("color","#545454");
-            $(".two_model ul").fadeOut(500);
-            $(".two_model li").css("width","60%");
+            stop();
+            closeAutoBuy(0);
         }
+
+
+
     });
+
+    var t1, t2, t3;
+    function start() {
+        order_state = 1;
+        $(".start_btn img").attr("src","./img/btn_start.png");
+        $(".start_btn span").text("正在抢单").css("color","red");
+        getNewOrder();
+
+        t1 = setInterval(function() {
+            buyOrder();
+        },2000);
+
+        t2 = setInterval(function() {
+            getAutoOrderStatus();
+        },2000);
+
+        t3 = setInterval(function() {
+            getNewOrder();
+        },2000);
+    }
+
+    function stop() {
+        order_state = 0;
+        $(".start_btn img").attr("src","./img/btn.png");
+        $(".start_btn span").text("已停止抢单").css("color","#545454");
+        $(".two_model ul").fadeOut(500);
+        $(".two_model li").css("width","60%");
+        window.clearInterval(t1);
+        window.clearInterval(t2);
+        window.clearInterval(t3);
+    }
 
     function addClick(){
         // 抢单付款
@@ -197,7 +225,10 @@
 
     $(function () {
         addClick();
+        // 获取公告
         getNoticeList();
+        // 获取抢单状态
+        getAutoOrderStatus();
         // 确认付款
         $("#sure_btn").click(function () {
             var orderId = $("#order_id").val();
@@ -205,6 +236,50 @@
         });
 
     });
+
+    
+    function openAutoBuy() {
+        getForAuth(host + open_auto_buy_uri, null, function(result){
+            if (result.code == 200) {
+                order_state = 1;
+            }
+        });
+    }
+    function closeAutoBuy() {
+        getForAuth(host + close_auto_buy_uri, null, function(result){
+            if (result.code == 200) {
+                order_state = 0;
+            }
+        });
+    }
+    function getAutoOrderStatus() {
+        getForAuth(host + get_auto_order_status, null, function(result){
+            if (result.code == 200) {
+                // 显示余额
+                $("#cqc_balance").text(result.data.cqc.toFixed(4));
+                if (result.data.autoOrderStatus){
+                    // t1没有开启时，才启动
+                    if (!t1) {
+                        start();
+                    }
+                } else {
+                    order_state = 0;
+                    close();
+                }
+            }
+        });
+    }
+
+    function buyOrder() {
+        getForAuth(host + buy_order_uri, null, function(result){
+            if (result.code == 200){
+                console.log("抢到一单");
+            } else if (result.code == 1020) {
+                // 余额为0 自动关闭抢单
+                stop();
+            }
+        });
+    }
 
     function getNoticeList(){
         var uri = notice_list_uri + "?type=2"
@@ -262,9 +337,6 @@
             addClick();
         });
     }
-
-
-
 
     function confirmPayOrder(orderId) {
         var uri = order_confirm_pay_uri +"?id="+orderId

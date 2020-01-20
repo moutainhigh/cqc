@@ -16,7 +16,11 @@ import java.math.BigDecimal;
  */
 public interface UserFundMapper extends BaseMapper<UserFund> {
 
-    @Update("update user_fund set balance = balance + #{amount}, available_balance = available_balance + #{amount}" +
-            "  where user_id = #{userId}")
-    int addAmount(String userId, BigDecimal amount);
+
+    int addCommission(String userId, BigDecimal amount);
+
+
+    int cutBalance(String userId, BigDecimal amount);
+
+    int freezeBalance(String userId, BigDecimal amount);
 }

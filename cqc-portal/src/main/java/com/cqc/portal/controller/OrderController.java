@@ -84,5 +84,17 @@ public class OrderController {
         return Result.success();
     }
 
+    @ApiOperation(value = "开启自动抢单")
+    @GetMapping("/buyOrder")
+    public Result<Boolean> startAutoOrder() {
+        String userId = PortalUserUtil.getCurrentUserId();
+        if (StringUtils.isEmpty(userId)) {
+            throw new BaseException(ResultCode.UNAUTHORIZED);
+        }
+        orderService.autoOrder(userId);
+        return Result.success(true, "抢单成功"+System.currentTimeMillis());
+    }
+
+
 }
 
