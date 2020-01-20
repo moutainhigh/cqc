@@ -31,6 +31,15 @@ public class UserFundServiceImpl extends ServiceImpl<UserFundMapper, UserFund> i
     private UserFundRecordMapper userFundRecordMapper;
 
 
+    @Override
+    public UserFund getFund(String userId) {
+        UserFund userFund = userFundMapper.selectOne(new QueryWrapper<UserFund>().eq("user_id", userId));
+        if (userFund == null) {
+            userFund = new UserFund(userId);
+        }
+        return userFund;
+    }
+
     @Transactional(rollbackFor = Throwable.class)
     @Override
     public boolean addBalance(String userId, BigDecimal amount, int type, String remark) {

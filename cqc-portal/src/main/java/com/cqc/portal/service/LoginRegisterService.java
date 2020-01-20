@@ -3,6 +3,7 @@ package com.cqc.portal.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.cqc.common.exception.BaseException;
 import com.cqc.model.User;
+import com.cqc.model.UserFund;
 import com.cqc.model.UserVirtualFund;
 import com.cqc.portal.dto.RegisterParam;
 import com.cqc.security.bean.AccessToken;
@@ -41,8 +42,9 @@ public class LoginRegisterService {
     @Autowired
     private InviteCodeService inviteCodeService;
 
+
     @Autowired
-    private UserVirtualFundService userVirtualFundService;
+    private UserFundService userFundService;
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
@@ -69,7 +71,7 @@ public class LoginRegisterService {
         // 校验inviteCode
         String refUserId = "";
         String inviteCode = param.getInviteCode();
-        if (StringUtils.isEmpty(inviteCode)) {
+        if (!StringUtils.isEmpty(inviteCode)) {
             refUserId = inviteCodeService.getUserId(inviteCode);
             if (StringUtils.isEmpty(refUserId)) {
                 throw new BaseException("", "邀请码错误");
@@ -84,8 +86,8 @@ public class LoginRegisterService {
         user.setRefUserId(refUserId);
         userService.save(user);
         // 初始化cqc数据
-        UserVirtualFund fund = new UserVirtualFund(user.getId(), 1);
-        userVirtualFundService.save(fund);
+        UserFund fund = new UserFund(user.getId());
+        userFundService.save(fund);
 
         return user;
     }

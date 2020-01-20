@@ -73,6 +73,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         entity.setStatus(1);
         entity.setPayTime(new Date());
         entity.setCommission(commission);
+        entity.setAmount(null);
         int i = orderMapper.updateById(entity);
         // 保存佣金记录
         userFundService.addBalance(userId, commission, 1, "抢单佣金");

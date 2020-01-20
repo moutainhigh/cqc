@@ -46,6 +46,19 @@ public class UserFund implements Serializable {
      */
     private BigDecimal availableBalance = BigDecimal.ZERO;
 
+    /**
+     * 押金
+     */
+    private BigDecimal deposit = BigDecimal.ZERO;
+
+    private BigDecimal commission = BigDecimal.ZERO;
+
+    /**
+     * cqc余额
+     */
+    private BigDecimal cqc = BigDecimal.ZERO;
+
+
     public UserFund() {
     }
 

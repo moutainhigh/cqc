@@ -14,6 +14,10 @@
     <link rel="stylesheet" href="./css/common.css" />
     <!-- 导入jquery -->
     <script src="./js/jquery.min.js"></script>
+
+    <script src="./js/config.js"></script>
+    <script src="./js/request.js"></script>
+
     <!-- 根据设备宽度，计算html根节点的font-size -->
     <script>
         // 获取html根节点要素内容
@@ -78,7 +82,7 @@
                         <em class="comm"></em>
                     </div>
                 </a>
-                <a href="./sign_out.html" class="btn_comm bg_qb">退出登录</a>
+                <a id="logout" class="btn_comm bg_qb">退出登录</a>
             </div>
         </div>
         <!-- 内容end -->
@@ -92,5 +96,11 @@
     $("#qc").click(function(){
         $(".comm_mes").show().fadeOut(2000).find("p").text("清除成功");
     });
+    // 退出登录
+    $("#logout").click(function(){
+        logout();
+        window.location = "./sign_out.html";
+    });
+
 </script>
 </html>

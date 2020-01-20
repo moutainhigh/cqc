@@ -33,7 +33,7 @@ public class LoginRegisterController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
     public Result<Boolean> register(@Validated @RequestBody RegisterParam param) {
-        if (Objects.equals(param.getPassword(), param.getConfirmPassword())) {
+        if (!Objects.equals(param.getPassword(), param.getConfirmPassword())) {
             return Result.failed("两次密码不一致");
         }
         User user = service.register(param);

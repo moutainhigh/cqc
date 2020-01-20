@@ -16,6 +16,13 @@ import java.math.BigDecimal;
 public interface UserFundService extends IService<UserFund> {
 
     /**
+     * 查询用户资金
+     * @param userId
+     * @return
+     */
+    UserFund getFund(String userId);
+
+    /**
      * 添加金额
      * @param userId
      * @param amount

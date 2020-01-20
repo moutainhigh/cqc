@@ -51,7 +51,7 @@ public class Order implements Serializable {
     /**
      * 金额
      */
-    private BigDecimal amount = BigDecimal.ZERO;
+    private BigDecimal amount;
 
     /**
      * 0 代付款 1已支付 2已入账 3订单已过期

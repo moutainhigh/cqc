@@ -10,8 +10,9 @@
 // url：跳转的地址
 // 传递参数为空时，不验证
 
-function valiData(mes,url,user,mobile,code,va_code,pass,pass_c,email,sub_btn){
+function valiData(mes,url,invite_code, user,mobile,code,va_code,pass,pass_c,email,sub_btn){
     // 验证布尔值
+    var invite_code_Boolean = false;    // 邀请码
     var user_Boolean = false;           //用户名
     var password_Boolean = false;       //密码
     var varconfirm_Boolean = false;     //二次密码
@@ -22,6 +23,9 @@ function valiData(mes,url,user,mobile,code,va_code,pass,pass_c,email,sub_btn){
     if(!user){
         user_Boolean = true;
     }
+
+
+
     if(user){
         console.log(1,$(user));
         // 验证规则：/^[A-Za-z0-9_-]{4,8}$/
@@ -160,14 +164,28 @@ function valiData(mes,url,user,mobile,code,va_code,pass,pass_c,email,sub_btn){
     console.log(10,sub_btn);
     $(sub_btn).click(function(){
         if(user_Boolean && password_Boolean && varconfirm_Boolean && emaile_Boolean && Code_Boolean && Mobile_Boolean == true){
-            if(mes){
-                $(".comm_mes").show().fadeOut(2000).find("p").text(mes);
+            var data = {
+                "inviteCode": $(invite_code).val(),
+                "account":$(user).val(),
+                "mobile":$(mobile).val(),
+                "password":$(pass).val(),
+                "confirmPassword": $(pass_c).val()
             }
-            if(url){
-                setTimeout(() => {
-                    window.location.href = url;
-                }, 2000);
-            }
+            postForAuth(host + register_uri, data, function(result){
+                if (result.code == 200) {
+                    if(mes){
+                        $(".comm_mes").show().fadeOut(2000).find("p").text(mes);
+                    }
+                    if(url){
+                        setTimeout(() => {
+                            window.location.href = url;
+                        }, 2000);
+                    }
+                } else {
+                    $(".comm_mes").show().fadeOut(2000).find("p").text(result.message);
+                }
+            });
+
           }else {
             $(".comm_mes").show().fadeOut(2000).find("p").text("请完善信息");
         }

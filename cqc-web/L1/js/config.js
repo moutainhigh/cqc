@@ -2,6 +2,8 @@ const host = "http://localhost:9090";
 
 const login_url = "/login";
 
+const register_uri = "/register";
+
 const getInfo_url = "/user/getInfo";
 
 const inviteCode_uri = "/inviteCode/get";

@@ -5,12 +5,14 @@ import com.cqc.common.api.Result;
 import com.cqc.common.api.ResultCode;
 import com.cqc.common.exception.BaseException;
 import com.cqc.model.User;
+import com.cqc.model.UserFund;
 import com.cqc.model.UserRealInfo;
 import com.cqc.model.UserVirtualFund;
 import com.cqc.portal.dto.ModifyAreaParam;
 import com.cqc.portal.dto.ModifyPasswordParam;
 import com.cqc.portal.dto.resp.UserFundDto;
 import com.cqc.portal.dto.resp.UserInfo;
+import com.cqc.portal.service.UserFundService;
 import com.cqc.portal.service.UserRealInfoService;
 import com.cqc.portal.service.UserService;
 import com.cqc.portal.service.UserVirtualFundService;
@@ -40,7 +42,7 @@ public class UserController {
     private UserRealInfoService userRealInfoService;
 
     @Autowired
-    private UserVirtualFundService userVirtualFundService;
+    private UserFundService userFundService;
 
     @ApiOperation("登录用户数据")
     @GetMapping("/getInfo")
@@ -58,12 +60,10 @@ public class UserController {
             userInfo.setRealName(realInfo.getRealName());
         }
         // 查余额
-        UserVirtualFund fund = userVirtualFundService.getOne(new QueryWrapper<UserVirtualFund>().eq("user_id", userId)
-                .eq("type", 1));
-        if (fund != null) {
-            userInfo.setCqcTotal(fund.getBalance());
-            userInfo.setCqc(fund.getAvailableBalance());
-        }
+        UserFund fund = userFundService.getFund(userId);
+        userInfo.setCqcTotal(fund.getBalance());
+        userInfo.setCqc(fund.getAvailableBalance());
+        // 查待入cqc，今日已入收益
 
         return Result.success(userInfo);
     }
@@ -178,11 +178,10 @@ public class UserController {
         }
         UserFundDto userFundDto = new UserFundDto();
         // 查余额
-        UserVirtualFund fund = userVirtualFundService.getOne(new QueryWrapper<UserVirtualFund>().eq("user_id", userId)
-                .eq("type", 1));
-        if (fund != null) {
-            userFundDto.setCqc(fund.getAvailableBalance());
-        }
+        // 查余额
+        UserFund fund = userFundService.getFund(userId);
+        userFundDto.setCqc(fund.getAvailableBalance());
+
         userFundDto.setAutoOrderStatus(user.getAutoOrderStatus());
         return Result.success(userFundDto);
     }

@@ -45,5 +45,10 @@ function handleResult(result){
         localStorage.removeItem("tokenHead");
         localStorage.removeItem("refreshToken");
     }
+}
 
+function logout() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("tokenHead");
+    localStorage.removeItem("refreshToken");
 }
