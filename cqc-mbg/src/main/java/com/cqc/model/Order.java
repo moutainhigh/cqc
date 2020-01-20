@@ -67,12 +67,20 @@ public class Order implements Serializable {
     /**
      * 过期时间
      */
+    @JsonFormat( pattern = "yyyy-MM-dd HH:mm:ss")
     private Date expireTime;
 
     /**
      * 付款时间
      */
+    @JsonFormat( pattern = "yyyy-MM-dd HH:mm:ss")
     private Date payTime;
+
+    /**
+     * 抢单时间
+     */
+    @JsonFormat( pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date buyTime;
 
     /**
      * 佣金

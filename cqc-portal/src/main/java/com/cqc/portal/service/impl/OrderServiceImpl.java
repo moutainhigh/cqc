@@ -12,10 +12,14 @@ import com.cqc.portal.service.UserRateService;
 import com.cqc.portal.service.UserVirtualFundService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * <p>
@@ -44,7 +48,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     @Override
     public void autoOrder(String userId) {
-
+        Order order = orderMapper.selectNewOrder();
+        buyOrder(userId, order.getId());
     }
 
     @Transactional(rollbackFor = Throwable.class)
@@ -60,23 +65,16 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         }
         // 获取订单金额  将用户cqc冻结金额减少
         boolean b = userVirtualFundService.cutFreezeBalance(userId, 1, order.getAmount(), "");
-        // 计算订单的佣金
-        BigDecimal commission = BigDecimal.ZERO;
-        BigDecimal rate = userRateService.getRate(userId, order.getChannel());
-        if (rate.compareTo(BigDecimal.ZERO) > 0) {
-            // 如果佣金费率大于0
-            commission = order.getAmount().multiply(rate);
-        }
+
         // 将订单状态改为确认付款
         Order entity = new Order();
         entity.setId(id);
         entity.setStatus(1);
         entity.setPayTime(new Date());
-        entity.setCommission(commission);
         entity.setAmount(null);
         int i = orderMapper.updateById(entity);
         // 保存佣金记录
-        userFundService.addBalance(userId, commission, 1, "抢单佣金");
+        userFundService.addBalance(userId, order.getCommission(), 1, "抢单佣金");
         // 保存
         return i == 1;
     }
@@ -87,14 +85,22 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
      * @return
      */
 
-    @Transactional(rollbackFor = Throwable.class)
-    public void buyOrder(String userId) {
-        // 读取最新发布的一个订单，然后尝试抢单
-        Order order = orderMapper.selectOne(new QueryWrapper<Order>().eq("status", 0)
-                .orderByDesc("create_time"));
-        if (order == null) {
+    @Transactional(rollbackFor = Throwable.class, propagation = Propagation.REQUIRES_NEW)
+    public void buyOrder(String userId, String orderId) {
+
+        // 再次查询数据库
+        Order order = orderMapper.selectById(orderId);
+        if (order == null || order.getStatus() != 0) {
             return;
         }
-        orderMapper.buyOrder(userId, order.getOrderSn());
+        // 读取费率
+        BigDecimal commission = BigDecimal.ZERO;
+        BigDecimal rate = userRateService.getRate(userId, order.getChannel());
+        if (rate.compareTo(BigDecimal.ZERO) > 0) {
+            // 如果佣金费率大于0
+            commission = order.getAmount().multiply(rate);
+        }
+        // todo 加锁
+        int i = orderMapper.buyOrder(userId, orderId, new Date(), commission);
     }
 }
