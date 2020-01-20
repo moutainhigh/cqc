@@ -1,17 +1,23 @@
 package com.cqc.portal.service.impl;
 
+import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.cqc.model.User;
+import com.cqc.model.UserDateIncome;
 import com.cqc.model.UserFund;
 import com.cqc.model.UserFundRecord;
 import com.cqc.portal.mapper.UserFundMapper;
 import com.cqc.portal.mapper.UserFundRecordMapper;
+import com.cqc.portal.service.UserDateIncomeService;
 import com.cqc.portal.service.UserFundService;
+import com.cqc.portal.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * <p>
@@ -30,6 +36,11 @@ public class UserFundServiceImpl extends ServiceImpl<UserFundMapper, UserFund> i
     @Autowired
     private UserFundRecordMapper userFundRecordMapper;
 
+    @Autowired
+    private UserDateIncomeService userDateIncomeService;
+
+    @Autowired
+    private UserService userService;
 
     @Override
     public UserFund getFund(String userId) {
@@ -42,13 +53,35 @@ public class UserFundServiceImpl extends ServiceImpl<UserFundMapper, UserFund> i
 
     @Transactional(rollbackFor = Throwable.class)
     @Override
+    public boolean addIncome(String userId, BigDecimal income) {
+        boolean rs = addBalance(userId, income, 7, "抢单佣金");
+        if (rs) {
+            // 查用户
+            String refUserId = "";
+            String refUserAccount = "";
+            User user = userService.getUser(userId);
+            if (user != null) {
+                refUserId = user.getRefUserId();
+                refUserAccount = user.getAccount();
+            }
+            // 保存 user_date_income表数据
+            UserDateIncome dateIncome = new UserDateIncome();
+            dateIncome.setUserId(userId);
+            dateIncome.setDate(DateUtil.format(new Date(), "yyyyMMdd"));
+            dateIncome.setIncome(income);
+            dateIncome.setRefUserId(refUserId);
+            dateIncome.setRefUserAccount(refUserAccount);
+            userDateIncomeService.saveOrUpdate(dateIncome);
+        }
+        return true;
+    }
+
+    @Transactional(rollbackFor = Throwable.class)
+    @Override
     public boolean addBalance(String userId, BigDecimal amount, int type, String remark) {
         userFundMapper.addCommission(userId, amount);
 
-        UserFund userFund = userFundMapper.selectOne(new QueryWrapper<UserFund>().eq("user_id", userId));
-        if (userFund == null) {
-            userFund = new UserFund(userId);
-        }
+        UserFund userFund = this.getFund(userId);
         // 保存记录
         UserFundRecord record = new UserFundRecord();
         record.setUserId(userId);
@@ -65,20 +98,17 @@ public class UserFundServiceImpl extends ServiceImpl<UserFundMapper, UserFund> i
     @Transactional(rollbackFor = Throwable.class)
     @Override
     public boolean cutFreezeBalance(String userId, BigDecimal amount, int type, String remark) {
-        int i = userFundMapper.cutBalance(userId, amount);
+        int i = userFundMapper.cutFreezeBalance(userId, amount);
         if (i <= 0) {
             return false;
         }
-        UserFund userFund = userFundMapper.selectOne(new QueryWrapper<UserFund>().eq("user_id", userId));
-        if (userFund == null) {
-            userFund = new UserFund(userId);
-        }
+        UserFund userFund = this.getFund(userId);
         // 保存记录
         UserFundRecord record = new UserFundRecord();
         record.setUserId(userId);
         record.setType(type);
         record.setAmount(amount);
-        record.setDirect(1);
+        record.setDirect(2);
         record.setBalance(userFund.getBalance());
         record.setRemark(remark);
         userFundRecordMapper.insert(record);

@@ -32,4 +32,12 @@ public interface OrderMapper extends BaseMapper<Order> {
                  @Param("buyTime")Date buyTime, @Param("commission")BigDecimal commission);
 
     Order selectNewOrder(@Param("balance") BigDecimal balance);
+
+    /**
+     * 查询待入cqc收益
+     * @param userId
+     * @return
+     */
+    @Select("select ifnull(sum(o.income), 0) from `order` as o where user_id = #{userId} and `status` = 0")
+    BigDecimal waitPayIncome(String userId);
 }

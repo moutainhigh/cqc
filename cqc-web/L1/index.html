@@ -95,16 +95,7 @@
             </div>
             <div class="two_model">
                 <ul>
-                    <li>
-                        <img src="./img/WeChat.png" alt="">
-                        <div class="two">
-                            <span>hong44466</span>
-                            <span>0.59</span>
-                            <span>560.0</span>
-                        </div>
-                        <span class="three">等待付款</span>
-                        <a href="javascript:void(0);" class="four">确认付款</a>
-                    </li>
+
                 </ul>
             </div>
         </div>
@@ -181,7 +172,7 @@
 
         t1 = setInterval(function() {
             buyOrder();
-        },2000);
+        },10000);
 
         t2 = setInterval(function() {
             getAutoOrderStatus();
@@ -309,13 +300,20 @@
     }
 
     function getNewOrder(){
-        getForAuth(host + my_order_new_list, null, function(result){
+        // 拿到最后一个时间的 查询最新的订单
+        var startTimeStr = "";
+        if ($(".two_model li")){
+            startTimeStr = $(".two_model li").eq(0).find('.order_time').text();
+        }
+        var uri = my_order_new_list + "?startTimeStr="+startTimeStr;
+        getForAuth(host + uri, null, function(result){
             var html = '';
             var list = result.data;
             if (!list) {
                 return;
             }
             var len = list.length;
+            // 先拿到已经加载的订单列表
             for (let i = 0; i < len; i++) {
                 var item = list[i];
                 html +=
@@ -323,14 +321,14 @@
                     '<img src="'+getChannelImg(item.channel)+'" alt="" data-type="2">' +
                     '<div class="two">' +
                     '<span>'+item.publisher+'</span>' +
-                    '<span></span>' +
+                    '<span class="order_time">'+item.createTime+'</span>' +
                     '<span>'+item.amount.toFixed(2)+'</span>' +
                     '</div>' +
                     '<span class="three" data-type="'+item.status+'">'+getStatus(item.status)+'</span>' +
                     '<a href="javascript:void(0);" class="four" datatype="'+item.id+'">确认付款</a>' +
                     '</li>';
             }
-            $(".two_model ul").html(html);
+            $(".two_model ul").prepend(html);
             $(".two_model ul").fadeIn(500);
             $(".two_model li").css("width","100%");
 
@@ -344,7 +342,7 @@
             handleResult(result);
             if (result.code == 200) {
                 //确认成功
-                getNewOrder();
+                // 删除
             } else {
 
             }

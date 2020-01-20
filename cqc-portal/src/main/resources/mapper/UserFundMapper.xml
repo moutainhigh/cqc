@@ -20,4 +20,12 @@
             available_balance = available_balance - #{amount}
              where user_id = #{userId} and  available_balance >= #{amount}
     </update>
+
+    <update id="cutFreezeBalance">
+        update user_fund set balance = balance - #{amount},
+            freeze_balance = freeze_balance - #{amount}
+            where user_id = #{userId}
+            and balance >= #{amount} and freeze_balance >= #{amount}
+    </update>
+
 </mapper>

@@ -3,6 +3,8 @@ package com.cqc.portal.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.cqc.model.Order;
 
+import java.math.BigDecimal;
+
 /**
  * <p>
  * 订单 服务类
@@ -25,5 +27,12 @@ public interface OrderService extends IService<Order> {
      * @return
      */
     boolean confirmPay(String userId, String id);
+
+    /**
+     * 查询待入cqc
+     * @param userId
+     * @return
+     */
+    BigDecimal getWaitPayIncome(String userId);
 
 }

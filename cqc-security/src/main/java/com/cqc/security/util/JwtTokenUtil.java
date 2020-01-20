@@ -169,7 +169,7 @@ public class JwtTokenUtil {
         claims.put(CLAIM_KEY_USERNAME, userDetails.getUsername());
         claims.put(CLAIM_KEY_CREATED, new Date());
         claims.put("user_id", portalUserDetails.getUser().getId());
-
+        claims.put("ref_user_id", portalUserDetails.getUser().getRefUserId());
 
         return generateToken(claims);
     }

@@ -85,6 +85,6 @@ public class Order implements Serializable {
     /**
      * 佣金
      */
-    private BigDecimal commission;
+    private BigDecimal income;
 
 }

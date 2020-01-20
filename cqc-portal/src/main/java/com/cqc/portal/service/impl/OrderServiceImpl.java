@@ -92,7 +92,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         entity.setAmount(null);
         int i = orderMapper.updateById(entity);
         // 保存佣金记录
-        userFundService.addBalance(userId, order.getCommission(), 7, "抢单佣金");
+        userFundService.addIncome(userId, order.getIncome());
         // 保存
         return i == 1;
     }
@@ -128,6 +128,13 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             // 抢单失败
             throw new BaseException("", "抢单失败，回滚");
         }
+    }
+
+
+    @Override
+    public BigDecimal getWaitPayIncome(String userId) {
+        // 直接从数据库中查
+        return orderMapper.waitPayIncome(userId);
     }
 
 }

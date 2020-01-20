@@ -1,6 +1,7 @@
 package com.cqc.portal.controller;
 
 
+import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cqc.common.api.PageQuery;
@@ -65,6 +66,7 @@ public class OrderController {
         List<Order> list = orderService.list(new QueryWrapper<Order>()
                 .eq("user_id", userId)
                 .eq("status", 0)
+                .gt(!StringUtils.isEmpty(param.getStartTimeStr()), "create_time", param.getStartTimeStr())
                 .orderByDesc("create_time"));
         return Result.success(list);
     }

@@ -90,15 +90,15 @@
                                 <ul>
                                     <li>
                                         <h4>当前cqc</h4>
-                                        <span id="cqc_total">0.51</span>
+                                        <span id="cqc_total">0.00</span>
                                     </li>
                                     <li>
                                         <h4>待入cqc</h4>
-                                        <span>0.00</span>
+                                        <span id="wait_pay_income">0.00</span>
                                     </li>
                                     <li>
                                         <h4>今日收益</h4>
-                                        <span>0.00</span>
+                                        <span id="income_today">0.00</span>
                                     </li>
                                 </ul>
                             </div>
@@ -228,9 +228,12 @@
                 // 成功 展示数据
                 var userInfo = result.data;
                 $(".user_info h1").text(userInfo.account);
-                $("#cqc").text(userInfo.cqc);
-                $("#cqc_total").text(userInfo.cqcTotal);
+                $("#cqc").text(userInfo.cqc.toFixed(4));
+                $("#cqc_total").text(userInfo.cqcTotal.toFixed(4));
 
+
+                $("#wait_pay_income").text(userInfo.waitPayIncome.toFixed(4));
+                $("#income_today").text(userInfo.incomeToday.toFixed(4));
                 if (userInfo.real == 1){
                     $(".user_info span").text("3c认证");
                 }

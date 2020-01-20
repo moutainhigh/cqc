@@ -23,6 +23,14 @@ public interface UserFundService extends IService<UserFund> {
     UserFund getFund(String userId);
 
     /**
+     * 加佣金
+     * @param userId
+     * @param amount
+     * @return
+     */
+    boolean addIncome(String userId, BigDecimal amount);
+
+    /**
      * 添加金额
      * @param userId
      * @param amount
@@ -31,6 +39,8 @@ public interface UserFundService extends IService<UserFund> {
      * @return
      */
     boolean addBalance(String userId, BigDecimal amount, int type, String remark);
+
+
 
     /**
      *

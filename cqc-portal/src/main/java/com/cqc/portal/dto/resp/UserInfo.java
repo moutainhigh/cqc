@@ -21,9 +21,26 @@ public class UserInfo {
 
     private boolean autoOrderStatus;
 
+    /**
+     * 可用cqc
+     */
     private BigDecimal cqc = BigDecimal.ZERO;
 
+    /**
+     * cqc总额
+     */
     private BigDecimal cqcTotal = BigDecimal.ZERO;
+
+    /**
+     * 待入cqc
+     */
+    private BigDecimal waitPayIncome = BigDecimal.ZERO;
+
+    /**
+     * 今日收益
+     */
+    private BigDecimal incomeToday = BigDecimal.ZERO;
+
 
     private String province;
 

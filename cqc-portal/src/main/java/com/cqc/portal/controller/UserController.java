@@ -1,5 +1,6 @@
 package com.cqc.portal.controller;
 
+import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.cqc.common.api.Result;
 import com.cqc.common.api.ResultCode;
@@ -12,10 +13,7 @@ import com.cqc.portal.dto.ModifyAreaParam;
 import com.cqc.portal.dto.ModifyPasswordParam;
 import com.cqc.portal.dto.resp.UserFundDto;
 import com.cqc.portal.dto.resp.UserInfo;
-import com.cqc.portal.service.UserFundService;
-import com.cqc.portal.service.UserRealInfoService;
-import com.cqc.portal.service.UserService;
-import com.cqc.portal.service.UserVirtualFundService;
+import com.cqc.portal.service.*;
 import com.cqc.security.util.PortalUserUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,6 +21,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
 
 /**
  * @Description：
@@ -44,6 +44,12 @@ public class UserController {
     @Autowired
     private UserFundService userFundService;
 
+    @Autowired
+    private OrderService orderService;
+
+    @Autowired
+    private UserDateIncomeService userDateIncomeService;
+
     @ApiOperation("登录用户数据")
     @GetMapping("/getInfo")
     public Result<UserInfo> getInfo() {
@@ -64,7 +70,8 @@ public class UserController {
         userInfo.setCqcTotal(fund.getBalance());
         userInfo.setCqc(fund.getAvailableBalance());
         // 查待入cqc，今日已入收益
-
+        userInfo.setWaitPayIncome(orderService.getWaitPayIncome(userId));
+        userInfo.setIncomeToday(userDateIncomeService.getIncomeByDate(userId, DateUtil.format(new Date(), "yyyyMMdd")));
         return Result.success(userInfo);
     }
 
