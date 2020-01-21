@@ -165,6 +165,10 @@
 
     var t1, t2, t3;
     function start() {
+        if (!hashToken()) {
+            alert("请先登录");
+            return false;
+        }
         order_state = 1;
         $(".start_btn img").attr("src","./img/btn_start.png");
         $(".start_btn span").text("正在抢单").css("color","red");
@@ -244,6 +248,9 @@
         });
     }
     function getAutoOrderStatus() {
+        if (!hashToken()) {
+            return false;
+        }
         getForAuth(host + get_auto_order_status, null, function(result){
             if (result.code == 200) {
                 // 显示余额
@@ -274,7 +281,7 @@
 
     function getNoticeList(){
         var uri = notice_list_uri + "?type=2"
-        getForAuth(host + uri, null, function(result){
+        getData(host + uri, null, function(result){
             var html = '';
             var list = result.data;
             if (!list) {

@@ -167,7 +167,10 @@
         });
     });
 $("#get_code").click(function(){
-
+    if (!hashToken()) {
+        alert("请先登录");
+        return false;
+    }
     getForAuth(host + invite_create_uri, null, function(result){
         handleResult(result);
         if (result.code == '401') {

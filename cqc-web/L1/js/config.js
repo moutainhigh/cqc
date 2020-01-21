@@ -61,6 +61,8 @@ const buy_order_uri = "/order/buyOrder";
 const order_confirm_pay_uri = "/order/confirmPay";
 // 我的账变记录
 const my_fund_list = "/userFund/myList";
+// 代理收益统计
+const income_agentIncome_uri = "/income/agentIncome";
 
 // 收款码列表
 const receive_list = "/receiveCode/list";

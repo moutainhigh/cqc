@@ -3,17 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <!-- -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no ">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no ">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>代理</title>
     <!-- 网页ico -->
     <link rel="shortcut icon" href="./favicon.ico">
     <!-- 导入基础base.css文件 -->
-    <link rel="stylesheet" href="./css/base.css" />
+    <link rel="stylesheet" href="./css/base.css"/>
     <!-- 导入本类.css文件 -->
-    <link rel="stylesheet" href="./css/common.css" />
+    <link rel="stylesheet" href="./css/common.css"/>
     <!-- 导入jquery -->
     <script src="./js/jquery.min.js"></script>
+
+    <script src="./js/config.js"></script>
+    <script src="./js/request.js"></script>
     <!-- 根据设备宽度，计算html根节点的font-size -->
     <script>
         // 获取html根节点要素内容
@@ -36,11 +40,12 @@
 </head>
 <style>
     /* 重置样式 */
-    .pro_each:first-child span{
+    .pro_each:first-child span {
         color: gray !important;
         font-size: .25rem;
     }
-    .pro_each span{
+
+    .pro_each span {
         color: gray !important;
         font-size: .3rem;
         color: black !important;
@@ -49,48 +54,75 @@
     }
 </style>
 <body>
-    <!-- 遮罩层 -->
-    <div class="gray_bg"></div>
-    <!-- zdy改成本自定义名称 -->
-    <div class="wrap_common">
-        <!-- 顶部start -->
-        <div class="top_wrap">
-            <div class="top">
-                <!-- 标题 -->
-                <h2>代理</h2>
-                <!-- 左边返回样式-->
-                <a href="javascript:history.back(-1)" class="ret"></a>
-            </div>
+<!-- 遮罩层 -->
+<div class="gray_bg"></div>
+<!-- zdy改成本自定义名称 -->
+<div class="wrap_common">
+    <!-- 顶部start -->
+    <div class="top_wrap">
+        <div class="top">
+            <!-- 标题 -->
+            <h2>代理</h2>
+            <!-- 左边返回样式-->
+            <a href="javascript:history.back(-1)" class="ret"></a>
         </div>
-        <!-- 内容start -->
-        <!-- 将zdy改成自定义名字 -->
-        <div class="content_common">
-            <div class="model_one" style="height:10%; padding-top: .5rem;">
-                <input type="button" value="昨天" class="comm_btn">
-                <input type="button" value="今天" class="comm_btn">
-            </div>
-            <div class="model_two" style="min-height: 90%; max-height: 90%;">
-                <div class="pro_each">
-                    <span>账号</span>
-                    <span class="text">团队业绩</span>
-                </div>
-                <div class="pro_each" id="pro_each">
-                    <span>Sxy502</span>
-                    <span class="text" id="yj">0.0</span>
-                    <div class="vip_each fr bg_y">
-                        <input type="button" value="上级会员" class="vip_btn bg_y">
-                        <input type="button" value="下级会员" class="vip_btn bg_b">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- 内容end -->
     </div>
+    <!-- 内容start -->
+    <!-- 将zdy改成自定义名字 -->
+    <div class="content_common">
+        <div class="model_one" style="height:10%; padding-top: .5rem;">
+            <input type="button" value="昨天" class="comm_btn">
+            <input type="button" value="今天" class="comm_btn">
+        </div>
+        <div class="model_two" style="min-height: 90%; max-height: 90%;">
+            <div class="pro_each">
+                <span>账号</span>
+                <span class="text">团队业绩</span>
+            </div>
+
+        </div>
+    </div>
+    <!-- 内容end -->
+</div>
 </body>
 <script>
-$("#pro_each").click(function(){
-    $("#yj").hide();
-    $(".vip_each").show();
-});
+
+
+    $(function () {
+        getIncomeList();
+    });
+
+    function getIncomeList() {
+        var date = "";
+        var uri = income_agentIncome_uri + "?date=" + date;
+        getForAuth(host + uri, null, function (result) {
+            handleResult(result);
+            if (result.code == '200') {
+                var html = '';
+                var list = result.data;
+                if (list) {
+                    var len = list.length;
+                    for (var i = 0; i < len; i++) {
+                        var item = list[i];
+                        html += '<div class="pro_each">' +
+                            '<span>' + item.account + '</span>' +
+                            '<span class="text" id="yj">' + item.teamIncome.toFixed(3) + '</span>' +
+                            '<div class="vip_each fr bg_y">' +
+                            '<input type="button" value="上级会员" class="vip_btn bg_y">' +
+                            '<input type="button" value="下级会员" class="vip_btn bg_b">' +
+                            '</div>' +
+                            '</div>';
+                    }
+                }
+                $(".model_two").append(html);
+
+                $(".pro_each").click(function () {
+                    $("#yj").hide();
+                    $(".vip_each").show();
+                });
+            }
+        });
+
+    }
 </script>
 </html>

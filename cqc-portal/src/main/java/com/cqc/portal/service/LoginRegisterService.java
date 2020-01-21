@@ -77,6 +77,14 @@ public class LoginRegisterService {
                 throw new BaseException("", "邀请码错误");
             }
         }
+        // 检查用户名是否重复
+        if (!getByUserName(param.getAccount())) {
+            throw new BaseException("", "该用户名已被注册");
+        }
+        if (!StringUtils.isEmpty(param.getMobile()) && !getByMobile(param.getMobile())) {
+            throw new BaseException("", "该手机号码已被注册");
+        }
+
         User user = new User();
         BeanUtils.copyProperties(param, user);
         //将密码进行加密操作
@@ -100,5 +108,16 @@ public class LoginRegisterService {
             throw new UsernameNotFoundException("用户名或密码错误");
         }
         return new PortalUserDetails(user);
+    }
+
+    private boolean getByUserName(String username) {
+        QueryWrapper wrapper = new QueryWrapper<User>().eq("account", username);
+        User user = userService.getOne(wrapper);
+        return user == null;
+    }
+    private boolean getByMobile(String mobile) {
+        QueryWrapper wrapper = new QueryWrapper<User>().eq("mobile", mobile);
+        User user = userService.getOne(wrapper);
+        return user == null;
     }
 }

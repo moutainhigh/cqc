@@ -2,8 +2,10 @@ package com.cqc.portal.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.cqc.model.UserDateIncome;
+import com.cqc.portal.dto.resp.UserIncomeDto;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * <p>
@@ -22,5 +24,13 @@ public interface UserDateIncomeService extends IService<UserDateIncome> {
      * @return
      */
     BigDecimal getIncomeByDate(String userId, String date);
+
+    /**
+     * 代理收益统计
+     * @param parentUserId
+     * @param date
+     * @return
+     */
+    List<UserIncomeDto> getAgentIncome(String parentUserId, String date);
 
 }

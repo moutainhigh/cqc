@@ -1,3 +1,16 @@
+function getData(url, param, callback) {
+    $.ajax({
+        type: "get",
+        url: url,
+        success: function (result) {
+            callback(result);
+        },
+        error: function (e) {
+            console.log(e.status);
+            console.log(e.responseText);
+        }
+    });
+}
 function getForAuth(url, param, callback) {
     var token = localStorage.getItem("token")
     var tokenHead = localStorage.getItem("tokenHead");
@@ -8,6 +21,14 @@ function getForAuth(url, param, callback) {
             'Authorization': tokenHead + ' ' + token
         },
         success: function (result) {
+            if (result.code == '401') {
+                $(".comm_mes").show().fadeOut(2000).find("p").text("登录已过期，请重新登录");
+                // 清除token
+                localStorage.removeItem("token");
+                localStorage.removeItem("tokenHead");
+                localStorage.removeItem("refreshToken");
+                return false;
+            }
             callback(result);
         },
         error: function (e) {
@@ -20,6 +41,7 @@ function getForAuth(url, param, callback) {
 function postForAuth(url, param, callback) {
     var token = localStorage.getItem("token")
     var tokenHead = localStorage.getItem("tokenHead");
+
     $.ajax({
         type: "post",
         url: url,
@@ -29,6 +51,14 @@ function postForAuth(url, param, callback) {
             'Authorization': tokenHead + ' ' + token
         },
         success: function (result) {
+            if (result.code == '401') {
+                $(".comm_mes").show().fadeOut(2000).find("p").text("登录已过期，请重新登录");
+                // 清除token
+                localStorage.removeItem("token");
+                localStorage.removeItem("tokenHead");
+                localStorage.removeItem("refreshToken");
+                return false;
+            }
             callback(result);
         },
         error: function (e) {
@@ -40,11 +70,19 @@ function postForAuth(url, param, callback) {
 function handleResult(result){
     if (result.code == '401') {
         $(".comm_mes").show().fadeOut(2000).find("p").text("登录已过期，请重新登录");
-        // 清楚token
+        // 清除token
         localStorage.removeItem("token");
         localStorage.removeItem("tokenHead");
         localStorage.removeItem("refreshToken");
     }
+}
+
+function hashToken() {
+    var token =  localStorage.getItem("token");
+    if (token) {
+        return true;
+    }
+    return false;
 }
 
 function logout() {

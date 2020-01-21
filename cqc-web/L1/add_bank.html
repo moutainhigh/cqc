@@ -143,6 +143,10 @@
     }
 
     $("#add").click(function () {
+        if (!hashToken()) {
+            alert("请先登录");
+            return false;
+        }
         var cardNo = $("#card_no").val();
         if (!cardNo) {
             $(".comm_mes").show().fadeOut(1000).find("p").text("请输入卡号");

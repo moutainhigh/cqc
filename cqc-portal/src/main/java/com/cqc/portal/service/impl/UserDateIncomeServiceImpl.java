@@ -3,11 +3,13 @@ package com.cqc.portal.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cqc.model.UserDateIncome;
+import com.cqc.portal.dto.resp.UserIncomeDto;
 import com.cqc.portal.mapper.UserDateIncomeMapper;
 import com.cqc.portal.service.UserDateIncomeService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * <p>
@@ -31,6 +33,12 @@ public class UserDateIncomeServiceImpl extends ServiceImpl<UserDateIncomeMapper,
             return BigDecimal.ZERO;
         }
         return dateIncome.getIncome() == null ? BigDecimal.ZERO : dateIncome.getIncome();
+    }
+
+
+    @Override
+    public List<UserIncomeDto> getAgentIncome(String parentUserId, String date) {
+        return baseMapper.queryAgentIncome(parentUserId, date);
     }
 
 }
