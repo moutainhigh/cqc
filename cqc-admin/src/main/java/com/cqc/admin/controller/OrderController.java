@@ -4,6 +4,7 @@ package com.cqc.admin.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cqc.admin.dto.OrderPublishParam;
+import com.cqc.admin.dto.OrderQueryParam;
 import com.cqc.admin.service.OrderService;
 import com.cqc.common.api.PageQuery;
 import com.cqc.common.api.Result;
@@ -16,12 +17,9 @@ import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -45,24 +43,28 @@ public class OrderController {
 
     @ApiOperation("已放单列表")
     @GetMapping("/list")
-    public Result<Page<Order>> list(PageQuery pageQuery, String status) {
+    public Result<Page<Order>> list(OrderQueryParam params) {
 
-        Page<Order> page = new Page<>(pageQuery.getPageNum(), pageQuery.getPageSize());
+        Page<Order> page = new Page<>(params.getPageNum(), params.getPageSize());
 
-        orderService.page(page, new QueryWrapper<Order>().orderByDesc("create_time"));
+        QueryWrapper<Order> wrapper = new QueryWrapper<Order>()
+                .eq(params.getStatus() != null, "status", params.getStatus())
+                .orderByDesc("create_time");
+
+        orderService.page(page, wrapper);
         return Result.success(page);
     }
 
 
     @ApiOperation("手动放单")
-    @GetMapping("/push")
+    @PostMapping("/push")
     public Result<Order> push(@Validated @RequestBody OrderPublishParam param) {
         Order order = new Order();
         BeanUtils.copyProperties(param, order);
 
         // 设置订单号
         order.setOrderSn(OrderUtils.generateOrderSn());
-        order.setStatus(0);
+        order.setStatus(-1);
 
         boolean rs = orderService.save(order);
         if (!rs) {

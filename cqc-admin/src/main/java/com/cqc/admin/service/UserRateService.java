@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.cqc.model.UserRate;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * <p>
@@ -18,11 +19,16 @@ public interface UserRateService extends IService<UserRate> {
     /**
      * 设置费率
      * @param userId
-     * @param channel
-     * @param rate
+     * @param list
      * @return
      */
-    boolean setUserRate(String userId, int channel, BigDecimal rate);
+    boolean setUserRate(String userId, List<UserRate> list);
 
+    /**
+     * 初始化费率
+     * @param userId
+     * @return
+     */
+    boolean initUserRate(String userId);
 
 }

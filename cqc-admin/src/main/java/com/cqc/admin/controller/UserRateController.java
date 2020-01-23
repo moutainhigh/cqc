@@ -9,15 +9,14 @@ import com.cqc.model.UserRate;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -42,21 +41,23 @@ public class UserRateController {
     @GetMapping("/list")
     public Result<List<UserRate>> listByUserId(@NotBlank(message = "userId不能为空") String userId) {
         List<UserRate> list = userRateService.list(new QueryWrapper<UserRate>().eq("user_id", userId));
+        if (CollectionUtils.isEmpty(list)) {
+            list = new ArrayList<>();
+        }
         return Result.success(list);
     }
 
 
     @ApiOperation("设置费率")
-    @GetMapping("/setUserRate")
+    @PostMapping("/setUserRate")
     public Result<Boolean> setUserRate(@Validated @RequestBody UserSetRateParam param) {
 
-        boolean rs = userRateService.setUserRate(param.getUserId(), param.getChannel(), param.getRate());
+        boolean rs = userRateService.setUserRate(param.getUserId(), param.getRateList());
         if (!rs) {
             return Result.failed("设置费率失败");
         }
         return Result.success(true);
     }
-
 
 }
 

@@ -19,7 +19,7 @@ public class UserCqcRechargeParam {
     private String userId;
 
     @Min(value = 1)
-    private BigDecimal cgc = BigDecimal.ZERO;
+    private BigDecimal cqc = BigDecimal.ZERO;
 
 
 

@@ -2,9 +2,11 @@ package com.cqc.admin.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cqc.admin.dao.NoticeAddParam;
 import com.cqc.admin.dao.NoticeEditParam;
 import com.cqc.admin.service.NoticeService;
+import com.cqc.common.api.PageQuery;
 import com.cqc.common.api.Result;
 import com.cqc.model.Notice;
 import io.swagger.annotations.Api;
@@ -12,10 +14,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -37,17 +36,19 @@ public class NoticeController {
 
     @ApiOperation("公告列表")
     @GetMapping("/list")
-    public Result<List<Notice>> list(String type){
+    public Result<Page<Notice>> list(PageQuery pageQuery, String type){
+        Page<Notice> page = new Page<>(pageQuery.getPageNum(), pageQuery.getPageSize());
 
-        List<Notice> list = noticeService.list(new QueryWrapper<Notice>().
-                eq(StringUtils.isEmpty(type), "type", type)
+
+        noticeService.page(page, new QueryWrapper<Notice>().
+                eq(!StringUtils.isEmpty(type), "type", type)
                 .eq("status", 1));
-        return Result.success(list);
+        return Result.success(page);
     }
 
 
     @ApiOperation("添加公告")
-    @GetMapping("/add")
+    @PostMapping("/add")
     public Result<Boolean> add(@Validated @RequestBody NoticeAddParam param) {
 
         Notice notice = new Notice();
@@ -64,8 +65,8 @@ public class NoticeController {
         return Result.success(true);
     }
 
-    @ApiOperation("添加公告")
-    @GetMapping("/edit")
+    @ApiOperation("修改公告")
+    @PostMapping("/edit")
     public Result<Boolean> edit(@Validated @RequestBody NoticeEditParam param) {
         if (param.isEmpty()) {
             return Result.success();

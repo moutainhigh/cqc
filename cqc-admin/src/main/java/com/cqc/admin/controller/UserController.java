@@ -7,6 +7,7 @@ import com.cqc.admin.dto.UserAddParam;
 import com.cqc.admin.dto.UserCqcRechargeParam;
 import com.cqc.admin.dto.UserQueryParam;
 import com.cqc.admin.dto.resp.UserListDto;
+import com.cqc.admin.service.UserFundService;
 import com.cqc.admin.service.UserService;
 import com.cqc.common.api.Result;
 import com.cqc.model.User;
@@ -35,6 +36,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserFundService userFundService;
 
 
     @ApiOperation("用户列表")
@@ -102,6 +106,11 @@ public class UserController {
     @PostMapping("/recharge")
     public Result<Boolean> recharge(@Validated @RequestBody UserCqcRechargeParam param) {
         log.info("充值参数, {}", param);
+
+        boolean rs = userFundService.recharge(param.getUserId(), param.getCqc());
+        if (!rs) {
+            return Result.failed("充值失败");
+        }
         return Result.success();
     }
 
