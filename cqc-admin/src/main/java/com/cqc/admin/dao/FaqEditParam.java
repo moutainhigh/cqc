@@ -1,12 +1,14 @@
 package com.cqc.admin.dao;
 
-
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 
 @Data
-public class FaqAddParam {
+public class FaqEditParam {
+
+    @NotBlank(message = "id不能为空")
+    private String id;
 
     @NotBlank(message = "标题不能为空")
     private String title;

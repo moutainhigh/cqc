@@ -12,6 +12,7 @@ import com.cqc.common.api.Result;
 import com.cqc.model.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -29,6 +30,7 @@ import java.util.Objects;
 @RestController
 @RequestMapping("/user")
 @Validated
+@Slf4j
 public class UserController {
 
     @Autowired
@@ -45,7 +47,7 @@ public class UserController {
     }
 
 
-    @ApiOperation("用户列表")
+    @ApiOperation("添加用户")
     @PostMapping("/add")
     public Result<Boolean> add(@Validated @RequestBody UserAddParam param) {
         // 校验两次密码是否一致
@@ -65,7 +67,7 @@ public class UserController {
     public Result<Boolean> close(@NotBlank(message = "用户id不能为空") String userId,
                                  @NotBlank(message = "封号时间不能为空") String closeTime) {
 
-        DateTime time = DateUtil.parse(closeTime, "yyyy-MM-dd HH:,mm:ss");
+        DateTime time = DateUtil.parse(closeTime, "yyyy-MM-dd HH:mm:ss");
 
         User user = new User();
         user.setId(userId);
@@ -82,14 +84,14 @@ public class UserController {
 
     @ApiOperation("删除")
     @GetMapping("/delete")
-    public Result<Boolean> delete(@NotBlank(message = "用户id不能为空") String userId) {
+    public Result<Boolean> delete(@NotBlank(message = "用户id不能为空") String id) {
         User user = new User();
-        user.setId(userId);
+        user.setId(id);
         user.setStatus(-1);
 
         boolean rs = userService.updateById(user);
         if (!rs) {
-            return Result.failed("删除成功");
+            return Result.failed("删除失败");
         }
         return Result.success(true);
     }
@@ -99,6 +101,7 @@ public class UserController {
     @ApiOperation("充值")
     @PostMapping("/recharge")
     public Result<Boolean> recharge(@Validated @RequestBody UserCqcRechargeParam param) {
+        log.info("充值参数, {}", param);
         return Result.success();
     }
 

@@ -6,10 +6,13 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cqc.admin.dto.UserRealInfoQueryParam;
 import com.cqc.admin.dto.resp.UserRealInfoDto;
 import com.cqc.admin.service.UserRealInfoService;
+import com.cqc.admin.service.UserService;
 import com.cqc.common.api.Result;
+import com.cqc.model.User;
 import com.cqc.model.UserRealInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,27 +40,43 @@ public class UserRealInfoController {
     @Autowired
     private UserRealInfoService service;
 
+    @Autowired
+    private UserService userService;
 
     @ApiOperation("列表")
-    @GetMapping("/listPage")
+    @GetMapping("/list")
     public Result<Page<UserRealInfoDto>> listPage(UserRealInfoQueryParam param) {
         Page<UserRealInfoDto> page = service.listPage(param);
         return Result.success(page);
     }
 
+    @ApiOperation("列表")
+    @GetMapping("/detail")
+    public Result<UserRealInfoDto> detail(@NotBlank(message = "id不能为空") String id) {
+        UserRealInfoDto detail = new UserRealInfoDto();
+        UserRealInfo byId = service.getById(id);
+        if (byId != null) {
+            BeanUtils.copyProperties(byId, detail);
+            // 查用户
+            User user = userService.getById(byId.getUserId());
+            if (user != null) {
+                detail.setAccount(user.getAccount());
+            }
+        }
+        return Result.success(detail);
+    }
 
 
     @ApiOperation("通过/或者不通过")
     @GetMapping("/audit")
-    public Result<Boolean> audit(@NotBlank(message = "userId不能为空") String userId,
+    public Result<Boolean> audit(@NotBlank(message = "id不能为空") String id,
                                  @NotNull(message = "status不能为空") Integer status) {
 
         UserRealInfo entity = new UserRealInfo();
+        entity.setId(id);
         entity.setStatus(status);
 
-        QueryWrapper<UserRealInfo> eq = new QueryWrapper<UserRealInfo>().eq("user_id", userId)
-                .eq("type", 1);
-        boolean rs = service.update(entity, eq);
+        boolean rs = service.updateById(entity);
         if (!rs) {
             return Result.failed("操作失败");
         }

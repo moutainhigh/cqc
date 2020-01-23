@@ -13,7 +13,7 @@ import lombok.Data;
 public class UserRealInfoQueryParam extends PageQuery {
 
 
-    private int status;
+    private Integer status;
 
     private int type = 1;
 

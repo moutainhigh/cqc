@@ -29,7 +29,7 @@ public class Message implements Serializable {
     /**
      * 1-佣金加成 2-全天佣金加成 3-重要通知 4-夜间佣金加成 5-全天加成 6-夜间活动 7-温馨提示 8-爆单提醒 9-同城派单提醒 10-充值注意事项 10-信用积分说明
      */
-    private Boolean type;
+    private Integer type;
 
     /**
      * 标题

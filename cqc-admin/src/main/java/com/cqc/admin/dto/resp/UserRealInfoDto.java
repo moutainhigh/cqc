@@ -13,6 +13,8 @@ import java.util.Date;
 @Data
 public class UserRealInfoDto {
 
+    private String id;
+
     private String userId;
 
     private String account;

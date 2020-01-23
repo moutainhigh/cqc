@@ -1,5 +1,6 @@
 package com.cqc.admin.dto.resp;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -24,9 +25,12 @@ public class UserListDto {
     private String realName;
 
     @ApiModelProperty(value = "创建时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
     @ApiModelProperty(value = "cqc可用余额")
     private BigDecimal cqcBalance;
+
+    private Integer status;
 
 }

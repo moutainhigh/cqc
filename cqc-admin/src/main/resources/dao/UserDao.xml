@@ -22,10 +22,10 @@
         <result column="available_balance" jdbcType="VARCHAR" property="cqcBalance" />
     </resultMap>
     <select id="list" resultMap="UserFundResultMap">
-        select u.id, u.account, u.nick_name, u.real_name, u.create_time,
+        select u.id, u.account, u.nick_name, u.real_name, u.create_time,u.`status`,
             IFNULL(uvf.available_balance, 0) as available_balance
-        from user u left join user_virtual_fund uvf on u.id = uvf.user_id and type = 1
-        where 1=1
+        from user u left join user_fund uvf on u.id = uvf.user_id
+        where u.status != -1
         <if test="p.account != null and p.account != ''">
             and u.account like CONCAT('%', #{p.account,jdbcType=VARCHAR},'%')
         </if>

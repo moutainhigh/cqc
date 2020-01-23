@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cqc.admin.dto.resp.UserRealInfoDto;
 import com.cqc.model.UserRealInfo;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -22,6 +23,6 @@ public interface UserRealInfoMapper extends BaseMapper<UserRealInfo> {
      * @param status
      * @return
      */
-    Page<UserRealInfoDto> listPage(Page<UserRealInfoDto> page, int type, int status);
+    Page<UserRealInfoDto> listPage(Page<UserRealInfoDto> page, @Param("type") int type, @Param("status") Integer status);
 
 }

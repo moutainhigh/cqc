@@ -17,8 +17,13 @@
 
 
     <select id="listPage" resultType="com.cqc.admin.dto.resp.UserRealInfoDto">
-        select u.id as user_id, u.account, u.mobile, uri.real_name, uri.type, uri.img1,uri.img2
+        select u.id as user_id, u.account, u.mobile, uri.real_name, uri.status,
+        uri.type, uri.img1,uri.img2, uri.id_number, uri.qq, uri.email, uri.id
         from `user` as u INNER JOIN user_real_info as  uri on u.id = uri.user_id
-        where uri.type = #{type} and uri.status = #{status}
+        where uri.type = #{type}
+        <if test="status != null">
+            and uri.status = #{status}
+        </if>
+
     </select>
 </mapper>

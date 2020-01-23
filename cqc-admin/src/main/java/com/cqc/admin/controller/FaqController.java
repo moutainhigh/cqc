@@ -2,10 +2,14 @@ package com.cqc.admin.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cqc.admin.dao.FaqAddParam;
+import com.cqc.admin.dao.FaqEditParam;
 import com.cqc.admin.service.FaqService;
+import com.cqc.common.api.PageQuery;
 import com.cqc.common.api.Result;
 import com.cqc.model.Faq;
+import com.cqc.model.Message;
 import com.cqc.model.Notice;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -36,9 +40,11 @@ public class FaqController {
 
     @ApiOperation("常见问题")
     @GetMapping("/list")
-    public Result<List<Faq>> list(){
-        List<Faq> list = faqService.list(new QueryWrapper<Faq>().eq("status", 1));
-        return Result.success(list);
+    public Result<Page<Faq>> list(PageQuery query){
+        Page<Faq> page = new Page<>(query.getPageNum(), query.getPageSize());
+
+        faqService.page(page,new QueryWrapper<Faq>().eq("status", 1));
+        return Result.success(page);
     }
 
     
@@ -55,6 +61,17 @@ public class FaqController {
         return Result.success(true);
     }
 
+    @ApiOperation("编辑常见问题")
+    @GetMapping("/edit")
+    public Result<Boolean> edit(@Validated @RequestBody FaqEditParam param){
+        Faq faq = new Faq();
+        BeanUtils.copyProperties(param, faq);
+        boolean rs = faqService.updateById(faq);
+        if (!rs) {
+            return Result.failed("编辑失败");
+        }
+        return Result.success(true);
+    }
 
 }
 

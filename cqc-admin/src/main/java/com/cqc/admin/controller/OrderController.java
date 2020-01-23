@@ -54,7 +54,7 @@ public class OrderController {
     }
 
 
-    @ApiOperation("已放单列表")
+    @ApiOperation("手动放单")
     @GetMapping("/push")
     public Result<Order> push(@Validated @RequestBody OrderPublishParam param) {
         Order order = new Order();
