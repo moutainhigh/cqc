@@ -8,6 +8,7 @@ import com.cqc.common.exception.BaseException;
 import com.cqc.model.ReceiveCode;
 import com.cqc.portal.dto.ReceiveCodeAddParam;
 import com.cqc.portal.service.ReceiveCodeService;
+import com.cqc.portal.service.UserService;
 import com.cqc.security.util.PortalUserUtil;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,9 @@ public class ReceiveCodeController {
     @Autowired
     private ReceiveCodeService receiveCodeService;
 
+    @Autowired
+    private UserService userService;
+
     @ApiOperation("我的收款账户")
     @GetMapping("/list")
     public Result<List<ReceiveCode>> list() {
@@ -40,6 +44,7 @@ public class ReceiveCodeController {
         if (StringUtils.isEmpty(userId)) {
             throw new BaseException(ResultCode.UNAUTHORIZED);
         }
+        userService.checkUser(userId);
         QueryWrapper<ReceiveCode> wrapper = new QueryWrapper<ReceiveCode>().eq("user_id", userId);
         List<ReceiveCode> list = receiveCodeService.list(wrapper);
         return Result.success(list);
@@ -53,6 +58,7 @@ public class ReceiveCodeController {
         if (StringUtils.isEmpty(userId)) {
             throw new BaseException(ResultCode.UNAUTHORIZED);
         }
+        userService.checkUser(userId);
         ReceiveCode receiveCode = new ReceiveCode();
         receiveCode.setName(param.getName());
         receiveCode.setType(param.getType());
@@ -74,6 +80,7 @@ public class ReceiveCodeController {
         if (StringUtils.isEmpty(userId)) {
             throw new BaseException(ResultCode.UNAUTHORIZED);
         }
+        userService.checkUser(userId);
         ReceiveCode receiveCode = new ReceiveCode();
         receiveCode.setId(id);
         receiveCode.setStatus(status);

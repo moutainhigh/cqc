@@ -7,10 +7,14 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cqc.common.api.PageQuery;
 import com.cqc.common.api.Result;
 import com.cqc.common.api.ResultCode;
+import com.cqc.common.enums.BaseErrorMsg;
 import com.cqc.common.exception.BaseException;
 import com.cqc.model.Order;
+import com.cqc.model.UserFund;
 import com.cqc.portal.dto.OrderQuery;
 import com.cqc.portal.service.OrderService;
+import com.cqc.portal.service.UserFundService;
+import com.cqc.portal.service.UserService;
 import com.cqc.security.util.PortalUserUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotBlank;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -41,6 +46,12 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private UserFundService userFundService;
+
+    @Autowired
+    private UserService userService;
+
     @ApiOperation("我的订单")
     @GetMapping("/list")
     public Result<Page<Order>> list(OrderQuery param) {
@@ -48,6 +59,7 @@ public class OrderController {
         if (StringUtils.isEmpty(userId)) {
             throw new BaseException(ResultCode.UNAUTHORIZED);
         }
+        userService.checkUser(userId);
         Page<Order> page = new Page<>(param.getPageNum(), param.getPageSize());
         orderService.page(page, new QueryWrapper<Order>()
                 .eq("user_id", userId)
@@ -63,10 +75,11 @@ public class OrderController {
         if (StringUtils.isEmpty(userId)) {
             throw new BaseException(ResultCode.UNAUTHORIZED);
         }
+        userService.checkUser(userId);
         List<Order> list = orderService.list(new QueryWrapper<Order>()
                 .eq("user_id", userId)
                 .eq("status", 0)
-                .gt(!StringUtils.isEmpty(param.getStartTimeStr()), "create_time", param.getStartTimeStr())
+                //.gt(!StringUtils.isEmpty(param.getStartTimeStr()), "create_time", param.getStartTimeStr())
                 .orderByDesc("create_time"));
         return Result.success(list);
     }
@@ -79,6 +92,7 @@ public class OrderController {
         if (StringUtils.isEmpty(userId)) {
             throw new BaseException(ResultCode.UNAUTHORIZED);
         }
+        userService.checkUser(userId);
         boolean rs = orderService.confirmPay(userId, id);
         if (!rs) {
             return Result.failed("确认失败");
@@ -92,6 +106,11 @@ public class OrderController {
         String userId = PortalUserUtil.getCurrentUserId();
         if (StringUtils.isEmpty(userId)) {
             throw new BaseException(ResultCode.UNAUTHORIZED);
+        }
+        userService.checkUser(userId);
+        UserFund fund = userFundService.getFund(userId);
+        if (fund.getAvailableBalance().compareTo(BigDecimal.ZERO) <= 0) {
+            return Result.failed(BaseErrorMsg.BALANCE_LESS);
         }
         orderService.autoOrder(userId);
         return Result.success(true, "抢单成功"+System.currentTimeMillis());

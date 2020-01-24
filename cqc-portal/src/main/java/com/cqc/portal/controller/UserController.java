@@ -4,6 +4,7 @@ import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.cqc.common.api.Result;
 import com.cqc.common.api.ResultCode;
+import com.cqc.common.enums.BaseErrorMsg;
 import com.cqc.common.exception.BaseException;
 import com.cqc.model.User;
 import com.cqc.model.UserFund;
@@ -22,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -100,6 +102,7 @@ public class UserController {
         if (StringUtils.isEmpty(userId)) {
             throw new BaseException(ResultCode.UNAUTHORIZED);
         }
+        userService.checkUser(userId);
         boolean rs = userService.modifyLoginPwd(userId, param);
         if (!rs) {
             return Result.failed("修改登录密码失败");
@@ -115,6 +118,7 @@ public class UserController {
         if (StringUtils.isEmpty(userId)) {
             throw new BaseException(ResultCode.UNAUTHORIZED);
         }
+        userService.checkUser(userId);
         boolean rs = userService.modifyPayPwd(userId, param);
         if (!rs) {
             return Result.failed("修改支付密码失败");
@@ -130,6 +134,7 @@ public class UserController {
         if (StringUtils.isEmpty(userId)) {
             throw new BaseException(ResultCode.UNAUTHORIZED);
         }
+        userService.checkUser(userId);
         boolean rs = userService.modifyArea(userId, param);
         if (!rs) {
             return Result.failed("修改地区失败");
@@ -143,6 +148,11 @@ public class UserController {
         String userId = PortalUserUtil.getCurrentUserId();
         if (StringUtils.isEmpty(userId)) {
             throw new BaseException(ResultCode.UNAUTHORIZED);
+        }
+        userService.checkUser(userId);
+        UserFund fund = userFundService.getFund(userId);
+        if (fund.getAvailableBalance().compareTo(BigDecimal.ZERO) <= 0) {
+            return Result.failed(BaseErrorMsg.BALANCE_LESS);
         }
         boolean b = userService.openCloseAutoOrder(userId, 1);
         if (!b) {
@@ -158,6 +168,7 @@ public class UserController {
         if (StringUtils.isEmpty(userId)) {
             throw new BaseException(ResultCode.UNAUTHORIZED);
         }
+        userService.checkUser(userId);
         boolean b = userService.openCloseAutoOrder(userId, 0);
         if (!b) {
             return Result.failed("关闭自动抢单失败");
@@ -172,10 +183,8 @@ public class UserController {
         if (StringUtils.isEmpty(userId)) {
             throw new BaseException(ResultCode.UNAUTHORIZED);
         }
-        User user = userService.getById(userId);
-        if (user == null) {
-            return Result.failed("用户被删除，请重新登录");
-        }
+        User user = userService.getUser(userId);
+
         UserFundDto userFundDto = new UserFundDto();
         // 查余额
         UserFund fund = userFundService.getFund(userId);

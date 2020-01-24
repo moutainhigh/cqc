@@ -6,6 +6,7 @@ import com.cqc.common.api.ResultCode;
 import com.cqc.common.exception.BaseException;
 import com.cqc.model.InviteCode;
 import com.cqc.portal.service.InviteCodeService;
+import com.cqc.portal.service.UserService;
 import com.cqc.security.util.PortalUserUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -31,6 +32,9 @@ public class InviteCodeController {
     @Autowired
     private InviteCodeService inviteCodeService;
 
+    @Autowired
+    private UserService userService;
+
     @ApiOperation("获取邀请码")
     @GetMapping("/get")
     public Result<String> getInviteCode() {
@@ -38,6 +42,7 @@ public class InviteCodeController {
         if (StringUtils.isEmpty(userId)) {
             throw new BaseException(ResultCode.UNAUTHORIZED);
         }
+        userService.checkUser(userId);
         int timestamp = (int) (System.currentTimeMillis() / 1000);
         InviteCode inviteCode = inviteCodeService.getOne(new QueryWrapper<InviteCode>().eq("user_id", userId)
                 .gt("expire", timestamp));
@@ -54,14 +59,15 @@ public class InviteCodeController {
         if (StringUtils.isEmpty(userId)) {
             throw new BaseException(ResultCode.UNAUTHORIZED);
         }
+        userService.checkUser(userId);
         // 创建邀请码
-        String base = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        String base = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
 
         int len = 8;
         StringBuilder sb = new StringBuilder("");
         Random rd = new Random();
         for (int i = 0; i < len; i++) {
-            int nextInt = rd.nextInt(35);
+            int nextInt = rd.nextInt(30);
             sb.append(base.charAt(nextInt));
         }
 

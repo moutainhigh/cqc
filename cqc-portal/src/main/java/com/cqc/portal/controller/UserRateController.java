@@ -7,6 +7,7 @@ import com.cqc.common.api.ResultCode;
 import com.cqc.common.exception.BaseException;
 import com.cqc.model.UserRate;
 import com.cqc.portal.service.UserRateService;
+import com.cqc.portal.service.UserService;
 import com.cqc.security.util.PortalUserUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,6 +37,8 @@ public class UserRateController {
     @Autowired
     private UserRateService userRateService;
 
+    @Autowired
+    private UserService userService;
 
     @ApiOperation("用户费率列表")
     @GetMapping("/list")
@@ -44,6 +47,7 @@ public class UserRateController {
         if (StringUtils.isEmpty(userId)) {
             throw new BaseException(ResultCode.UNAUTHORIZED);
         }
+        userService.checkUser(userId);
         List<UserRate> list = userRateService.list(new QueryWrapper<UserRate>().eq("user_id", userId));
         return Result.success(list);
     }

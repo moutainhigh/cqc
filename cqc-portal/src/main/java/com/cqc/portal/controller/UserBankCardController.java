@@ -10,6 +10,7 @@ import com.cqc.model.UserBankCard;
 import com.cqc.portal.dto.BankCardAddParam;
 import com.cqc.portal.service.BankService;
 import com.cqc.portal.service.UserBankCardService;
+import com.cqc.portal.service.UserService;
 import com.cqc.security.util.PortalUserUtil;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,8 @@ public class UserBankCardController {
     @Autowired
     private UserBankCardService service;
 
-
+    @Autowired
+    private UserService userService;
 
 
     @ApiOperation(value = "添加银行卡")
@@ -51,6 +53,7 @@ public class UserBankCardController {
         if (StringUtils.isEmpty(userId)) {
             throw new BaseException(ResultCode.UNAUTHORIZED);
         }
+        userService.checkUser(userId);
         Bank bank = bankService.getById(param.getBankId());
         if (bank == null) {
             return Result.failed("银行错误");
@@ -76,6 +79,7 @@ public class UserBankCardController {
         if (StringUtils.isEmpty(userId)) {
             throw new BaseException(ResultCode.UNAUTHORIZED);
         }
+        userService.checkUser(userId);
         List<UserBankCard> list = service.list(new QueryWrapper<UserBankCard>().eq("user_id", userId));
         return Result.success(list);
     }
@@ -87,6 +91,7 @@ public class UserBankCardController {
         if (StringUtils.isEmpty(userId)) {
             throw new BaseException(ResultCode.UNAUTHORIZED);
         }
+        userService.checkUser(userId);
         // 先设置所有为0
         UserBankCard card = new UserBankCard();
         card.setIsDefault(false);
@@ -109,6 +114,7 @@ public class UserBankCardController {
         if (StringUtils.isEmpty(userId)) {
             throw new BaseException(ResultCode.UNAUTHORIZED);
         }
+        userService.checkUser(userId);
         boolean rs = service.removeById(id);
         if (!rs) {
             return Result.failed("删除");

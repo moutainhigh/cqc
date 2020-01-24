@@ -9,6 +9,7 @@ import com.cqc.admin.service.NoticeService;
 import com.cqc.common.api.PageQuery;
 import com.cqc.common.api.Result;
 import com.cqc.model.Notice;
+import com.cqc.model.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 /**
@@ -82,6 +84,15 @@ public class NoticeController {
         return Result.success(true);
     }
 
+    @ApiOperation("删除")
+    @GetMapping("/delete")
+    public Result<Boolean> delete(@NotBlank(message = "id不能为空") String id) {
+        boolean rs = noticeService.removeById(id);
+        if (!rs) {
+            return Result.failed("删除失败");
+        }
+        return Result.success(true);
+    }
 
 }
 

@@ -45,7 +45,7 @@ public class ExceptionAop {
 	@ResponseBody
 	public <T> Result<T> baseExceptionHandle(BaseException e) {
 		log.error("自定义异常：{}", e.getMessage());
-        return Result.failed(e.getMessage());
+        return Result.failed(e.getErrorMsg());
 	}
 
 	/**

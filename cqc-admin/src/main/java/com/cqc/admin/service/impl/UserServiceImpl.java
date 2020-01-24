@@ -48,7 +48,10 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     @Transactional(rollbackFor = Throwable.class)
     @Override
     public boolean addUser(UserAddParam param) {
-        Integer count = userMapper.selectCount(new QueryWrapper<User>().eq("account", param.getAccount()));
+        Integer count = userMapper.selectCount(new QueryWrapper<User>()
+                .eq("account", param.getAccount())
+                .ne("status", -1)
+        );
         if (count >= 1) {
             throw new BaseException("", "用户名重复");
         }

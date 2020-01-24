@@ -29,7 +29,7 @@ public interface OrderMapper extends BaseMapper<Order> {
      */
 
     int buyOrder(@Param("orderId") String orderId, @Param("userId")String userId,
-                 @Param("buyTime")Date buyTime, @Param("commission")BigDecimal commission);
+                 @Param("buyTime")Date buyTime, @Param("income")BigDecimal income);
 
     Order selectNewOrder(@Param("balance") BigDecimal balance);
 

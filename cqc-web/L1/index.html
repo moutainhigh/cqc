@@ -151,22 +151,34 @@
     // 开启抢单
     var order_state = 0;
     $(".start_btn").click(function(){
+        if (!hashToken()) {
+            alert("请先登录");
+            return false;
+        }
         if(order_state == 0){
-            start();
+            // 如果页面的余额为0 不允许抢单
+            var balance = $("#cqc_balance").text();
+            if (balance <= 0) {
+                alert("余额为0，无法抢单");
+                return false;
+            }
             openAutoBuy();
         }else if(order_state == 1){
             stop();
             closeAutoBuy(0);
         }
-
-
-
     });
 
     var t1, t2, t3;
     function start() {
         if (!hashToken()) {
+            $(".comm_mes").show().fadeOut(2000).find("p").text("请先登录");
             alert("请先登录");
+            return false;
+        }
+        if (hashClose()) {
+            $(".comm_mes").show().fadeOut(2000).find("p").text("账号被封，请联系管理员解封");
+            alert("账号被封，请联系管理员解封");
             return false;
         }
         order_state = 1;
@@ -176,7 +188,7 @@
 
         t1 = setInterval(function() {
             buyOrder();
-        },10000);
+        },2000);
 
         t2 = setInterval(function() {
             getAutoOrderStatus();
@@ -196,6 +208,8 @@
         window.clearInterval(t1);
         window.clearInterval(t2);
         window.clearInterval(t3);
+
+        closeAutoBuy();
     }
 
     function addClick(){
@@ -237,6 +251,10 @@
         getForAuth(host + open_auto_buy_uri, null, function(result){
             if (result.code == 200) {
                 order_state = 1;
+                start();
+            } else if (result.code = 1020) {
+                alert("余额为0，无法抢单");
+                return false;
             }
         });
     }
@@ -262,7 +280,7 @@
                     }
                 } else {
                     order_state = 0;
-                    close();
+                    stop();
                 }
             }
         });
@@ -312,6 +330,7 @@
         if ($(".two_model li")){
             startTimeStr = $(".two_model li").eq(0).find('.order_time').text();
         }
+
         var uri = my_order_new_list + "?startTimeStr="+startTimeStr;
         getForAuth(host + uri, null, function(result){
             var html = '';
@@ -323,7 +342,18 @@
             // 先拿到已经加载的订单列表
             for (let i = 0; i < len; i++) {
                 var item = list[i];
-                html +=
+                var flag = 0;
+                $(".two_model li .four").each(function (i, row) {
+                    var id =  $(row).attr("datatype");
+                    if (id === item.id) {
+                        flag = 1;
+                        return;
+                    }
+                });
+                if (flag === 1) {
+                    continue;
+                }
+                html =
                     '<li>' +
                     '<img src="'+getChannelImg(item.channel)+'" alt="" data-type="2">' +
                     '<div class="two">' +
@@ -334,8 +364,8 @@
                     '<span class="three" data-type="'+item.status+'">'+getStatus(item.status)+'</span>' +
                     '<a href="javascript:void(0);" class="four" datatype="'+item.id+'">确认付款</a>' +
                     '</li>';
+                $(".two_model ul").prepend(html);
             }
-            $(".two_model ul").prepend(html);
             $(".two_model ul").fadeIn(500);
             $(".two_model li").css("width","100%");
 

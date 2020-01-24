@@ -12,6 +12,7 @@ import com.cqc.portal.dto.FundRecordQueryParam;
 import com.cqc.portal.dto.resp.UserFundDto;
 import com.cqc.portal.service.UserFundRecordService;
 import com.cqc.portal.service.UserFundService;
+import com.cqc.portal.service.UserService;
 import com.cqc.portal.service.UserVirtualFundService;
 import com.cqc.security.util.PortalUserUtil;
 import io.swagger.annotations.ApiOperation;
@@ -39,6 +40,9 @@ public class UserFundController {
     @Autowired
     private UserFundRecordService userFundRecordService;
 
+    @Autowired
+    private UserService userService;
+
     @ApiOperation("缴纳做单押金")
     @GetMapping("/payDeposit")
     public Result<Boolean> payDeposit(){
@@ -46,6 +50,7 @@ public class UserFundController {
         if (StringUtils.isEmpty(userId)) {
             throw new BaseException(ResultCode.UNAUTHORIZED);
         }
+        userService.checkUser(userId);
         return Result.success();
     }
 
@@ -57,6 +62,7 @@ public class UserFundController {
         if (StringUtils.isEmpty(userId)) {
             throw new BaseException(ResultCode.UNAUTHORIZED);
         }
+        userService.checkUser(userId);
         Page<UserFundRecord> page = new Page<>(param.getPageNum(), param.getPageSize());
         QueryWrapper wrapper = new QueryWrapper<UserFundRecord>().eq("user_id", userId)
                 .eq(param.getType() != null, "type", param.getType());
@@ -73,7 +79,7 @@ public class UserFundController {
         if (StringUtils.isEmpty(userId)) {
             throw new BaseException(ResultCode.UNAUTHORIZED);
         }
-
+        userService.checkUser(userId);
         UserFundDto userFundDto = new UserFundDto();
         // 查余额
         UserFund fund = service.getFund(userId);

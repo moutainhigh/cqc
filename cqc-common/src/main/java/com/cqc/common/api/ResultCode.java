@@ -12,7 +12,9 @@ public enum ResultCode implements IErrorCode {
     FAILED("500", "fail"),
     VALIDATE_FAILED("404", "参数检验失败"),
     UNAUTHORIZED("401", "暂未登录或token已经过期"),
-    FORBIDDEN("403", "没有相关权限");
+    FORBIDDEN("403", "没有相关权限"),
+    CLOSE("406", "账号被封");
+
     private String code;
     private String message;
 

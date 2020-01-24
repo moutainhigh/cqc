@@ -7,6 +7,7 @@ import com.cqc.common.exception.BaseException;
 import com.cqc.model.Bank;
 import com.cqc.portal.dto.resp.UserIncomeDto;
 import com.cqc.portal.service.UserDateIncomeService;
+import com.cqc.portal.service.UserService;
 import com.cqc.security.util.PortalUserUtil;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,9 @@ public class UserDateIncomeController {
     @Autowired
     private UserDateIncomeService service;
 
+    @Autowired
+    private UserService userService;
+
     @ApiOperation("银行列表")
     @GetMapping("/agentIncome")
     public Result<List<UserIncomeDto>> list(String date) {
@@ -44,6 +48,7 @@ public class UserDateIncomeController {
         if (StringUtils.isEmpty(userId)) {
             throw new BaseException(ResultCode.UNAUTHORIZED);
         }
+        userService.checkUser(userId);
         List<UserIncomeDto> dataList = service.getAgentIncome(userId, date);
         return Result.success(dataList);
     }

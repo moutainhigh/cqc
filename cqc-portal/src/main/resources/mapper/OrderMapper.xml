@@ -4,7 +4,7 @@
 
     <update id="buyOrder">
         update  `order` set user_id = #{userId}, `status` = 0, buy_time =#{buyTime},
-        commission= #{commission}
+        income= #{income}
         where id = #{orderId} and status = -1
     </update>
 

@@ -147,6 +147,11 @@
             alert("请先登录");
             return false;
         }
+        if (hashClose()) {
+            $(".comm_mes").show().fadeOut(2000).find("p").text("账号被封，请联系管理员解封");
+            alert("账号被封，请联系管理员解封");
+            return false;
+        }
         var cardNo = $("#card_no").val();
         if (!cardNo) {
             $(".comm_mes").show().fadeOut(1000).find("p").text("请输入卡号");

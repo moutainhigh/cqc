@@ -1,6 +1,7 @@
 package com.cqc.portal.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.cqc.common.api.ResultCode;
 import com.cqc.common.exception.BaseException;
 import com.cqc.model.User;
 import com.cqc.portal.dto.ModifyAreaParam;
@@ -36,8 +37,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (user == null) {
             throw new BaseException("", "不存在的用户");
         }
-        if (user.getStatus() != 1) {
-            throw new BaseException("", "用户被锁定");
+        return user;
+    }
+
+
+    @Override
+    public User checkUser(String userId) {
+        User user = userMapper.selectById(userId);
+        if (user == null) {
+            throw new BaseException("", "不存在的用户");
+        }
+        if (user.getStatus() == -1) {
+            throw new BaseException("", "用户不存在");
+        }
+        if (user.getStatus() == 2) {
+            throw new BaseException(ResultCode.CLOSE);
         }
         return user;
     }

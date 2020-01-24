@@ -29,6 +29,14 @@ function getForAuth(url, param, callback) {
                 localStorage.removeItem("refreshToken");
                 return false;
             }
+            if (result.code == "406") {
+                // 账号被封
+                localStorage.setItem("close", 1);
+                $(".comm_mes").show().fadeOut(2000).find("p").text("账号被封，请联系管理员解封");
+                alert("账号被封，请联系管理员解封");
+                return false;
+            }
+            localStorage.removeItem("close");
             callback(result);
         },
         error: function (e) {
@@ -59,6 +67,14 @@ function postForAuth(url, param, callback) {
                 localStorage.removeItem("refreshToken");
                 return false;
             }
+            if (result.code == "406") {
+                // 账号被封
+                localStorage.setItem("close", 1);
+                $(".comm_mes").show().fadeOut(2000).find("p").text("账号被封，请联系管理员解封");
+                alert("账号被封，请联系管理员解封");
+                return false;
+            }
+            localStorage.removeItem("close");
             callback(result);
         },
         error: function (e) {
@@ -80,6 +96,14 @@ function handleResult(result){
 function hashToken() {
     var token =  localStorage.getItem("token");
     if (token) {
+        return true;
+    }
+    return false;
+}
+
+function hashClose() {
+    var close =  localStorage.getItem("close");
+    if (close) {
         return true;
     }
     return false;

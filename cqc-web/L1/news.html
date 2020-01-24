@@ -54,76 +54,7 @@
     <!-- 内容start -->
     <!-- 将zdy改成自定义名字 -->
     <div class="content_news">
-        <div class="news_each">
-            <a href="javascript:void(0);">
-                <h2>报备</h2>
-                <p>这是一个测试测试测试 001</p>
-                <span class="time">20191123</span>
-            </a>
-        </div>
-        <div class="news_each">
-            <a href="javascript:void(0);">
-                <h2>最新通告</h2>
-                <p>这是一个测试测试测试 002</p>
-                <span class="time">20191123</span>
-            </a>
-        </div>
-        <div class="news_each">
-            <a href="javascript:void(0);">
-                <h2>啦啦啦</h2>
-                <p>这是一个测试测试测试 003</p>
-                <span class="time">20191123</span>
-            </a>
-        </div>
-        <div class="news_each">
-            <a href="javascript:void(0);">
-                <h2>平台通知</h2>
-                <p>这是一个测试测试测试 123</p>
-                <span class="time">20191123</span>
-            </a>
-        </div>
-        <div class="news_each">
-            <a href="javascript:void(0);">
-                <h2>报备</h2>
-                <p>这是一个测试测试测试 456</p>
-                <span class="time">20191123</span>
-            </a>
-        </div>
-        <div class="news_each">
-            <a href="javascript:void(0);">
-                <h2>报备</h2>
-                <p>这是一个测试测试测试 789</p>
-                <span class="time">20191123</span>
-            </a>
-        </div>
-        <div class="news_each">
-            <a href="javascript:void(0);">
-                <h2>报备</h2>
-                <p>这是一个测试测试测试 1011</p>
-                <span class="time">20191123</span>
-            </a>
-        </div>
-        <div class="news_each">
-            <a href="javascript:void(0);">
-                <h2>报备</h2>
-                <p>这是一个测试测试测试 1012</p>
-                <span class="time">20191123</span>
-            </a>
-        </div>
-        <div class="news_each">
-            <a href="javascript:void(0);">
-                <h2>报备</h2>
-                <p>这是一个测试测试测试 1013</p>
-                <span class="time">20191123</span>
-            </a>
-        </div>
-        <div class="news_each">
-            <a href="javascript:void(0);">
-                <h2>报备</h2>
-                <p>这是一个测试测试测试 1014</p>
-                <span class="time">20191123</span>
-            </a>
-        </div>
+
     </div>
     <!-- 内容end -->
     <!-- 通用通告 -->
@@ -144,14 +75,14 @@
     // 滚动
 
     $(function () {
-        getNoticeList();
+        getMsgList();
     })
 
-    function getNoticeList() {
+    function getMsgList() {
         var uri = msg_list_uri;
         getForAuth(host + uri, null, function (result) {
             var html = '';
-            var list = result.data;
+            var list = result.data.records;
             if (!list) {
                 return;
             }
@@ -166,17 +97,23 @@
                     '</a></div>'
                 ;
             }
-            $(news_each[i]).click(function () {
-                var notice_title = $(this).find("h2").text();
-                var notice_content_text = $(this).find("p").text();
-                console.log(notice_title, notice_content_text);
-                $(".notice_box").find(".notice_title").text(notice_title);
-                $(".notice_box").find(".notice_content_text").text(notice_content_text);
-                $(".gray_bg,.notice_box").fadeIn(300);
-                $(".notice_cancel").click(function () {
-                    $(".gray_bg,.notice_box").fadeOut(300);
+            $(".content_news").html(html);
+            // 显示通告赋值
+            var news_each = $(".news_each");
+            for(i=0;i<news_each.length; i++){
+                $(news_each[i]).click(function(){
+                    var notice_title = $(this).find("h2").text();
+                    var notice_content_text = $(this).find("p").text();
+                    console.log(notice_title,notice_content_text);
+                    $(".notice_box").find(".notice_title").text(notice_title);
+                    $(".notice_box").find(".notice_content_text").text(notice_content_text);
+                    $(".gray_bg,.notice_box").fadeIn(300);
+                    $(".notice_cancel").click(function(){
+                        $(".gray_bg,.notice_box").fadeOut(300);
+                    });
                 });
-            });
+            }
+
         });
     }
 

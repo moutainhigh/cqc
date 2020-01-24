@@ -8,6 +8,7 @@ import com.cqc.model.UmsAdmin;
 import com.cqc.model.UserRealInfo;
 import com.cqc.portal.dto.UserRealInfoAddParam;
 import com.cqc.portal.service.UserRealInfoService;
+import com.cqc.portal.service.UserService;
 import com.cqc.security.util.PortalUserUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -34,6 +35,9 @@ public class UserRealInfoController {
     @Autowired
     private UserRealInfoService service;
 
+    @Autowired
+    private UserService userService;
+
     @ApiOperation(value = "提交实名信息")
     @GetMapping("/get")
     public Result<UserRealInfo> get() {
@@ -41,6 +45,7 @@ public class UserRealInfoController {
         if (StringUtils.isEmpty(userId)) {
             throw new BaseException(ResultCode.UNAUTHORIZED);
         }
+        userService.checkUser(userId);
         UserRealInfo realInfo = service.getRealInfo(userId);
         if (realInfo == null) {
             return Result.failed("暂未实名");

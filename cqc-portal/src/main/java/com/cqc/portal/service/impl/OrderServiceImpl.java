@@ -8,10 +8,7 @@ import com.cqc.model.Order;
 import com.cqc.model.UserFund;
 import com.cqc.portal.mapper.OrderMapper;
 import com.cqc.portal.mapper.UserVirtualFundMapper;
-import com.cqc.portal.service.OrderService;
-import com.cqc.portal.service.UserFundService;
-import com.cqc.portal.service.UserRateService;
-import com.cqc.portal.service.UserVirtualFundService;
+import com.cqc.portal.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -44,11 +41,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     private OrderMapper orderMapper;
 
     @Autowired
-    private UserRateService userRateService;
-
-    @Autowired
     private UserFundService userFundService;
 
+    @Autowired
+    private RateService rateService;
 
     @Async
     @Override
@@ -117,7 +113,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         }
         // 读取费率
         BigDecimal commission = BigDecimal.ZERO;
-        BigDecimal rate = userRateService.getRate(userId, order.getChannel());
+        BigDecimal rate = rateService.getRate(order.getChannel());
         if (rate.compareTo(BigDecimal.ZERO) > 0) {
             // 如果佣金费率大于0
             commission = order.getAmount().multiply(rate);

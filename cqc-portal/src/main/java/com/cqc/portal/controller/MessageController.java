@@ -42,15 +42,9 @@ public class MessageController {
     @ApiOperation("最近消息列表")
     @GetMapping("/getNew")
     public Result<Page<Message>> getNew(PageQuery param) {
-
-        String userId = PortalUserUtil.getCurrentUserId();
-        if (StringUtils.isEmpty(userId)) {
-            throw new BaseException(ResultCode.UNAUTHORIZED);
-        }
         Page<Message> page = new Page<>(param.getPageNum(), param.getPageSize());
 
-        service.page(page, new QueryWrapper<Message>().eq("user_id", userId)
-                .orderByDesc("create_time"));
+        service.page(page, new QueryWrapper<Message>().orderByDesc("create_time"));
 
         return Result.success(page);
     }

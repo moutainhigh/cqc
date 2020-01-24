@@ -20,6 +20,13 @@ public interface UserService extends IService<User> {
     User getUser(String userId);
 
     /**
+     * 获取可用的用户
+     * @param userId
+     * @return
+     */
+    User checkUser(String userId);
+
+    /**
      * 修改登录密码
      * @param userId
      * @param param

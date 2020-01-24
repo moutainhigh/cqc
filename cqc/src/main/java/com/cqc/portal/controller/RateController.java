@@ -7,15 +7,15 @@ import org.springframework.stereotype.Controller;
 
 /**
  * <p>
- * 银行 前端控制器
+ *  前端控制器
  * </p>
  *
  * @author ${author}
- * @since 2020-01-17
+ * @since 2020-01-24
  */
 @Controller
-@RequestMapping("/bank")
-public class BankController {
+@RequestMapping("/rate")
+public class RateController {
 
 }
 
