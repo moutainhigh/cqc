@@ -80,7 +80,19 @@ public class UserController {
 
         boolean rs = userService.updateById(user);
         if (!rs) {
-            return Result.failed("封禁成功");
+            return Result.failed("封禁失败");
+        }
+        return Result.success(true);
+    }
+    @ApiOperation("解封")
+    @GetMapping("/open")
+    public Result<Boolean> open(@NotBlank(message = "用户id不能为空") String userId) {
+        User user = new User();
+        user.setId(userId);
+        user.setStatus(1);
+        boolean rs = userService.updateById(user);
+        if (!rs) {
+            return Result.failed("解封失败");
         }
         return Result.success(true);
     }

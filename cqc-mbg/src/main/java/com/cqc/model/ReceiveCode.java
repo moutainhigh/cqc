@@ -28,9 +28,19 @@ public class ReceiveCode implements Serializable {
     private String userId;
 
     /**
+     * 用户账号
+     */
+    private String account;
+
+    /**
+     * 授权渠道 1-支付宝 2-微信
+     */
+    private Integer channel;
+
+    /**
      * 名称
      */
-    private String name;
+    private String receiveName;
 
     /**
      * 收款码
@@ -38,9 +48,9 @@ public class ReceiveCode implements Serializable {
     private String code;
 
     /**
-     * 1 支付宝 2微信
+     * 二维码图片链接
      */
-    private Integer type;
+    private String codeImg;
 
     /**
      * 状态 1-启动 0关闭

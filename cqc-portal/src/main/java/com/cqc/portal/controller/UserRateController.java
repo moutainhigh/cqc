@@ -5,7 +5,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.cqc.common.api.Result;
 import com.cqc.common.api.ResultCode;
 import com.cqc.common.exception.BaseException;
+import com.cqc.model.Rate;
 import com.cqc.model.UserRate;
+import com.cqc.portal.service.RateService;
 import com.cqc.portal.service.UserRateService;
 import com.cqc.portal.service.UserService;
 import com.cqc.security.util.PortalUserUtil;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotBlank;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -35,20 +38,22 @@ import java.util.List;
 public class UserRateController {
 
     @Autowired
-    private UserRateService userRateService;
+    private RateService rateService;
 
     @Autowired
     private UserService userService;
 
     @ApiOperation("用户费率列表")
     @GetMapping("/list")
-    public Result<List<UserRate>> listByUserId() {
+    public Result<List<Rate>> listByUserId() {
         String userId = PortalUserUtil.getCurrentUserId();
         if (StringUtils.isEmpty(userId)) {
             throw new BaseException(ResultCode.UNAUTHORIZED);
         }
         userService.checkUser(userId);
-        List<UserRate> list = userRateService.list(new QueryWrapper<UserRate>().eq("user_id", userId));
+
+        List<Rate> list = rateService.list();
+
         return Result.success(list);
     }
 

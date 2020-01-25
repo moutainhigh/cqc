@@ -14,6 +14,9 @@
     <link rel="stylesheet" href="./css/common.css" />
     <!-- 导入jquery -->
     <script src="./js/jquery.min.js"></script>
+
+    <script src="./js/config.js"></script>
+    <script src="./js/request.js"></script>
     <!-- 根据设备宽度，计算html根节点的font-size -->
     <script>
         // 获取html根节点要素内容
@@ -61,31 +64,140 @@
         <div class="content_news">
             <div class="news_each">
                 <h3>账号名称</h3>
-                <input type="text" class="input_text">
+                <input type="text" id="name" class="input_text">
+                <input type="text" hidden id="code_img" class="input_text">
                 <h3>账号类型</h3>
                 <div class="cate">
-                    <span class="each_btn" data-type = "1">全部</span>
+                    <span class="each_btn" data-type = "0">全部</span>
                     <span class="each_btn" data-type = "2">微信扫描</span>
-                    <span class="each_btn" data-type = "3">支付宝扫码</span>
+                    <span class="each_btn" data-type = "1">支付宝扫码</span>
                     <!-- <span class="each_btn">拼多多微信</span>
                     <span class="each_btn">拼多多支付宝</span>
                     <span class="each_btn">聚合扫码</span> -->
                 </div>
                 <h3>收款二维码</h3>
                 <div class="code">
-                    <!-- <div class="code_add"></div> -->
-                    <div class="code_view"></div>
+                    <div class="code_add">
+                        <input type="file" id="file" name="file" style="width:448px; height: 22px;"
+                               accept = "image/*" onchange="reads(this)"/>
+                    </div>
+                    <div class="code_view">
+                        <img src="" id="img_view" />
+
+                    </div>
                 </div>
-                <a href="#" class="sure_btn">提交</a>
+                <a href="#" class="sure_btn" id="sure_btn">提交</a>
             </div>
             <!-- 筛选内容end -->
+        </div>
+    </div>
+
+    <div class="wrap_common"  style="overflow: auto;">
+        <!-- 内容end -->
+        <div class="comm_mes">
+            <p></p>
         </div>
     </div>
     <!-- 筛选end -->
 </body>
 <script>
-     $(".cate .each_btn").click(function(){
-        $(this).addClass("bg_blue").siblings().removeClass("bg_blue");
-    });
+
+    window.onload = function () {
+        let $img = document.getElementById('img_view')
+        file.onchange = function (e) {
+            console.log(e.target.files[0])
+            let file = e.target.files[0]
+            const fr = new FileReader(file)
+            fr.readAsDataURL(file)
+            fr.onload = function () {
+                $img.src = this.result
+            }
+
+            var token = localStorage.getItem("token");
+            var tokenHead = localStorage.getItem("tokenHead");
+            var formData = new FormData();
+            formData.append("file", document.getElementById("file").files[0]);
+            $.ajax({
+                url: host + "/upload/uploadImg",
+                type: "POST",
+                data: formData,
+                /**
+                 *必须false才会自动加上正确的Content-Type
+                 */
+                contentType: false,
+                headers: {
+                    'Authorization': tokenHead + ' ' + token
+                },
+                /**
+                 * 必须false才会避开jQuery对 formdata 的默认处理
+                 * XMLHttpRequest会对 formdata 进行正确的处理
+                 */
+                processData: false,
+                success: function (data) {
+                    if (data.code == "200") {
+                        alert("上传成功！");
+                        console.log(data.data);
+                        $("#code_img").val(data.data);
+                    }
+                    if (data.status == "error") {
+                        alert(data.msg);
+                    }
+                    $("#img_view").hide();
+                },
+                error: function () {
+                    alert("上传失败！");
+                    $("#img_view").hide();
+                }
+            });
+
+        }
+    }
+
+     $(function () {
+
+
+
+         $(".cate .each_btn").click(function(){
+             $(this).addClass("bg_blue").siblings().removeClass("bg_blue");
+         });
+
+         $("#sure_btn").click(function () {
+             // 判断type name不能为空
+             var type = $(".bg_blue").attr("data-type");
+             if (!type) {
+                 $(".comm_mes").show().fadeOut(2000).find("p").text("请选择类型");
+                 return;
+             }
+             var receiveName = $("#name").val();
+             if (!receiveName) {
+                 $(".comm_mes").show().fadeOut(2000).find("p").text("请收入收款人姓名");
+                 return;
+             }
+             var code_img = $("#code_img").val();
+             if (!code_img) {
+                 $(".comm_mes").show().fadeOut(2000).find("p").text("请上传收款二维码");
+                 return;
+             }
+             var data = {
+                 "receiveName" : $("#name").val(),
+                 "codeImg":$("#code_img").val(),
+                 "type": type
+             };
+             console.log(data);
+             postForAuth(host + receive_add_uri, data, function (result) {
+                 handleResult(result);
+                 console.log(result);
+                 if (result.code == '200') {
+                     $(".comm_mes").show().fadeOut(2000).find("p").text("添加收款码成功");
+                     window.location = "./pay_code.html";
+                 }
+             });
+         });
+
+     });
+
+
+
+
 </script>
 </html>

@@ -11,10 +11,9 @@ import com.cqc.common.enums.BaseErrorMsg;
 import com.cqc.common.exception.BaseException;
 import com.cqc.model.Order;
 import com.cqc.model.UserFund;
+import com.cqc.model.UserRealInfo;
 import com.cqc.portal.dto.OrderQuery;
-import com.cqc.portal.service.OrderService;
-import com.cqc.portal.service.UserFundService;
-import com.cqc.portal.service.UserService;
+import com.cqc.portal.service.*;
 import com.cqc.security.util.PortalUserUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -51,6 +50,12 @@ public class OrderController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserRealInfoService userRealInfoService;
+
+    @Autowired
+    private ReceiveCodeService receiveCodeService;
 
     @ApiOperation("我的订单")
     @GetMapping("/list")
@@ -100,7 +105,7 @@ public class OrderController {
         return Result.success();
     }
 
-    @ApiOperation(value = "开启自动抢单")
+    @ApiOperation(value = "自动抢单")
     @GetMapping("/buyOrder")
     public Result<Boolean> startAutoOrder() {
         String userId = PortalUserUtil.getCurrentUserId();
@@ -111,6 +116,17 @@ public class OrderController {
         UserFund fund = userFundService.getFund(userId);
         if (fund.getAvailableBalance().compareTo(BigDecimal.ZERO) <= 0) {
             return Result.failed(BaseErrorMsg.BALANCE_LESS);
+        }
+        // 查实名信息
+        UserRealInfo realInfo = userRealInfoService.getRealInfo(userId);
+        if (realInfo == null) {
+            // 如果没实名 不允许抢单
+            throw new BaseException(BaseErrorMsg.NOT_REAL);
+        }
+        //未上传收款码
+        int codeNumber = receiveCodeService.getCodeNumber(userId);
+        if (codeNumber <= 0) {
+            throw new BaseException(BaseErrorMsg.NO_RECEIVE_CODE);
         }
         orderService.autoOrder(userId);
         return Result.success(true, "抢单成功"+System.currentTimeMillis());

@@ -107,7 +107,7 @@ public class UserBankCardController {
         return Result.success();
     }
 
-    @ApiOperation(value = "设为默认")
+    @ApiOperation(value = "删除银行卡")
     @GetMapping("/remove")
     public Result<Boolean> remove(@NotBlank(message = "id不能为空") String id) {
         String userId = PortalUserUtil.getCurrentUserId();

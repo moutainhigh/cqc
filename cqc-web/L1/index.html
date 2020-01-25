@@ -252,8 +252,8 @@
             if (result.code == 200) {
                 order_state = 1;
                 start();
-            } else if (result.code = 1020) {
-                alert("余额为0，无法抢单");
+            } else  {
+                alert(result.message);
                 return false;
             }
         });
@@ -290,7 +290,7 @@
         getForAuth(host + buy_order_uri, null, function(result){
             if (result.code == 200){
                 console.log("抢到一单");
-            } else if (result.code == 1020) {
+            } else {
                 // 余额为0 自动关闭抢单
                 stop();
             }

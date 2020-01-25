@@ -66,6 +66,12 @@ const income_agentIncome_uri = "/income/agentIncome";
 
 // 收款码列表
 const receive_list = "/receiveCode/list";
+// 启用、关闭收款码
+const open_receive_code_uri = "/receiveCode/open";
+// 关闭收款码
+const close_receive_code_uri = "/receiveCode/close";
+// 添加收款码
+const receive_add_uri = "/receiveCode/add";
 //缴纳押金
 const pay_deposit_uri = "/user/payDeposit";
 

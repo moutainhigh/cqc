@@ -12,3 +12,9 @@ spring:
       stat-view-servlet: #访问监控网页的登录用户名和密码
         login-username: druid
         login-password: druid
+
+
+
+upload:
+  dir: D:\work_space\cqc\cqc-web\L1\img
+  urlPrefix: D:\work_space\cqc\cqc-web\L1\img

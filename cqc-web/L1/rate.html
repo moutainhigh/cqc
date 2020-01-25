@@ -95,7 +95,7 @@
                 for (let i = 0; i < len; i++) {
                     var item = list[i];
                     html += '<div class="pro_each">' +
-                        '<span>' + getType(item.channel) + '</span>' +
+                        '<span>' + getType(item.id) + '</span>' +
                         '<span class="text">' + convertPercent(item.rate) + '%</span>' +
                         '</div>';
                 }
@@ -108,13 +108,13 @@
 
     function getType(type) {
         var name = '';
-        if (type == 1) {
+        if (type == "1") {
             name = '支付宝';
-        } else if (type == 2) {
+        } else if (type == "2") {
             name = "微信";
-        } else if (type == 3) {
+        } else if (type == "2") {
             name = "拼多多支付宝";
-        }else if (type == 4) {
+        }else if (type == "4") {
             name = "拼多多微信";
         }
         return name;

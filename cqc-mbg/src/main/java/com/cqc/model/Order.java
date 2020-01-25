@@ -87,4 +87,8 @@ public class Order implements Serializable {
      */
     private BigDecimal income;
 
+    /**
+     * 收款码
+     */
+    private String receiveCode;
 }

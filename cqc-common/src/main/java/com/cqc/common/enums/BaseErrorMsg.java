@@ -75,7 +75,11 @@ public enum BaseErrorMsg implements IErrorCode<BaseErrorMsg> {
 	/** 文操作频率过快 **/
 	VALIDATE_OPTION_TOO_FAST("oauth-1001", "操作频率过快"),
 
-	BALANCE_LESS("1020","余额为0"),
+	BALANCE_LESS("1020","余额为0，无法抢单"),
+
+	NOT_REAL("1030", "未实名认证不允许抢单"),
+
+	NO_RECEIVE_CODE("1040","未上传收款码"),
 	;
 
 /////////////////////////////////////////////系统通用错误信息（结束）///////////////////////////////////////////////

@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="./css/common.css" />
     <!-- 导入jquery -->
     <script src="./js/jquery.min.js"></script>
+    <script src="./js/config.js"></script>
+    <script src="./js/request.js"></script>
     <!-- 根据设备宽度，计算html根节点的font-size -->
     <script>
         // 获取html根节点要素内容
@@ -59,11 +61,11 @@
         <!-- 将zdy改成自定义名字 -->
         <div class="content_common">
             <div class="model_one" style="height:10%; padding-top: .5rem;">
-                <a href="javascript:add();" class="add_bank">添加收款码</a>
+                <a href="./add_copy.html" class="add_bank">添加收款码</a>
                 <a href="javascript:startAuto();" class="add_bank">自动接单</a>
             </div>
             <div class="model_two" style="min-height: 90%; max-height: 90%;">
-                <a href="javascript:void(0);">
+                <!--<a href="javascript:void(0);">
                     <div class="pro_each">
                         <img src="./img/Alipay.png" alt="" data-type="3">
                         <span class="name">米娅琴</span>
@@ -84,15 +86,17 @@
                             <span class="check-handler"></span>
                         </div>
                     </div>
-                </a>
+                </a>-->
             </div>
         </div>
         <!-- 内容end -->
         <!-- 添加收款码 -->
         <div class="add_each">
             <ul>
+                <input type="file" id="file" name="file" hidden/>
                 <li onclick="window.location.href='./add_copy.html'">扫描</li>
-                <li onclick="window.location.href='./add_copy.html'">相册</li>
+                <li onclick="javascript:$('#file').click()">相册</li>
+
                 <li id="cancel_add">取消</li>
             </ul>
         </div>
@@ -143,8 +147,10 @@
     <div class="open_code">
         <h3>设置收款账号</h3>
         <span>是否<em class="status">关闭</em><em class="code_name">123456</em>的收款账号?</span>
+        <input hidden id="code_id" value="" />
+        <input hidden id="op_type" value="" />
         <div class="code_view">
-            <img src="./img/pinduoduo.png" alt="">
+            <img id="code_img" src="./img/pinduoduo.png" alt="">
         </div>
         <div class="each_btn">
             <a href="javascript:void(0);" class="btn1">确定</a>
@@ -158,13 +164,60 @@
     console.log($(".pro_each .name:contains(米)"));
     var search_input = $(".news_each .input_text");
     console.log($(pro_each[0]).find(".name"));
-    // 按钮阻止冒泡
-    var chck = $(".chck");
-    for(i=0;i<chck.length; i++){
-       if($(chck[i]).is(":checked")){
-        event.preventDefault();
-       }
+
+    $(function () {
+        getReceiveCode();
+    });
+    function getReceiveCode() {
+        getForAuth(host + receive_list, null, function (result) {
+            var html = '';
+            var list = result.data;
+            if (!list) {
+                return;
+            }
+            var len = list.length;
+            for (let i = 0; i < len; i++) {
+                var item = list[i];
+                var checkBox = '';
+                if (item.status === 1) {
+                    checkBox = '<input class="id" value="'+item.id+'" id="'+item.id+'" type="checkbox" checked="checked" class="chck" onclick="openCode(this)">'
+                } else {
+                    checkBox = '<input class="id" value="'+item.id+'" id="'+item.id+'" type="checkbox" class="chck" onclick="openCode(this)">';
+                }
+                html += '<a href="javascript:void(0);">'+
+                    '<div class="pro_each">'+
+                    '<img src="'+getChannelImg(item.channel)+'" alt="" data-type="2">'+
+                    '<span class="name" datatype="'+item.codeImg+'">'+item.receiveName+'</span>'+
+                    '<div class="start_end">'+
+                     checkBox +
+                    '<label for="'+item.id+'" class="check-trail">'+
+                    '<span class="check-handler"></span>'+
+                    '</div>'+
+                    '</div>'+
+                    '</a>';
+            }
+            $(".model_two").html(html);
+
+            // 按钮阻止冒泡
+            var chck = $(".chck");
+            for(i=0;i<chck.length; i++){
+                if($(chck[i]).is(":checked")){
+                    event.preventDefault();
+                }
+            }
+
+        });
     }
+    function getChannelImg(channel) {
+        var logo = "";
+        if (channel == 1) {
+            logo = "img/Alipay.png";
+        } else if (channel == 2) {
+            logo = "img/WeChat.png";
+        }
+        return logo;
+    }
+
     // 添加收款码
     function add(){
         $(".gray_bg").show();
@@ -190,16 +243,14 @@
     // 开启二维码收款
     function openCode(obj){
         var target = obj;
+        $("#code_id").val($(target).val());
+        $("#code_img").attr("src", $(target).parent().parent().find(".name").attr("datatype"));
         if($(target).is(":checked")){
             $(".gray_bg,.open_code").show();
             $(".open_code span .status").text("开启");
             $(".open_code span .code_name").text($(target).parent().parent().find(".name").text());
-            // 确认按钮
-            $(".btn1").click(function(){
-                $(".gray_bg,.open_code").hide();
-                $(target).prop('checked', true);
-                target = undefined;
-            });
+            $("#op_type").val(1);
+            // 如果有图片，就把图片设置进去
              // 取消按钮
              $(".btn2").click(function(){
                 $(".gray_bg,.open_code").hide();
@@ -210,12 +261,8 @@
             $(".gray_bg,.open_code").show();
             $(".open_code span .status").text("关闭");
             $(".open_code span .code_name").text($(target).parent().parent().find(".name").text());
+            $("#op_type").val(0);
             // 确认按钮
-            $(".btn1").click(function(){
-                $(".gray_bg,.open_code").hide();
-                $(target).removeAttr("checked");
-                target = undefined;
-            });
              // 取消按钮
              $(".btn2").click(function(){
                 $(".gray_bg,.open_code").hide();
@@ -224,7 +271,42 @@
             });
         }
     }
+    $(".btn1").click(function(){
+        $(".gray_bg,.open_code").hide();
+        var id = $("#code_id").val();
+        var op = $("#op_type").val();
+        if (op == 1) {
+            open(id);
+        } else {
+            close(id);
+        }
+    });
 
+    function open(id) {
+        var uri = open_receive_code_uri + "?id=" + id;
+        getForAuth(host + uri, null, function (result) {
+            if (result.code == 200) {
+                // 启用
+                $(".gray_bg,.open_code").hide();
+
+            } else {
+                alert(result.message);
+            }
+        });
+    }
+
+    function close(id) {
+        var uri = close_receive_code_uri + "?id=" + id;
+        getForAuth(host + uri, null, function (result) {
+            if (result.code == 200) {
+                // 关闭
+                $(".gray_bg,.open_code").hide();
+
+            } else {
+                alert(result.message);
+            }
+        });
+    }
 
     // 筛选
     $(".cate .each_btn").click(function(){

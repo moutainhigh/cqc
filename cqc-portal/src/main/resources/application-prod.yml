@@ -15,3 +15,8 @@ spring:
 
 logging:
   path: /var/logs #配置日志生成路径
+
+
+upload:
+  dir: /opt/ms/cqc/L1/img
+  urlPrefix: http://182.61.134.5:8092/img

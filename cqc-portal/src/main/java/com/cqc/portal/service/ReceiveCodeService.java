@@ -13,4 +13,13 @@ import com.cqc.model.ReceiveCode;
  */
 public interface ReceiveCodeService extends IService<ReceiveCode> {
 
+    /**
+     * 查询收款码
+     * @param userId
+     * @param channel
+     * @return
+     */
+    ReceiveCode getCode(String userId, int channel);
+
+    int getCodeNumber(String userId);
 }

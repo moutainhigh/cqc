@@ -11,11 +11,12 @@ import lombok.Data;
 public class ReceiveCodeAddParam {
 
 
-    private String name;
+    private String receiveName;
 
     private String code;
 
-    private int type;
+    private Integer type;
 
+    private String codeImg;
 
 }
