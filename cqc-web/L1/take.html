@@ -4,17 +4,21 @@
     <meta charset="UTF-8">
     <!-- -->
     <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no ">
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no ">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>提现</title>
     <!-- 网页ico -->
     <link rel="shortcut icon" href="./favicon.ico">
     <!-- 导入基础base.css文件 -->
-    <link rel="stylesheet" href="./css/base.css" />
+    <link rel="stylesheet" href="./css/base.css"/>
     <!-- 导入本类.css文件 -->
-    <link rel="stylesheet" href="./css/common.css" />
+    <link rel="stylesheet" href="./css/common.css"/>
     <!-- 导入jquery -->
     <script src="./js/jquery.min.js"></script>
+
+    <script src="./js/config.js"></script>
+    <script src="./js/request.js"></script>
+
     <!-- 根据设备宽度，计算html根节点的font-size -->
     <script>
         // 获取html根节点要素内容
@@ -37,79 +41,235 @@
 </head>
 
 <body style="background:#3e7fff">
-    <!-- 遮罩层 -->
-    <div class="gray_bg"></div>
-    <!-- zdy改成本自定义名称 -->
-    <div class="wrap_deposit">
-        <!-- 顶部start -->
-        <div class="top_wrap">
-            <div class="top">
-                <!-- 标题 -->
-                <h2>提现</h2>
-                <!-- 右边书写样式 -->
-                <a href="./take_record.html" class="pen"></a>
-                <!-- 左边返回样式 -->
-                <a href="javascript:history.back(-1)" class="ret"></a>
-            </div>
+<!-- 遮罩层 -->
+<div class="gray_bg"></div>
+<!-- zdy改成本自定义名称 -->
+<div class="wrap_deposit">
+    <!-- 顶部start -->
+    <div class="top_wrap">
+        <div class="top">
+            <!-- 标题 -->
+            <h2>提现</h2>
+            <!-- 右边书写样式 -->
+            <a href="./take_record.html" class="pen"></a>
+            <!-- 左边返回样式 -->
+            <a href="javascript:history.back(-1)" class="ret"></a>
         </div>
-        <!-- 顶部end -->
-        <!-- 内容start -->
-        <!-- 将zdy改成自定义名字 -->
-        <div class="content_deposit">
-            <form method="" action="">
+    </div>
+    <!-- 顶部end -->
+    <!-- 内容start -->
+    <!-- 将zdy改成自定义名字 -->
+    <div class="content_deposit">
+        <form method="" action="">
             <div class="one_model_bank">
-               <div class="bank_tx">
-                   <h3>转到账银行卡</h3>
-                   <img src="./img/ABC.png">
-                    <span onclick="bank()">中国农业银行</span>
-               </div>
-               <div class="common_model">
-                   <h3>提现cqc(最多可提现：0.51)</h3>
-                   <input type="text" value="" name="" class="tx_input" placeholder="提现"/>
-               </div>
-               <div class="common_model">
-                    <input type="submit" value="提现" class="btn_input"/>
-               </div>
+                <div class="bank_tx">
+                    <h3>转到账银行卡</h3>
+                    <input hidden id="bank_card_id"/>
+                    <img id="bank_logo" src="./img/ABC.png">
+                    <span id="bank_name" hidden onclick="bank()">中国农业银行</span>
+                    <span id="no_card" onclick="window.location='./add_bank.html'">点击绑定银行卡</span>
+                </div>
+                <div class="common_model">
+                    <h3>提现cqc(最多可提现：<span class="balance">0.00</span>)</h3>
+                    <input id="amount" type="number" min="0" value="" name="" class="tx_input" placeholder="提现"/>
+                </div>
+                <div class="common_model">
+                    <input type="button" value="提现" class="btn_input" id="take"/>
+                </div>
             </div>
             <div class="two_model_deposit">
                 <div class="cqc_dep">
-                   <h3>还需收取(cqc)任务金，可提现</h3>
+                    <h3>还需收取(cqc)任务金，可提现</h3>
                 </div>
                 <div class="tixian">0.00</div>
             </div>
-            </form>
-        </div>
-        <!-- 内容end -->
-        <!-- 银行卡 -->
-        <div class="add_each">
-            <ul>
-                <li>
-                    <h1>选择到账的银行卡</h1>
-                    <h3>请留意个银行到账时间</h3>
-                </li>
-                <li style="position: relative;">
-                    <a href="#" >
-                        <img src="./img/ABC.png" alt="">
-                        <span>中国农业银行</span>
-                        <div class="opt opt_active"></div>
-                    </a>
-                </li>
-                <li id="cancel_add"><a href="./add_bank.html">添加银行卡</a></li>
-            </ul>
-        </div>
+        </form>
     </div>
+    <!-- 内容end -->
+    <!-- 银行卡 -->
+    <div class="add_each">
+        <ul>
+            <li>
+                <h1>选择到账的银行卡</h1>
+                <h3>请留意个银行到账时间</h3>
+            </li>
+            <li style="position: relative;" id="card_list">
+                <a href="#">
+                    <img src="./img/ABC.png" alt="">
+                    <span class="bank_name">中国农业银行</span>
+                    <div class="opt opt_active"></div>
+                </a>
+            </li>
+
+            <li id="cancel_add"><a href="./add_bank.html">添加银行卡</a></li>
+        </ul>
+    </div>
+
+    <!-- 首页通告 -->
+    <div class="notice_box" style="display: none">
+        <div class="notice_content">
+            <h2 class="notice_title"></h2>
+            <span class="notice_content_text"></span>
+        </div>
+        <a href="javascript:void(0);" class="notice_cancel">朕知道了</a>
+    </div>
+
+</div>
+<div class="wrap_common"  style="overflow: auto;">
+    <!-- 内容end -->
+    <div class="comm_mes">
+        <p></p>
+    </div>
+</div>
 </body>
 <script>
-     // 切换银行卡
-     function bank(){
+    // 切换银行卡
+    function bank() {
         $(".gray_bg").show();
-        $(".add_each").animate({"height":"3rem"});
-        if($(".gray_bg").is(":visible")){
-            $(".gray_bg,#cancel_add").click(function(){
-                $(".add_each").animate({"height":"0rem"});
+        $(".add_each").animate({"height": "5rem"});
+        if ($(".gray_bg").is(":visible")) {
+            $(".gray_bg,#cancel_add").click(function () {
+                $(".add_each").animate({"height": "0rem"});
                 $(".gray_bg").hide();
             });
         }
     }
+
+    $(function () {
+        $("#card_list a").click(function () {
+            var card_id = $(this).find('.card_id').val();
+            var card_logo = $(this).find("img").attr("src");
+            var card_no = $(this).find('.bank_name').text();
+            console.log(card_id, card_logo, card_no);
+        });
+
+        take();
+
+        getFund();
+
+        getBankCard();
+
+        getNoticeList();
+
+        setTimeout(() => {
+            $(".gray_bg,.notice_box").show();
+        }, 500);
+        var time = 5;
+        function timeDown(){
+            if(time == 0){
+                clearInterval(timer);
+                $(".notice_cancel").text("朕知道了").css("color","aqua");
+                $(".notice_cancel").click(function(){
+                    $(".gray_bg,.notice_box").hide()
+                });
+                return;
+            }
+            $(".notice_cancel").unbind().attr('disabled',false).text("朕知道了"+time).css("color","gray");
+            time--;
+        }
+        console.log(time);
+        timeDown();
+        timer = setInterval(timeDown,1000);
+    });
+
+    function take() {
+        $("#take").click(function () {
+            var bank_card_id = $("#bank_card_id").val();
+            if (!bank_card_id) {
+                $(".comm_mes").show().fadeOut(2000).find("p").text("请选择银行卡");
+                return false;
+            }
+            var amount = $("#amount").val();
+            if (!amount || amount <= 0) {
+                $(".comm_mes").show().fadeOut(2000).find("p").text("请输入提现金额");
+                return false;
+            }
+            var data = {
+                "bankCardId": bank_card_id,
+                "amount": amount
+            }
+            var balance = $(".balance").text();
+            postForAuth(host + with_draw_apply_uri, data, function (result) {
+                if (result.code == 200) {
+                    $(".comm_mes").show().fadeOut(2000).find("p").text("提现成功");
+                    balance = balance - amount;
+                    $(".balance").text(balance);
+                    return;
+                } else {
+                    $(".comm_mes").show().fadeOut(2000).find("p").text(result.message);
+                }
+            })
+
+        });
+    }
+
+    function getBankCard() {
+        getForAuth(host + bank_card_list_uri, null, function (result) {
+            handleResult(result);
+            if (result.code == '401') {
+                // 页面内容更改
+                return;
+            }
+            if (result.code == '200') {
+                var html = '';
+                var list = result.data;
+                if (list) {
+                    var len = list.length;
+                    for (var i = 0; i < len; i++) {
+                        var card = list[i];
+                        var text = card.isDefault == 1 ? "默认" : "";
+                        var bankName = card.bankName + '  ' + card.cardNo;
+                        if (card.isDefault) {
+                            //赋值
+                            $("#bank_card_id").val(card.id);
+                            $("#bank_logo").attr("src", card.bankLogo);
+                            $("#bank_name").text(bankName);
+
+                            $("#bank_name").show();
+                            $("#no_card").hide();
+                        }
+                        html += '<a href="#" >' +
+                            '<input class="card_id" hidden value="' + card.id + '"></hidden>' +
+                            '<img src="' + card.bankLogo + '" alt="">' +
+                            '<span class="bank_name">' + bankName + '</span>' +
+                            '<div class="opt opt_active"></div>' +
+                            '</a>';
+                    }
+                    $("#card_list").html(html);
+                }
+            }
+        });
+    }
+
+    function getFund() {
+        if (!hashToken()) {
+            return false;
+        }
+        getForAuth(host + get_auto_order_status, null, function(result){
+            if (result.code == 200) {
+                // 显示余额
+                $(".balance").text(result.data.cqc.toFixed(4));
+            }
+        });
+    }
+
+    function getNoticeList(){
+        var uri = notice_list_uri + "?type=3"
+        getData(host + uri, null, function(result){
+            if (result.code === 200) {
+                return;
+            }
+            var html = '';
+            var list = result.data;
+            if (!list) {
+                return;
+            }
+            var notice = list[0];
+            $(".notice_title").text(notice.title);
+            $(".notice_content_text").text(notice.content);
+        });
+    }
+
+
 </script>
 </html>

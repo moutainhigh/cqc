@@ -14,6 +14,7 @@ import com.cqc.portal.service.UserService;
 import com.cqc.security.util.PortalUserUtil;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -81,6 +82,9 @@ public class UserBankCardController {
         }
         userService.checkUser(userId);
         List<UserBankCard> list = service.list(new QueryWrapper<UserBankCard>().eq("user_id", userId));
+        if (!CollectionUtils.isEmpty(list) && list.size() == 1) {
+            list.get(0).setIsDefault(true);
+        }
         return Result.success(list);
     }
 

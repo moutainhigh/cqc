@@ -85,6 +85,7 @@ public class UserBankCard implements Serializable {
 
     private Boolean isDefault;
 
+    /**
     public String getCardNo() {
         if (!StringUtils.isEmpty(cardNo)) {
             if (cardNo.length() >= 4) {
@@ -95,4 +96,5 @@ public class UserBankCard implements Serializable {
         }
         return cardNo;
     }
+   **/
 }

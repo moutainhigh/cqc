@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cqc.admin.mapper.UserWithdrawMapper">
+
+    <select id="pageList" resultType="com.cqc.admin.dto.resp.UserWithDrawDto">
+        select wd.id, u.id as user_id, u.account, wd.amount, wd.bank_name,
+            wd.bank_logo, wd.card_no, wd.`status`, wd.create_time
+        from user_withdraw wd INNER JOIN `user` u on wd.user_id = u.id
+        where 1=1
+        <if test="p.status != null ">
+            and wd.status = #{p.status}
+        </if>
+        order by wd.create_time desc
+    </select>
+
+</mapper>

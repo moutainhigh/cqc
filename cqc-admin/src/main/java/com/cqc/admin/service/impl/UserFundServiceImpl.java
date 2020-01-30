@@ -51,8 +51,8 @@ public class UserFundServiceImpl extends ServiceImpl<UserFundMapper, UserFund> i
         if (i != 1) {
             return false;
         }
-        UserFund userFund = this.getFund(userId);
         // 保存记录
+        UserFund userFund = this.getFund(userId);
         UserFundRecord record = new UserFundRecord();
         record.setUserId(userId);
         record.setType(1);
@@ -60,6 +60,33 @@ public class UserFundServiceImpl extends ServiceImpl<UserFundMapper, UserFund> i
         record.setDirect(1);
         record.setBalance(userFund.getBalance());
         record.setRemark("后台管理员手工充值");
+
+        int j = userFundRecordMapper.insert(record);
+        if (j != 1) {
+            // 保存失败 回滚数据
+            throw new BaseException("", "保存失败");
+        }
+        return true;
+    }
+
+    @Override
+    public boolean backWithDraw(String userId, BigDecimal amount) {
+        if (BigDecimal.ZERO.compareTo(amount) >= 0) {
+            return false;
+        }
+        int i = userFundMapper.addBalance(userId, amount);
+        if (i != 1) {
+            return false;
+        }
+        // 保存记录
+        UserFund userFund = this.getFund(userId);
+        UserFundRecord record = new UserFundRecord();
+        record.setUserId(userId);
+        record.setType(5);
+        record.setAmount(amount);
+        record.setDirect(1);
+        record.setBalance(userFund.getBalance());
+        record.setRemark("后台打回提现");
 
         int j = userFundRecordMapper.insert(record);
         if (j != 1) {

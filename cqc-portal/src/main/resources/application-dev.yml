@@ -16,5 +16,5 @@ spring:
 
 
 upload:
-  dir: D:\work_space\cqc\cqc-web\L1\img
-  urlPrefix: D:\work_space\cqc\cqc-web\L1\img
+  dir: /opt/ms/cqc/L1/img
+  urlPrefix: http://182.61.134.5:8092/img

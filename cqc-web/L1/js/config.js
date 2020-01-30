@@ -1,4 +1,4 @@
-const host = "http://localhost:9090";
+const host = "http://182.61.134.5:9090";
 
 const login_url = "/login";
 
@@ -74,4 +74,7 @@ const close_receive_code_uri = "/receiveCode/close";
 const receive_add_uri = "/receiveCode/add";
 //缴纳押金
 const pay_deposit_uri = "/user/payDeposit";
+
+// 提现
+const with_draw_apply_uri = "/withDraw/add";
 

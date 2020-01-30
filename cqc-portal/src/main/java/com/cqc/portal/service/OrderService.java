@@ -2,8 +2,11 @@ package com.cqc.portal.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.cqc.model.Order;
+import com.cqc.model.ReceiveCode;
+import com.cqc.model.User;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * <p>
@@ -17,9 +20,10 @@ public interface OrderService extends IService<Order> {
 
     /**
      * 自动抢单
-     * @param userId
+     * @param user
+     * @param list
      */
-    void autoOrder(String userId);
+    void autoOrder(User user, List<ReceiveCode> list);
 
     /**
      * 确认付款

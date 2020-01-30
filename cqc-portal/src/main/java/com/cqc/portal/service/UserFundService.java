@@ -40,10 +40,8 @@ public interface UserFundService extends IService<UserFund> {
      */
     boolean addBalance(String userId, BigDecimal amount, int type, String remark);
 
-
-
     /**
-     *
+     * 减少冻结金额
      * @param userId
      *
      * @param amount
@@ -60,4 +58,12 @@ public interface UserFundService extends IService<UserFund> {
      * @return
      */
     boolean freezeBalance(String userId, BigDecimal amount);
+
+    /**
+     * 提现
+     * @param userId
+     * @param amount
+     * @return
+     */
+    boolean withDraw(String userId, BigDecimal amount);
 }

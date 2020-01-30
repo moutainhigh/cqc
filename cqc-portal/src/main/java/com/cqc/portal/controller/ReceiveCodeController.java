@@ -72,7 +72,7 @@ public class ReceiveCodeController {
 
         receiveCode.setReceiveName(param.getReceiveName());
         receiveCode.setChannel(param.getType());
-        receiveCode.setCode(param.getCode());
+        receiveCode.setCodeImg(param.getCodeImg());
 
         boolean rs = receiveCodeService.save(receiveCode);
         if (!rs) {

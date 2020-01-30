@@ -49,6 +49,10 @@ public class Order implements Serializable {
     private String userId;
 
     /**
+     * 抢单用户账号
+     */
+    private String account;
+    /**
      * 金额
      */
     private BigDecimal amount;
@@ -88,7 +92,12 @@ public class Order implements Serializable {
     private BigDecimal income;
 
     /**
-     * 收款码
+     * 收款码图片
      */
-    private String receiveCode;
+    private String receiveCodeImg;
+
+    /**
+     * 收款码id
+     */
+    private String receiveCodeId;
 }

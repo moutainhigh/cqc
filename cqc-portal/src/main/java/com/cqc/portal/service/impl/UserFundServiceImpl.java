@@ -3,6 +3,7 @@ package com.cqc.portal.service.impl;
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.cqc.common.exception.BaseException;
 import com.cqc.model.User;
 import com.cqc.model.UserDateIncome;
 import com.cqc.model.UserFund;
@@ -109,7 +110,7 @@ public class UserFundServiceImpl extends ServiceImpl<UserFundMapper, UserFund> i
         record.setType(type);
         record.setAmount(amount);
         record.setDirect(2);
-        record.setBalance(userFund.getBalance());
+        record.setBalance(userFund.getAvailableBalance());
         record.setRemark(remark);
         userFundRecordMapper.insert(record);
         return true;
@@ -120,5 +121,30 @@ public class UserFundServiceImpl extends ServiceImpl<UserFundMapper, UserFund> i
     public boolean freezeBalance(String userId, BigDecimal amount) {
         int i = userFundMapper.freezeBalance(userId, amount);
         return i == 1;
+    }
+
+    @Transactional(rollbackFor = Throwable.class)
+    @Override
+    public boolean withDraw(String userId, BigDecimal amount) {
+        UserFund userFund = this.getFund(userId);
+        if (userFund.getAvailableBalance().compareTo(amount) < 0) {
+            // 报错
+            throw new BaseException("", "可用余额不足");
+        }
+        int i = userFundMapper.cutBalance(userId, amount);
+        if (i != 1) {
+            return false;
+        }
+        // 保存记录
+        // 保存记录
+        UserFundRecord record = new UserFundRecord();
+        record.setUserId(userId);
+        record.setType(4);
+        record.setAmount(amount);
+        record.setDirect(2);
+        record.setBalance(userFund.getAvailableBalance().subtract(amount));
+        record.setRemark("提现");
+        userFundRecordMapper.insert(record);
+        return true;
     }
 }

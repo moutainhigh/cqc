@@ -50,7 +50,7 @@ public class UserRealInfoController {
         return Result.success(page);
     }
 
-    @ApiOperation("列表")
+    @ApiOperation("详情")
     @GetMapping("/detail")
     public Result<UserRealInfoDto> detail(@NotBlank(message = "id不能为空") String id) {
         UserRealInfoDto detail = new UserRealInfoDto();

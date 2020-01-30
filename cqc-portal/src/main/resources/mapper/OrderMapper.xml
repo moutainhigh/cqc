@@ -4,14 +4,18 @@
 
     <update id="buyOrder">
         update  `order` set user_id = #{userId}, `status` = 0, buy_time =#{buyTime},
-        income= #{income}
-        where id = #{orderId} and status = -1
+        income= #{income}, set `account` = #{account} , receive_code = #{receiveCode}
+        where id = #{id} and status = -1
     </update>
 
     <select id="selectNewOrder" parameterType="java.math.BigDecimal" resultType="com.cqc.model.Order">
         select * from `order`
         where `status` = -1 and amount &lt;= #{balance}
-         order by create_time desc limit 1
+        and channel in
+        <foreach item="item" collection="channelSet" separator="," open="(" close=")" index="">
+            #{item}
+        </foreach>
+        order by create_time desc limit 1
     </select>
 
 </mapper>

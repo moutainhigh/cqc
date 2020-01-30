@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Update;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * <p>
@@ -23,15 +24,18 @@ public interface OrderMapper extends BaseMapper<Order> {
 
     /**
      * 抢单
-     * @param orderId
-     * @param userId
+     * @param order
      * @return
      */
+    int buyOrder(Order order);
 
-    int buyOrder(@Param("orderId") String orderId, @Param("userId")String userId,
-                 @Param("buyTime")Date buyTime, @Param("income")BigDecimal income);
-
-    Order selectNewOrder(@Param("balance") BigDecimal balance);
+    /**
+     *
+     * @param balance
+     * @param channelSet
+     * @return
+     */
+    Order selectNewOrder(@Param("balance") BigDecimal balance, @Param("channelSet") Set<Integer> channelSet);
 
     /**
      * 查询待入cqc收益

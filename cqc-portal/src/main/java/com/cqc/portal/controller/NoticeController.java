@@ -44,8 +44,4 @@ public class NoticeController {
                 .eq("status", 1));
         return Result.success(list);
     }
-
-
-
-
 }

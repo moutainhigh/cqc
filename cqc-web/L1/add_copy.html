@@ -135,7 +135,6 @@
                 processData: false,
                 success: function (data) {
                     if (data.code == "200") {
-                        alert("上传成功！");
                         console.log(data.data);
                         $("#code_img").val(data.data);
                     }

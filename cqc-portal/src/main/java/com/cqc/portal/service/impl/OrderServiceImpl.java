@@ -5,22 +5,27 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cqc.common.enums.BaseErrorMsg;
 import com.cqc.common.exception.BaseException;
 import com.cqc.model.Order;
+import com.cqc.model.ReceiveCode;
+import com.cqc.model.User;
 import com.cqc.model.UserFund;
 import com.cqc.portal.mapper.OrderMapper;
-import com.cqc.portal.mapper.UserVirtualFundMapper;
-import com.cqc.portal.service.*;
+import com.cqc.portal.service.OrderService;
+import com.cqc.portal.service.RateService;
+import com.cqc.portal.service.UserFundService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -49,19 +54,27 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     @Async
     @Override
     @Transactional(rollbackFor = Throwable.class)
-    public void autoOrder(String userId) {
-        UserFund fund = userFundService.getFund(userId);
+    public void autoOrder(User user, List<ReceiveCode> list) {
+        UserFund fund = userFundService.getFund(user.getId());
         if (fund.getAvailableBalance().compareTo(BigDecimal.ZERO) <= 0) {
             throw new BaseException(BaseErrorMsg.BALANCE_LESS);
         }
+        // 查询符合该用户收款渠道的可抢单
+        if (CollectionUtils.isEmpty(list)) {
+            return;
+        }
+        Set<Integer> channelSet = new HashSet<>();
+        list.stream().forEach(item -> {
+            channelSet.add(item.getChannel());
+        });
         BigDecimal availableBalance = fund.getAvailableBalance();
         // 查询金额足够支付的订单
-        Order order = orderMapper.selectNewOrder(availableBalance);
+        Order order = orderMapper.selectNewOrder(availableBalance, channelSet);
         if (order == null) {
             // 没有可抢的订单
             return;
         }
-        buyOrder(userId, order.getId());
+        buyOrder(user, order.getId(), list);
     }
 
     @Transactional(rollbackFor = Throwable.class)
@@ -95,31 +108,47 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     /**
      * 下单
-     * @param userId
+     * @param user
      * @return
      */
 
     @Transactional(rollbackFor = Throwable.class, propagation = Propagation.REQUIRES_NEW)
-    public void buyOrder(String userId, String orderId) {
+    public void buyOrder(User user, String orderId, List<ReceiveCode> receiveCodeList) {
         // 再次查询数据库
         Order order = orderMapper.selectById(orderId);
         if (order == null || order.getStatus() != -1) {
             return;
         }
+        // 取一个收款码
+        List<ReceiveCode> collect = receiveCodeList.stream().filter(item -> {
+            return item.getChannel().equals(order.getChannel());
+        }).collect(Collectors.toList());
+        // 得到一个收款码
+        ReceiveCode receiveCode = collect.get(0);
         // 冻结金额
-        boolean b = userFundService.freezeBalance(userId, order.getAmount());
+        boolean b = userFundService.freezeBalance(user.getId(), order.getAmount());
         if (!b) {
             throw new BaseException("", "可用余额不足，不足以抢单");
         }
         // 读取费率
-        BigDecimal commission = BigDecimal.ZERO;
+        BigDecimal income = BigDecimal.ZERO;
         BigDecimal rate = rateService.getRate(order.getChannel());
         if (rate.compareTo(BigDecimal.ZERO) > 0) {
             // 如果佣金费率大于0
-            commission = order.getAmount().multiply(rate);
+            income = order.getAmount().multiply(rate);
         }
+        Order entity = new Order();
+        entity.setId(orderId);
+        entity.setStatus(0);
+        entity.setUserId(user.getId());
+        entity.setBuyTime(new Date());
+        entity.setIncome(income);
+        entity.setAccount(user.getAccount());
+        entity.setReceiveCodeId(receiveCode.getId());
+        entity.setReceiveCodeImg(receiveCode.getCodeImg());
         // todo 加锁
-        int i = orderMapper.buyOrder(orderId, userId, new Date(), commission);
+        int i = orderMapper.update(entity, new QueryWrapper<Order>().eq("id", orderId)
+                .eq("status", -1));
         if (i != 1) {
             // 抢单失败
             throw new BaseException("", "抢单失败，回滚");

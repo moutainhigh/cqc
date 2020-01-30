@@ -19,12 +19,15 @@ public class UserRealInfoDto {
 
     private String account;
 
-    private String mobile;
+    private String telephone;
 
     private String realName;
 
     private String idNumber;
 
+    private String qq;
+
+    private String email;
     /**
      * 证件照1
      */

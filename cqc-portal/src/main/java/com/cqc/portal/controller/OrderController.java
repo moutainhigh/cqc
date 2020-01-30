@@ -9,15 +9,14 @@ import com.cqc.common.api.Result;
 import com.cqc.common.api.ResultCode;
 import com.cqc.common.enums.BaseErrorMsg;
 import com.cqc.common.exception.BaseException;
-import com.cqc.model.Order;
-import com.cqc.model.UserFund;
-import com.cqc.model.UserRealInfo;
+import com.cqc.model.*;
 import com.cqc.portal.dto.OrderQuery;
 import com.cqc.portal.service.*;
 import com.cqc.security.util.PortalUserUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -112,7 +111,7 @@ public class OrderController {
         if (StringUtils.isEmpty(userId)) {
             throw new BaseException(ResultCode.UNAUTHORIZED);
         }
-        userService.checkUser(userId);
+        User user = userService.checkUser(userId);
         UserFund fund = userFundService.getFund(userId);
         if (fund.getAvailableBalance().compareTo(BigDecimal.ZERO) <= 0) {
             return Result.failed(BaseErrorMsg.BALANCE_LESS);
@@ -123,12 +122,14 @@ public class OrderController {
             // 如果没实名 不允许抢单
             throw new BaseException(BaseErrorMsg.NOT_REAL);
         }
+        List<ReceiveCode> list = receiveCodeService.list(new QueryWrapper<ReceiveCode>().eq("user_id", userId)
+                .eq("status", 1));
         //未上传收款码
-        int codeNumber = receiveCodeService.getCodeNumber(userId);
-        if (codeNumber <= 0) {
+        if (CollectionUtils.isEmpty(list)) {
             throw new BaseException(BaseErrorMsg.NO_RECEIVE_CODE);
         }
-        orderService.autoOrder(userId);
+        orderService.autoOrder(user, list);
+
         return Result.success(true, "抢单成功"+System.currentTimeMillis());
     }
 

@@ -30,4 +30,11 @@ public interface UserFundService extends IService<UserFund> {
      */
     boolean recharge(String userId, BigDecimal amount);
 
+    /**
+     * 退回用户提现金额
+     * @param userId
+     * @param amount
+     * @return
+     */
+    boolean backWithDraw(String userId, BigDecimal amount);
 }
