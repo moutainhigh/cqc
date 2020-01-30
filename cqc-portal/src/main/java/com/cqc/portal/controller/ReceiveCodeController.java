@@ -69,7 +69,6 @@ public class ReceiveCodeController {
         ReceiveCode receiveCode = new ReceiveCode();
         receiveCode.setUserId(user.getId());
         receiveCode.setAccount(user.getAccount());
-
         receiveCode.setReceiveName(param.getReceiveName());
         receiveCode.setChannel(param.getType());
         receiveCode.setCodeImg(param.getCodeImg());
