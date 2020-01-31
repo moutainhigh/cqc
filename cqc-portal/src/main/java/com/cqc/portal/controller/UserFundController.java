@@ -65,7 +65,8 @@ public class UserFundController {
         userService.checkUser(userId);
         Page<UserFundRecord> page = new Page<>(param.getPageNum(), param.getPageSize());
         QueryWrapper wrapper = new QueryWrapper<UserFundRecord>().eq("user_id", userId)
-                .eq(param.getType() != null, "type", param.getType());
+                .eq(param.getType() != null, "type", param.getType())
+                .orderByDesc("create_time");
 
         userFundRecordService.page(page, wrapper);
 

@@ -24,6 +24,6 @@
         <if test="status != null">
             and uri.status = #{status}
         </if>
-
+        order by uri.create_time desc
     </select>
 </mapper>

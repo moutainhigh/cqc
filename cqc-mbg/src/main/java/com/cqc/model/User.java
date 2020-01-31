@@ -77,4 +77,5 @@ public class User implements Serializable {
     private Boolean autoOrderStatus;
 
 
+    private String googleSecret;
 }

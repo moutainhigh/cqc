@@ -61,6 +61,7 @@ public class LoginRegisterService {
             accessToken = jwtTokenUtil.generatePortalToken(userDetails);
         } catch (AuthenticationException e) {
             log.warn("登录异常： " + e.getMessage());
+            throw new BaseException("", e.getMessage());
         }
 
         return accessToken;

@@ -1,4 +1,4 @@
-const host = "http://182.61.134.5:9090";
+const host = "http://localhost:9090";
 
 const login_url = "/login";
 
@@ -78,3 +78,8 @@ const pay_deposit_uri = "/user/payDeposit";
 // 提现
 const with_draw_apply_uri = "/withDraw/add";
 
+// 获取密钥和二维码
+const google_auth_secret_uri = "/googleAuth/secret";
+
+// 绑定谷歌验证器
+const google_auth_bind_uri = "/googleAuth/bind";

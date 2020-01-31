@@ -1,6 +1,7 @@
 package com.cqc.security;
 
 import com.cqc.security.author.GoogleAuthenticator;
+import com.cqc.security.util.GoogleAuthUtil;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
@@ -22,8 +23,8 @@ public class ApplicationTest {
 
     }
 
-    public static void main(String[] args) throws IOException {
-        //String secret = GoogleAuthenticator.generateSecretKey();
+    public static void main2(String[] args) throws IOException {
+        String secret = GoogleAuthenticator.generateSecretKey();
         String qrcode = GoogleAuthenticator.getQRBarcode("2816661736@qq.com", secret);
         System.out.println("qrcode:" + qrcode + ",key:" + secret);
         Scanner scanner = new Scanner(System.in);
@@ -39,4 +40,10 @@ public class ApplicationTest {
 
     }
 
+
+    public static void main(String[] args) {
+        String secret = "AWGVOMS4N7WLFFNX";
+        boolean b = GoogleAuthUtil.checkCode(921746, secret, System.currentTimeMillis());
+        System.out.println(b);
+    }
 }

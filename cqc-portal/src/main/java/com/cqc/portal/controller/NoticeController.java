@@ -41,7 +41,7 @@ public class NoticeController {
 
         List<Notice> list = noticeService.list(new QueryWrapper<Notice>().
                 eq(StringUtils.isEmpty(type), "type", type)
-                .eq("status", 1));
+                .eq("status", 1).orderByDesc("create_time"));
         return Result.success(list);
     }
 }

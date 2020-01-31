@@ -42,7 +42,7 @@ public class MessageController {
 
         service.page(page, new QueryWrapper<Message>().
                 eq(!StringUtils.isEmpty(param.getType()), "type", param.getType())
-                .eq("status", 1));
+                .eq("status", 1).orderByDesc("create_time"));
         return Result.success(page);
     }
 

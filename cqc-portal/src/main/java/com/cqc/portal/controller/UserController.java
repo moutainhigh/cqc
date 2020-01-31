@@ -55,6 +55,7 @@ public class UserController {
     @Autowired
     private ReceiveCodeService receiveCodeService;
 
+
     @ApiOperation("登录用户数据")
     @GetMapping("/getInfo")
     public Result<UserInfo> getInfo() {

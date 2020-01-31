@@ -81,7 +81,8 @@ public class UserBankCardController {
             throw new BaseException(ResultCode.UNAUTHORIZED);
         }
         userService.checkUser(userId);
-        List<UserBankCard> list = service.list(new QueryWrapper<UserBankCard>().eq("user_id", userId));
+        List<UserBankCard> list = service.list(new QueryWrapper<UserBankCard>().eq("user_id", userId)
+        .orderByDesc("create_time"));
         if (!CollectionUtils.isEmpty(list) && list.size() == 1) {
             list.get(0).setIsDefault(true);
         }
