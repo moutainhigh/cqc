@@ -26,4 +26,9 @@
         </if>
     </select>
 
+    <update id="updateIncome">
+        insert into user_date_income(user_id, date, ref_user_id, ref_user_account, income, team_income)
+        VALUES(#{userId}, #{date}, #{refUserId},#{refUserAccount}, #{income} , 0)
+        on DUPLICATE key update income = income + #{income}, team_income = team_income + 0;
+    </update>
 </mapper>

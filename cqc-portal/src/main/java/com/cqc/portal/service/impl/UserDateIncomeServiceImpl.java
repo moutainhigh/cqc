@@ -41,4 +41,8 @@ public class UserDateIncomeServiceImpl extends ServiceImpl<UserDateIncomeMapper,
         return baseMapper.queryAgentIncome(parentUserId, date);
     }
 
+    @Override
+    public boolean updateUserIncome(UserDateIncome entity) {
+        return baseMapper.updateIncome(entity) > 0;
+    }
 }

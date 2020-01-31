@@ -33,4 +33,10 @@ public interface UserDateIncomeService extends IService<UserDateIncome> {
      */
     List<UserIncomeDto> getAgentIncome(String parentUserId, String date);
 
+    /**
+     * 更新用户每日收益
+     * @param entity
+     * @return
+     */
+    boolean updateUserIncome(UserDateIncome entity);
 }

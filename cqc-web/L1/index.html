@@ -188,15 +188,15 @@
 
         t1 = setInterval(function() {
             buyOrder();
-        },2000);
+        },3000);
 
         t2 = setInterval(function() {
             getAutoOrderStatus();
-        },2000);
+        },3000);
 
         t3 = setInterval(function() {
             getNewOrder();
-        },2000);
+        },3000);
     }
 
     function stop() {
@@ -378,10 +378,11 @@
         getForAuth(host + uri, null, function(result){
             handleResult(result);
             if (result.code == 200) {
-                //确认成功
-                // 删除
+                $("#close_btn").click();
+                // 刷新订单列表
+                $(".two_model ul").html('');
             } else {
-
+                alert(result.message);
             }
         });
 

@@ -24,4 +24,5 @@ public interface UserDateIncomeMapper extends BaseMapper<UserDateIncome> {
      */
     List<UserIncomeDto> queryAgentIncome(String parentUserId, String date);
 
+    int updateIncome(UserDateIncome entity);
 }

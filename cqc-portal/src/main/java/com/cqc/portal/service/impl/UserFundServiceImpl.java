@@ -13,7 +13,9 @@ import com.cqc.portal.mapper.UserFundRecordMapper;
 import com.cqc.portal.service.UserDateIncomeService;
 import com.cqc.portal.service.UserFundService;
 import com.cqc.portal.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +30,7 @@ import java.util.Date;
  * @author ${author}
  * @since 2020-01-19
  */
+@Slf4j
 @Service
 public class UserFundServiceImpl extends ServiceImpl<UserFundMapper, UserFund> implements UserFundService {
 
@@ -72,7 +75,11 @@ public class UserFundServiceImpl extends ServiceImpl<UserFundMapper, UserFund> i
             dateIncome.setIncome(income);
             dateIncome.setRefUserId(refUserId);
             dateIncome.setRefUserAccount(refUserAccount);
-            userDateIncomeService.saveOrUpdate(dateIncome);
+            boolean b = userDateIncomeService.updateUserIncome(dateIncome);
+            if (!b) {
+                // 手动回滚
+                throw new BaseException("", "保存收益数据有误，回滚数据");
+            }
         }
         return true;
     }
