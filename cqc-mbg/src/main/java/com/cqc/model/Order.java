@@ -102,4 +102,13 @@ public class Order implements Serializable {
      * 收款码id
      */
     private String receiveCodeId;
+
+    private String country;
+
+    private String province;
+
+    private String city;
+
+    private String region;
+
 }

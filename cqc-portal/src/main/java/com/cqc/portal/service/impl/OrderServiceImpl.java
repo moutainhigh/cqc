@@ -155,6 +155,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         entity.setAccount(user.getAccount());
         entity.setReceiveCodeId(receiveCode.getId());
         entity.setReceiveCodeImg(receiveCode.getCodeImg());
+        entity.setCountry(user.getCountry());
+        entity.setProvince(user.getProvince());
+        entity.setCity(user.getCity());
+        entity.setRegion(user.getRegion());
         // todo 加锁
         int i = orderMapper.update(entity, new QueryWrapper<Order>().eq("id", orderId)
                 .eq("status", -1));
