@@ -1,7 +1,11 @@
 package com.cqc.admin.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.cqc.admin.dto.UserBankCardQueryParam;
+import com.cqc.admin.dto.resp.UserBankCardListDto;
 import com.cqc.model.UserBankCard;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -13,4 +17,11 @@ import com.cqc.model.UserBankCard;
  */
 public interface UserBankCardMapper extends BaseMapper<UserBankCard> {
 
+    /**
+     * 列表
+     * @param page
+     * @param param
+     * @return
+     */
+    Page<UserBankCardListDto> pageList(Page<UserBankCardListDto> page, @Param("p") UserBankCardQueryParam param);
 }
