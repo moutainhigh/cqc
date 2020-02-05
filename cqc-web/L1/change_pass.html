@@ -98,9 +98,10 @@
                         <span></span>
                     </div>
                     <div class="pro_each">
-                        <span>安全码</span>
+                        <span>谷歌验证码 </span>
                         <input type="text" class="pass_input" />
                         <span></span>
+                        <a style="display: none" id="go_bind" href="./google_bind.html">点击绑定谷歌验证器</a>
                     </div>
                     <div class="pro_each" style="margin-top: 1rem;">
                         <input type="button" id="modify_login_pass_btn" value="提交" class="btn_input"/>
@@ -116,5 +117,26 @@
     // 修改密码
     var ele_data = $(".pass_input");
     valiPass('修改成功','./safe.html',ele_data[0],ele_data[1],ele_data[2],ele_data[3],$(".btn_input"));
+
+    $(function () {
+
+        getGoogleSecretStatus();
+    });
+
+    function getGoogleSecretStatus() {
+        if (!hashToken()) {
+            $(".comm_mes").show().fadeOut(2000).find("p").text("请先登录");
+            return false;
+        }
+        getForAuth(host + get_user_info, null, function (result) {
+            if (result.code == 200) {
+                // 如果已经绑定谷歌
+                var status = result.data.googleBind;
+                if (status == 0) {
+                    $("#go_bind").show();
+                }
+            }
+        });
+    }
 </script>
 </html>

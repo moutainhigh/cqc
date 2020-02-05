@@ -91,6 +91,8 @@ public class Order implements Serializable {
      */
     private BigDecimal income;
 
+    private BigDecimal rate;
+
     /**
      * 收款码图片
      */

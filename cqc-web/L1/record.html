@@ -148,6 +148,8 @@
 </div>
 </body>
 <script>
+    var pageNum = 1;
+    var pageSize = 100;
     // 筛选
     var cate_btn = $(".cate .each_btn");        //类型按钮
     $(".screen").click(function () {
@@ -163,11 +165,8 @@
     });
     // 确认筛选
     $(".sure_btn").click(function () {
-        // 获取筛选数据
-        // todo 调用接口
-
-
         sure();
+        // todo 调用接口
     });
 
     function sure() {
@@ -180,18 +179,20 @@
         if (cate) {
             //cateRecord(cate);
         }
-        console.log(cate);
+
         var status1 = cate ? 1 : 0;
         var status2 = timeRecord(cate);
         if (status1 == 0 && status2 == 0) {
             $(".gray_bg,.notice_box").show();
             $(".notice_box .notice_content_text").text("随便点个不咯？");
+            return;
             $(".notice_cancel").click(function () {
                 $(".gray_bg,.notice_box").hide();
             });
         } else if (status2 == 2) {
             $(".gray_bg,.notice_box").show();
             $(".notice_box .notice_content_text").text("开始时间不能大于结束时间哦");
+            return;
             $(".notice_cancel").click(function () {
                 $(".gray_bg,.notice_box").hide();
             });
@@ -199,7 +200,17 @@
             $(".screen_comm").hide();
             $(".wrap_common").show();
         }
-
+        $(".wrap_common").show();
+        var start_end = $(".date_time");
+        var start_time = $(start_end[0]).val();           //开始时间
+        var end_time = $(start_end[1]).val();
+        // 组装参数
+        var params = {
+            "type": cate,
+            "startTimeStr": start_time,
+            "endTimeStr":end_time
+        }
+        list(params);
     }
 
 
@@ -276,10 +287,19 @@
     });
 
 
-    function list() {
-        getForAuth(host + my_fund_list, null, function (result) {
-
+    function list(params) {
+        if (!params) {
+            params = {}
+        }
+        params["pageNum"] = pageNum;
+        params["pageSize"] = pageSize;
+        console.log("参数:", params);
+        getForAuth(host + my_fund_list, params, function (result) {
             var list = result.data.records;
+            if (pageNum == 1) {
+                // 清空列表
+                $(".invitation_code_box").html('');
+            }
             fillData(list);
         });
     }

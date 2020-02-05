@@ -20,6 +20,7 @@ function getForAuth(url, param, callback) {
         headers: {
             'Authorization': tokenHead + ' ' + token
         },
+        data : param,
         success: function (result) {
             if (result.code == '401') {
                 $(".comm_mes").show().fadeOut(2000).find("p").text("登录已过期，请重新登录");

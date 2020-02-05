@@ -2,8 +2,10 @@ package com.cqc.portal.dto;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 /**
  * @Description：
@@ -21,5 +23,7 @@ public class LoginParam {
     @NotEmpty(message = "密码不能为空")
     private String password;
 
+    @Length(max = 6, message = "最大长度6")
+    private String googleCode;
 
 }

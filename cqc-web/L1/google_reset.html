@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- -->
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no ">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>页面</title>
+    <!-- 网页ico -->
+    <link rel="shortcut icon" href="">
+    <!-- 导入基础base.css文件 -->
+    <link rel="stylesheet" href="./css/base2.css" />
+    <link rel="stylesheet" href="./css/base.css" />
+    <!-- 导入jquery -->
+    <script src="./js/jquery.min.js"></script>
+    <!-- 导入clipboard -->
+    <script src="./js/clipboard.min.js"></script>
+
+    <script src="./js/config.js"></script>
+    <script src="./js/request.js"></script>
+    <script src="./js/qrcode.js"></script>
+
+    <!-- 根据设备宽度，计算html根节点的font-size -->
+    <script>
+        // 获取html根节点要素内容
+        var htmlEle = document.documentElement,
+            // 设备宽度等于客户端宽度
+            deviceWidth = htmlEle.clientWidth;
+        // 750px的屏幕基准像素为100px
+        htmlEle.style.fontSize = 100 * (deviceWidth / 750) + "px";
+
+        // 执行onresize事件，
+        window.onresize = function () {
+            // 获取html根节点要素内容
+            var htmlEle = document.documentElement,
+                // 设备宽度等于客户端宽度
+                deviceWidth = htmlEle.clientWidth;
+            // 750px的屏幕基准像素为100px
+            htmlEle.style.fontSize = 100 * (deviceWidth / 750) + "px";
+        }
+    </script>
+</head>
+
+<body>
+    <div class="wrap_page">
+        <!-- 内容start -->
+        <div class="content_page">
+            <div class="m_con">
+                <div class="title">
+                    <em>1</em>
+                    <h1>在谷歌验证中添加秘钥并备份</h1>
+                </div>
+                <div class="c_each">
+                    <h2>打开谷歌验证器，扫描下方二维码或手动输入下述秘钥添加验证令牌</h2>
+                </div> 
+                <div class="code" >
+                    <div id="qrcode" style="width:138px; height:138px;">
+                    </div>
+
+                    <div class="c_e">
+                        <input type="text" id="secret" value="" readonly="readonly">
+                        <span data-clipboard-target="#secret" class="copy">复制秘钥</span>
+                    </div>
+                </div>
+                <div class="t_con">
+                    <img src="./img/t.png" alt="">
+                    <h3>秘钥用于手机更改或意识找回谷歌验证器，绑定前请务必将下述秘钥备份保存。</h3>
+                </div>
+            </div>
+            <div class="m_con">
+                <div class="title">
+                    <em>2</em>
+                    <h1>输入谷歌验证器中的6为验证码</h1>
+                </div>
+                <div class="c_each">
+                    <h2>谷歌验证码</h2>
+                    <input type="text" name="code" id="code" class="input_c">
+                </div> 
+            </div>
+            <div class="m_con">
+                <div class="c_each">
+                    <input type="button" value="绑定" class="input_c" id="bind_google">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="comm_mes">
+        <p></p>
+    </div>
+
+</body>
+<script>
+
+//二维码
+var qrcode = new QRCode(document.getElementById("qrcode"), {
+    width : 100,
+    height : 100
+});
+
+
+// new ClipboardJS;
+var clipboard = new Clipboard('.copy');
+// 复制
+clipboard.on('success', function(e) {
+    // var msg = '复制成功';
+    alert("复制成功");
+});
+
+$(function () {
+    getGoogleSecret();
+    $("#bind_google").click(function () {
+        bindGoogle();
+    });
+
+});
+
+function getGoogleSecret() {
+    if (!hashToken()) {
+        $(".comm_mes").show().fadeOut(2000).find("p").text("请先登录");
+        alert("请先登录");
+        return false;
+    }
+    getForAuth(host + google_secret_uri, null, function (result) {
+        if (result.code == 200) {
+            // 如果已经绑定谷歌
+            console.log(result);
+            // 如果有二维码  那就生成二维码
+            $("#secret").val(result.data.secret);
+            makeCode(result.data.qrCode);
+
+        }
+    });
+}
+
+function makeCode (text) {
+    if (!text) {
+        return
+    }
+    qrcode.makeCode(text);
+}
+
+
+function bindGoogle() {
+    if (!hashToken()) {
+        $(".comm_mes").show().fadeOut(2000).find("p").text("请先登录");
+        alert("请先登录");
+        return false;
+    }
+    var secret = $("#secret").val();
+    var code = $("#code").val();
+    if (!code) {
+        alert("请输入6位谷歌验证码");
+        $(".comm_mes").show().fadeOut(2000).find("p").text("请输入6位谷歌验证码");
+        return;
+    }
+    if (!secret) {
+        $(".comm_mes").show().fadeOut(2000).find("p").text("请等待页面刷新");
+        return;
+    }
+
+    var data = {
+        "secret": secret,
+        "code": code
+    };
+    postForAuth(host + google_bind_uri, data, function (result) {
+        if (result.code == 200) {
+            $(".comm_mes").show().fadeOut(2000).find("p").text("谷歌验证器绑定成功");
+            window.location = "./safe.html";
+        } else {
+            $(".comm_mes").show().fadeOut(2000).find("p").text(result.message);
+        }
+    });
+}
+</script>
+</html>

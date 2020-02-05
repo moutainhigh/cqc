@@ -71,10 +71,40 @@ public class UserFundServiceImpl extends ServiceImpl<UserFundMapper, UserFund> i
             // 保存 user_date_income表数据
             UserDateIncome dateIncome = new UserDateIncome();
             dateIncome.setUserId(userId);
+            dateIncome.setUserAccount(refUserAccount);
             dateIncome.setDate(DateUtil.format(new Date(), "yyyyMMdd"));
             dateIncome.setIncome(income);
+            dateIncome.setTeamIncome(income);
             dateIncome.setRefUserId(refUserId);
-            dateIncome.setRefUserAccount(refUserAccount);
+            boolean b = userDateIncomeService.updateUserIncome(dateIncome);
+            if (!b) {
+                // 手动回滚
+                throw new BaseException("", "保存收益数据有误，回滚数据");
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean addRefIncome(String userId, BigDecimal income) {
+        boolean rs = addBalance(userId, income, 8, "推广佣金");
+        if (rs) {
+            // 查用户
+            String refUserId = "";
+            String refUserAccount = "";
+            User user = userService.getUser(userId);
+            if (user != null) {
+                refUserId = user.getRefUserId();
+                refUserAccount = user.getAccount();
+            }
+            // 保存 user_date_income表数据
+            UserDateIncome dateIncome = new UserDateIncome();
+            dateIncome.setUserId(userId);
+            dateIncome.setUserAccount(refUserAccount);
+            dateIncome.setDate(DateUtil.format(new Date(), "yyyyMMdd"));
+            dateIncome.setIncome(income);
+            dateIncome.setTeamIncome(income);
+            dateIncome.setRefUserId(refUserId);
             boolean b = userDateIncomeService.updateUserIncome(dateIncome);
             if (!b) {
                 // 手动回滚

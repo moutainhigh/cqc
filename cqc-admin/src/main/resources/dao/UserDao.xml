@@ -35,6 +35,7 @@
         <if test="p.realName != null and p.realName != ''">
             and u.real_name like CONCAT('%', #{p.realName,jdbcType=VARCHAR},'%')
         </if>
+        order by u.create_time desc
     </select>
 
 </mapper>

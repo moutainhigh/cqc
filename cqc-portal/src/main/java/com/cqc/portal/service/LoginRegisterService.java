@@ -1,13 +1,18 @@
 package com.cqc.portal.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.cqc.common.api.Result;
+import com.cqc.common.api.ResultCode;
+import com.cqc.common.enums.BaseErrorMsg;
 import com.cqc.common.exception.BaseException;
 import com.cqc.model.User;
 import com.cqc.model.UserFund;
+import com.cqc.model.UserRecommend;
 import com.cqc.model.UserVirtualFund;
 import com.cqc.portal.dto.RegisterParam;
 import com.cqc.security.bean.AccessToken;
 import com.cqc.security.bean.PortalUserDetails;
+import com.cqc.security.util.GoogleAuthUtil;
 import com.cqc.security.util.JwtTokenUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -22,7 +27,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @Description：
@@ -47,14 +57,31 @@ public class LoginRegisterService {
     private UserFundService userFundService;
 
     @Autowired
+    private UserRecommendService userRecommendService;
+
+    @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
-    public AccessToken login(String username, String password) {
+    public AccessToken login(String username, String password, String googleCode) {
         AccessToken accessToken = null;
         try {
-            UserDetails userDetails = loadUser(username);
+            PortalUserDetails userDetails = (PortalUserDetails) this.loadUser(username);
             if(!passwordEncoder.matches(password,userDetails.getPassword())){
                 throw new BaseException("", "密码不正确");
+            }
+            User user = userDetails.getUser();
+            if (!StringUtils.isEmpty(user.getGoogleSecret())) {
+                // 开启了谷歌验证码，但是没有输入验证码，报错
+                if (StringUtils.isEmpty(googleCode)) {
+                    throw new BaseException(BaseErrorMsg.NO_GOOGLE_CODE);
+                }
+                // 此时验证码谷歌验证码
+                long t = System.currentTimeMillis();
+                boolean b = GoogleAuthUtil.checkCode(googleCode, user.getGoogleSecret(), t);
+                log.info("谷歌验证， 账号 : {}, 密钥: {}, code ： {}", user.getId(), user.getGoogleSecret(), googleCode);
+                if (!b) {
+                    throw new BaseException(BaseErrorMsg.GOOGLE_CODE_ERROR);
+                }
             }
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -82,10 +109,9 @@ public class LoginRegisterService {
         if (!getByUserName(param.getAccount())) {
             throw new BaseException("", "该用户名已被注册");
         }
-        if (!StringUtils.isEmpty(param.getMobile()) && !getByMobile(param.getMobile())) {
+        if (!StringUtils.isEmpty(param.getMobile()) && !userService.checkMobileReg(param.getMobile())) {
             throw new BaseException("", "该手机号码已被注册");
         }
-
         User user = new User();
         BeanUtils.copyProperties(param, user);
         //将密码进行加密操作
@@ -97,7 +123,21 @@ public class LoginRegisterService {
         // 初始化cqc数据
         UserFund fund = new UserFund(user.getId());
         userFundService.save(fund);
-
+        // 保存推荐关系
+        /*List<UserRecommend> recommendList = new LinkedList<>();
+        User parent = userService.getById(refUserId);
+        if (parent != null) {
+            UserRecommend userRecommend = new UserRecommend();
+            userRecommend.setUserId(user.getId());
+            userRecommend.setAccount(user.getAccount());
+            userRecommend.setLevel(1);
+            userRecommend.setRefUserId(parent.getId());
+            userRecommend.setRefUserAccount(parent.getAccount());
+        }*/
+        List<UserRecommend> list = userService.queryParents(user.getId());
+        if (!CollectionUtils.isEmpty(list)) {
+            userRecommendService.saveBatch(list);
+        }
         return user;
     }
 
@@ -108,16 +148,17 @@ public class LoginRegisterService {
         if (user == null) {
             throw new UsernameNotFoundException("用户名或密码错误");
         }
+        if (user.getStatus() == 2) {
+            // 账号被封禁时间已过
+            if (user.getCloseTime() != null && user.getCloseTime().after(new Date())) {
+                throw new BaseException(ResultCode.CLOSE);
+            }
+        }
         return new PortalUserDetails(user);
     }
 
     private boolean getByUserName(String username) {
         QueryWrapper wrapper = new QueryWrapper<User>().eq("account", username);
-        User user = userService.getOne(wrapper);
-        return user == null;
-    }
-    private boolean getByMobile(String mobile) {
-        QueryWrapper wrapper = new QueryWrapper<User>().eq("mobile", mobile);
         User user = userService.getOne(wrapper);
         return user == null;
     }

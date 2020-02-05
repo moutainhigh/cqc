@@ -30,12 +30,10 @@ public class ApplicationTest {
         Scanner scanner = new Scanner(System.in);
         String nextLine = scanner.nextLine();
 
-        long code = Long.parseLong(nextLine);
-
         long t = System.currentTimeMillis();
         GoogleAuthenticator ga = new GoogleAuthenticator();
         ga.setWindowSize(5);
-        boolean r = ga.check_code(secret, code, t);
+        boolean r = ga.check_code(secret, nextLine, t);
         System.out.println("检查code是否正确？" + r);
 
     }
@@ -43,7 +41,7 @@ public class ApplicationTest {
 
     public static void main(String[] args) {
         String secret = "AWGVOMS4N7WLFFNX";
-        boolean b = GoogleAuthUtil.checkCode(921746, secret, System.currentTimeMillis());
+        boolean b = GoogleAuthUtil.checkCode("921746", secret, System.currentTimeMillis());
         System.out.println(b);
     }
 }

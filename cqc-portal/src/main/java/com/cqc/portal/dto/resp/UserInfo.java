@@ -47,4 +47,7 @@ public class UserInfo {
     private String city;
 
     private String region;
+
+    private int googleBind;
+
 }

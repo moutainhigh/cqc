@@ -2,33 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cqc.portal.mapper.UserDateIncomeMapper">
 
-    <select id="queryAgentIncome" resultType="com.cqc.portal.dto.resp.UserIncomeDto">
-
-        select * from user_date_income udc RIGHT JOIN
-        (
-        SELECT
-            id,
-            account
-        FROM
-            ( SELECT t1.id,
-        IF
-            ( FIND_IN_SET( ref_user_id, @pids ) > 0, @pids := CONCAT( @pids, ',', id ), 0 ) AS ischild,
-            t1.account
-        FROM
-            ( SELECT id, ref_user_id, account FROM `user` t ORDER BY ref_user_id, id ) t1,
-            ( SELECT @pids := #{parentUserId} ) t2
-            ) t3
-        WHERE
-            ischild != 0
-        ) as u on udc.user_id = u.id
+    <select id="queryAgentIncome" resultType="com.cqc.model.UserDateIncome">
+        select udi.user_id, sum(udi.income) as income , sum(udi.team_income) as team_income
+        from user_date_income udi
+        where udi.user_id in
+        <foreach item="item" collection="userIds" separator="," open="(" close=")" index="">
+            #{item}
+        </foreach>
         <if test="date != null and date !='' ">
-            and udc.date = #{date}
+            and udi.date = #{date}
         </if>
+        group by udi.user_id
     </select>
 
     <update id="updateIncome">
-        insert into user_date_income(user_id, date, ref_user_id, ref_user_account, income, team_income)
-        VALUES(#{userId}, #{date}, #{refUserId},#{refUserAccount}, #{income} , 0)
-        on DUPLICATE key update income = income + #{income}, team_income = team_income + 0;
+        insert into user_date_income(user_id, `date`, ref_user_id, user_account, income, team_income)
+        VALUES(#{userId}, #{date}, #{refUserId}, #{userAccount}, #{income} , #{teamIncome})
+        on DUPLICATE key update income = income + #{income}, team_income = team_income + #{teamIncome};
     </update>
 </mapper>

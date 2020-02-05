@@ -27,6 +27,8 @@ public class RegisterParam {
     @NotEmpty(message = "确认密码不能为空")
     private String confirmPassword;
 
+    @NotEmpty(message = "短信验证码不能为空")
+    private String smsCode;
 
 
 }

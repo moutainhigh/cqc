@@ -10,6 +10,7 @@ spring:
   jackson:
     time-zone: Asia/Shanghai
     date-format: yyyy-MM-dd HH:mm:ss
+
 mybatis-plus:
   mapper-locations: mapper/*.xml
 
@@ -33,6 +34,7 @@ secure:
   ignored:
     urls: #安全路径白名单
       - /notice/**
+      - /sms/**
       - /message/**
       - /bank/**
       - /swagger-ui.html

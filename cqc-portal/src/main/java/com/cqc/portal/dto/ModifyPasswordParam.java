@@ -2,6 +2,8 @@ package com.cqc.portal.dto;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * @Description：
  * @author： wanglz
@@ -20,8 +22,7 @@ public class ModifyPasswordParam {
 
     private String confirmPassword;
 
+    @NotBlank(message = "code不能为空")
     private String code;
-
-
 
 }

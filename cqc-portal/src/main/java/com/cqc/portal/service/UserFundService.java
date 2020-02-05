@@ -31,6 +31,13 @@ public interface UserFundService extends IService<UserFund> {
     boolean addIncome(String userId, BigDecimal amount);
 
     /**
+     * 保存推荐收益
+     * @param userId
+     * @param amount
+     * @return
+     */
+    boolean addRefIncome(String userId, BigDecimal amount);
+    /**
      * 添加金额
      * @param userId
      * @param amount

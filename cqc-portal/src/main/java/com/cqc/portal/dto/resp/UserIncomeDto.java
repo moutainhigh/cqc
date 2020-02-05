@@ -1,9 +1,11 @@
 package com.cqc.portal.dto.resp;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
+@NoArgsConstructor
 @Data
 public class UserIncomeDto {
 
@@ -23,6 +25,9 @@ public class UserIncomeDto {
 
     private BigDecimal teamIncome = BigDecimal.ZERO;
 
-
-
+    public UserIncomeDto(String userId, String account, String date) {
+        this.userId = userId;
+        this.account = account;
+        this.date = date;
+    }
 }

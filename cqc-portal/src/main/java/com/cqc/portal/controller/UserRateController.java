@@ -4,11 +4,14 @@ package com.cqc.portal.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.cqc.common.api.Result;
 import com.cqc.common.api.ResultCode;
+import com.cqc.common.constant.Constants;
 import com.cqc.common.exception.BaseException;
 import com.cqc.model.Rate;
 import com.cqc.model.UserRate;
+import com.cqc.model.UserRecommend;
 import com.cqc.portal.service.RateService;
 import com.cqc.portal.service.UserRateService;
+import com.cqc.portal.service.UserRecommendService;
 import com.cqc.portal.service.UserService;
 import com.cqc.security.util.PortalUserUtil;
 import io.swagger.annotations.Api;
@@ -43,6 +46,9 @@ public class UserRateController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserRecommendService userRecommendService;
+
     @ApiOperation("用户费率列表")
     @GetMapping("/list")
     public Result<List<Rate>> listByUserId() {
@@ -52,8 +58,12 @@ public class UserRateController {
         }
         userService.checkUser(userId);
 
+        int count = userRecommendService.count(new QueryWrapper<UserRecommend>().eq("user_id", userId));
         List<Rate> list = rateService.list();
-
+        BigDecimal a = Constants.RATE_CHA.multiply(new BigDecimal(count));
+        for (Rate rate : list) {
+            rate.setRate(rate.getRate().subtract(a));
+        }
         return Result.success(list);
     }
 

@@ -27,11 +27,11 @@ public interface UserDateIncomeService extends IService<UserDateIncome> {
 
     /**
      * 代理收益统计
-     * @param parentUserId
+     * @param userIds
      * @param date
      * @return
      */
-    List<UserIncomeDto> getAgentIncome(String parentUserId, String date);
+    List<UserDateIncome> getAgentIncome(List<String> userIds, String date);
 
     /**
      * 更新用户每日收益
@@ -39,4 +39,12 @@ public interface UserDateIncomeService extends IService<UserDateIncome> {
      * @return
      */
     boolean updateUserIncome(UserDateIncome entity);
+
+    /**
+     * 保存上级收益
+     * @param userId 用户id
+     * @param date 日期
+     * @return
+     */
+    boolean saveUserIncome(String userId, BigDecimal amount, String date);
 }

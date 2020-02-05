@@ -2,9 +2,12 @@ package com.cqc.portal.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.cqc.model.User;
+import com.cqc.model.UserRecommend;
 import com.cqc.portal.dto.ModifyAreaParam;
 import com.cqc.portal.dto.ModifyPasswordParam;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.List;
 
 /**
  * @author wanglz
@@ -57,4 +60,25 @@ public interface UserService extends IService<User> {
      * @return
      */
     boolean openCloseAutoOrder(String userId, int autoOrder);
+
+    /**
+     * 查找父级
+     * @param userId
+     * @return
+     */
+    List<UserRecommend> queryParents(String userId);
+
+    /**
+     * 上级id
+     * @param parentUserId
+     * @return
+     */
+    List<User> getByParent(String parentUserId);
+
+    /**
+     * 检查手机号码是否注册
+     * @param mobile
+     * @return
+     */
+    boolean checkMobileReg(String mobile);
 }

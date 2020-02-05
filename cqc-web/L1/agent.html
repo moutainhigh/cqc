@@ -71,14 +71,11 @@
     <!-- 将zdy改成自定义名字 -->
     <div class="content_common">
         <div class="model_one" style="height:10%; padding-top: .5rem;">
-            <input type="button" value="昨天" class="comm_btn">
-            <input type="button" value="今天" class="comm_btn">
+            <input type="button" value="昨天" class="comm_btn" data-type="2">
+            <input type="button" value="今天" class="comm_btn" data-type="1">
         </div>
         <div class="model_two" style="min-height: 90%; max-height: 90%;">
-            <div class="pro_each">
-                <span>账号</span>
-                <span class="text">团队业绩</span>
-            </div>
+            <div class="pro_each"><span>账号</span><span class="text">团队业绩</span></div>
 
         </div>
     </div>
@@ -90,10 +87,30 @@
 
     $(function () {
         getIncomeList();
+
+        $(".comm_btn").click(function () {
+            var type = $(this).attr("data-type");
+
+            var day1 = new Date();
+            if (type == 2) {
+                day1.setTime(day1.getTime()-24*60*60*1000);
+            }
+            var month = day1.getMonth() + 1; var date = day1.getDate();
+            if (month <= 9) {
+                month = "0" + month;
+            }
+            if (date <= 9) {
+                date = "0" + date;
+            }
+            var s1 = day1.getFullYear()+ ""+ month + ""+ date;
+            getIncomeList(s1);
+        });
     });
 
-    function getIncomeList() {
-        var date = "";
+    function getIncomeList(date) {
+        if (!date) {
+            date = "";
+        }
         var uri = income_agentIncome_uri + "?date=" + date;
         getForAuth(host + uri, null, function (result) {
             handleResult(result);
@@ -104,7 +121,7 @@
                     var len = list.length;
                     for (var i = 0; i < len; i++) {
                         var item = list[i];
-                        html += '<div class="pro_each">' +
+                        html += '<div class="pro_each agent">' +
                             '<span>' + item.account + '</span>' +
                             '<span class="text" id="yj">' + item.teamIncome.toFixed(3) + '</span>' +
                             '<div class="vip_each fr bg_y">' +
@@ -114,6 +131,7 @@
                             '</div>';
                     }
                 }
+                $(".model_two .agent").remove();
                 $(".model_two").append(html);
 
                 $(".pro_each").click(function () {
@@ -124,5 +142,6 @@
         });
 
     }
+
 </script>
 </html>

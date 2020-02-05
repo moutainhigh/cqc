@@ -8,6 +8,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Objects;
 
 public class GoogleAuthenticator {
     // 生成的key长度( Generate secret key length)
@@ -68,7 +69,7 @@ public class GoogleAuthenticator {
      *  The time in msec (System.currentTimeMillis() for example)
      * @return
      */
-    public boolean check_code(String secret, long code, long timeMsec) {
+    public boolean check_code(String secret, String code, long timeMsec) {
         Base32 codec = new Base32();
         byte[] decodedKey = codec.decode(secret);
         // convert unix msec time into a 30 second "window"
@@ -88,7 +89,7 @@ public class GoogleAuthenticator {
                 throw new RuntimeException(e.getMessage());
                 // return false;
             }
-            if (hash == code) {
+            if (Objects.equals(String.valueOf(hash), code)) {
                 return true;
             }
         }
@@ -119,4 +120,9 @@ public class GoogleAuthenticator {
         return (int) truncatedHash;
     }
 
+    public static void main(String[] args) {
+        long hash = 334560L;
+        System.out.println(Objects.equals(String.valueOf(hash), "334560"));
+
+    }
 } 

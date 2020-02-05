@@ -66,21 +66,33 @@ function valiData(mes,url,invite_code, user,mobile,code,va_code,pass,pass_c,emai
     $(code).click(function(){
         if(Mobile_Boolean == true){
             console.log(Mobile_Boolean);
-            var time = 60;						            //重新发送时间时间
-            function timeCountDown(){
-                if(time==0){				                //倒计时完了
-                    clearInterval(timer);	                //清除定时器
-                    $(code).removeAttr("disabled").val("发送");		 //显示倒计时
-                    return true;
+            var url = host + send_sms_uri + "?type=1&mobile="+$(mobile).val();
+            getForAuth(url, null, function (result) {
+                if (result.code == 200) {
+
+                    var time = 60;						            //重新发送时间时间
+                    function timeCountDown(){
+                        if(time==0){				                //倒计时完了
+                            clearInterval(timer);	                //清除定时器
+                            $(code).removeAttr("disabled").val("发送");		 //显示倒计时
+                            return true;
+                        }
+                        $(code).val(time+"S后再次发送");		     //显示倒计时
+                        time--;										//开始倒计时
+                        console.log(1);
+                        return false;
+                    }
+                    timeCountDown();
+                    var timer = setInterval(timeCountDown,1000);    //开始循环timeCountDown函数
+                    $(this).attr("disabled","true");
+
+                } else {
+                    $(".comm_mes").show().fadeOut(2000).find("p").text(result.message);
                 }
-                $(code).val(time+"S后再次发送");		     //显示倒计时
-                time--;										//开始倒计时
-                console.log(1);	
-                return false;
-            }
-            timeCountDown();
-            var timer = setInterval(timeCountDown,1000);    //开始循环timeCountDown函数
-            $(this).attr("disabled","true");
+            });
+
+
+
         }else{
             $(".comm_mes").show().fadeOut(2000).find("p").text("手机号不正确");
         }
@@ -169,7 +181,8 @@ function valiData(mes,url,invite_code, user,mobile,code,va_code,pass,pass_c,emai
                 "account":$(user).val(),
                 "mobile":$(mobile).val(),
                 "password":$(pass).val(),
-                "confirmPassword": $(pass_c).val()
+                "confirmPassword": $(pass_c).val(),
+                "smsCode":$(va_code).val()
             }
             postForAuth(host + register_uri, data, function(result){
                 if (result.code == 200) {

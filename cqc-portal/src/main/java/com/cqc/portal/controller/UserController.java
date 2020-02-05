@@ -15,9 +15,11 @@ import com.cqc.portal.dto.ModifyPasswordParam;
 import com.cqc.portal.dto.resp.UserFundDto;
 import com.cqc.portal.dto.resp.UserInfo;
 import com.cqc.portal.service.*;
+import com.cqc.security.util.GoogleAuthUtil;
 import com.cqc.security.util.PortalUserUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -32,6 +34,7 @@ import java.util.Date;
  * @date： 2020-01-17
  **/
 
+@Slf4j
 @Api(tags = "用户API")
 @RestController
 @RequestMapping("/user")
@@ -95,6 +98,9 @@ public class UserController {
             return Result.failed();
         }
         BeanUtils.copyProperties(user, userInfo);
+        if (!StringUtils.isEmpty(user.getGoogleSecret())) {
+            userInfo.setGoogleBind(1);
+        }
         return Result.success(userInfo);
     }
 
@@ -106,7 +112,14 @@ public class UserController {
         if (StringUtils.isEmpty(userId)) {
             throw new BaseException(ResultCode.UNAUTHORIZED);
         }
-        userService.checkUser(userId);
+        User user = userService.checkUser(userId);
+        // 校验谷歌验证码
+        long t = System.currentTimeMillis();
+        boolean b = GoogleAuthUtil.checkCode(param.getCode(), user.getGoogleSecret(), t);
+        log.info("谷歌验证， 账号 : {}, 密钥: {}, code ： {}", user.getId(), user.getGoogleSecret(), param.getCode());
+        if (!b) {
+            throw new BaseException(BaseErrorMsg.GOOGLE_CODE_ERROR);
+        }
         boolean rs = userService.modifyLoginPwd(userId, param);
         if (!rs) {
             return Result.failed("修改登录密码失败");
@@ -122,7 +135,14 @@ public class UserController {
         if (StringUtils.isEmpty(userId)) {
             throw new BaseException(ResultCode.UNAUTHORIZED);
         }
-        userService.checkUser(userId);
+        User user = userService.checkUser(userId);
+        // 校验谷歌验证码
+        long t = System.currentTimeMillis();
+        boolean b = GoogleAuthUtil.checkCode(param.getCode(), user.getGoogleSecret(), t);
+        log.info("谷歌验证， 账号 : {}, 密钥: {}, code ： {}", user.getId(), user.getGoogleSecret(), param.getCode());
+        if (!b) {
+            throw new BaseException(BaseErrorMsg.GOOGLE_CODE_ERROR);
+        }
         boolean rs = userService.modifyPayPwd(userId, param);
         if (!rs) {
             return Result.failed("修改支付密码失败");

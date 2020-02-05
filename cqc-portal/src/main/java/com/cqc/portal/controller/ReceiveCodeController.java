@@ -8,6 +8,7 @@ import com.cqc.common.exception.BaseException;
 import com.cqc.model.ReceiveCode;
 import com.cqc.model.User;
 import com.cqc.portal.dto.ReceiveCodeAddParam;
+import com.cqc.portal.dto.ReceiveCodeQueryParam;
 import com.cqc.portal.service.ReceiveCodeService;
 import com.cqc.portal.service.UserService;
 import com.cqc.security.util.PortalUserUtil;
@@ -40,13 +41,16 @@ public class ReceiveCodeController {
 
     @ApiOperation("我的收款账户")
     @GetMapping("/list")
-    public Result<List<ReceiveCode>> list() {
+    public Result<List<ReceiveCode>> list(ReceiveCodeQueryParam param) {
         String userId = PortalUserUtil.getCurrentUserId();
         if (StringUtils.isEmpty(userId)) {
             throw new BaseException(ResultCode.UNAUTHORIZED);
         }
         userService.checkUser(userId);
-        QueryWrapper<ReceiveCode> wrapper = new QueryWrapper<ReceiveCode>().eq("user_id", userId);
+        QueryWrapper<ReceiveCode> wrapper = new QueryWrapper<ReceiveCode>()
+                .eq("user_id", userId)
+                .like(!StringUtils.isEmpty(param.getName()), "name", param.getName())
+                .eq(param.getType() != null, "channel", param.getType());
         List<ReceiveCode> list = receiveCodeService.list(wrapper);
         return Result.success(list);
     }
@@ -61,11 +65,11 @@ public class ReceiveCodeController {
         }
         User user = userService.checkUser(userId);
         // 先判断是否存在该方式是否存在
-        ReceiveCode code = receiveCodeService.getCode(userId, param.getType());
+        /*ReceiveCode code = receiveCodeService.getCode(userId, param.getType());
         if (code != null) {
             // 报错
             throw new BaseException("", "该方式收款码已经存在");
-        }
+        }*/
         ReceiveCode receiveCode = new ReceiveCode();
         receiveCode.setUserId(user.getId());
         receiveCode.setAccount(user.getAccount());

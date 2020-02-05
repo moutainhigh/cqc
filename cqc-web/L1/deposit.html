@@ -15,6 +15,9 @@
     <link rel="stylesheet" href="./css/common.css" />
     <!-- 导入jquery -->
     <script src="./js/jquery.min.js"></script>
+
+    <script src="./js/config.js"></script>
+    <script src="./js/request.js"></script>
     <!-- 根据设备宽度，计算html根节点的font-size -->
     <script>
         // 获取html根节点要素内容
@@ -121,6 +124,8 @@
     });
 
     $(function(){
+        getNoticeList();
+
         setTimeout(() => {
             $(".gray_bg,.notice_box").show();    
         }, 500);
@@ -142,8 +147,23 @@
         timer = setInterval(timeDown,1000);
     })
 
-
-
+     // 获取存取款公告
+    function getNoticeList(){
+        var uri = notice_list_uri + "?type=3"
+        getData(host + uri, null, function(result){
+            if (result.code === 200) {
+                return;
+            }
+            var html = '';
+            var list = result.data;
+            if (!list) {
+                return;
+            }
+            var notice = list[0];
+            $(".notice_title").text(notice.title);
+            $(".notice_content_text").text(notice.content);
+        });
+    }
 
 </script>
 </html>

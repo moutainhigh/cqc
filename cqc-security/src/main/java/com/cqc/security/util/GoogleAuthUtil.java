@@ -31,7 +31,7 @@ public class GoogleAuthUtil {
      * @param timestamp
      * @return
      */
-    public static boolean checkCode(int code, String secret, long timestamp) {
+    public static boolean checkCode(String code, String secret, long timestamp) {
         GoogleAuthenticator ga = new GoogleAuthenticator();
         ga.setWindowSize(5);
         boolean r = ga.check_code(secret, code, timestamp);

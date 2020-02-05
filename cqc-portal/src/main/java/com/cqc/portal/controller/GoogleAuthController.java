@@ -32,10 +32,7 @@ public class GoogleAuthController {
             throw new BaseException(ResultCode.UNAUTHORIZED);
         }
         User user = userService.checkUser(userId);
-        if (!StringUtils.isEmpty(user.getGoogleSecret())) {
-            // 已经绑定google验证器
-            return Result.failed("已经绑定谷歌验证器");
-        }
+
         String account = PortalUserUtil.getCurrentUsername();
         String secret = GoogleAuthUtil.getSecret();
         String qrCode = GoogleAuthUtil.getQrcode(account, secret);
@@ -44,6 +41,8 @@ public class GoogleAuthController {
 
         return Result.success(vo);
     }
+
+
 
     @PostMapping("/bind")
     public Result<Boolean> bindGoogle(@Validated @RequestBody GoogleSecretBindParam param) {

@@ -12,7 +12,7 @@ public class Result<T> {
     protected Result() {
     }
 
-    protected Result(String code, String message, T data) {
+    public Result(String code, String message, T data) {
         this.code = code;
         this.message = message;
         this.data = data;
@@ -118,6 +118,14 @@ public class Result<T> {
         Result<T>  result =getInstance(errorMsg );
         result.setMessage(message);
         return result;
+    }
+
+    public boolean hashError() {
+        return !this.code.equals(ResultCode.SUCCESS.getCode());
+    }
+
+    public boolean hashSuccess() {
+        return this.code.equals(ResultCode.SUCCESS.getCode());
     }
 
     public String getCode() {

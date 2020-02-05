@@ -27,6 +27,11 @@ public class UserDateIncome implements Serializable {
     private String userId;
 
     /**
+     * 推荐用户账号
+     */
+    private String userAccount;
+
+    /**
      * 日期，联合主键
      */
     private String date;
@@ -37,14 +42,12 @@ public class UserDateIncome implements Serializable {
     private String refUserId;
 
     /**
-     * 推荐用户账号
-     */
-    private String refUserAccount;
-
-    /**
      * 当日收益
      */
-    private BigDecimal income;
+    private BigDecimal income = BigDecimal.ZERO;
 
-
+    /**
+     * 团队
+     */
+    private BigDecimal teamIncome = BigDecimal.ZERO;
 }

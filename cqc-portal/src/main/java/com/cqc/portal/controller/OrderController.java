@@ -24,7 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * <p>
@@ -64,10 +66,31 @@ public class OrderController {
             throw new BaseException(ResultCode.UNAUTHORIZED);
         }
         userService.checkUser(userId);
+        Date startDate = null;
+        Date endDate = null;
+        try {
+            if (!StringUtils.isEmpty(param.getStartTimeStr())) {
+                startDate = DateUtil.parse(param.getStartTimeStr(), "yyyy-MM-dd HH:mm");
+            }
+        } catch (Exception e) {
+            endDate = null;
+        }
+        try {
+            if (!StringUtils.isEmpty(param.getEndTimeStr())) {
+                endDate = DateUtil.parse(param.getEndTimeStr(), "yyyy-MM-dd HH:mm");
+            }
+        } catch (Exception e) {
+            endDate = null;
+        }
+        if (Objects.equals(0, param.getStatus())) {
+            param.setStatus(null);
+        }
         Page<Order> page = new Page<>(param.getPageNum(), param.getPageSize());
         orderService.page(page, new QueryWrapper<Order>()
                 .eq("user_id", userId)
                 .eq(!StringUtils.isEmpty(param.getStatus()), "status", param.getStatus())
+                .gt(startDate != null, "create_time", startDate)
+                .lt(endDate != null, "create_time", endDate)
                 .orderByDesc("create_time"));
         return Result.success(page);
     }

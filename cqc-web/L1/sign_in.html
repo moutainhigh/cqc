@@ -93,6 +93,17 @@
                 </div>
             </div>
         </div>
+
+        <div class="open_code" style="display: none; z-index: 1002; height: 160px;">
+            <h3>请输入谷歌验证码</h3>
+            <div style="height: 50px; margin-top: 10px;">
+                <input style="margin-top: 10px; height: 25px" id="google_code"/>
+            </div>
+            <div>
+                <input type="button" value="登陆" class="btn_input"/>
+            </div>
+        </div>
+
         <!-- 内容end -->
         <div class="comm_mes">
             <p></p>
@@ -102,9 +113,12 @@
 <script>
 </script>
 <script>
+    var resultCode = 0;
     $(".btn_input").click(function(){
         var username = $("#username").val();
         var password = $("#password").val();
+        var googleCode = $("#google_code").val();
+
         if (!username){
             $(".comm_mes").show().fadeOut(2000).find("p").text("请输入账号");
             return;
@@ -113,9 +127,14 @@
             $(".comm_mes").show().fadeOut(2000).find("p").text("请输入密码");
             return;
         }
+        if (resultCode == 1050 && !googleCode){
+            $(".comm_mes").show().fadeOut(2000).find("p").text("请输入6位谷歌验证码");
+            return;
+        }
         var data = {
             "username":username,
-            "password":password
+            "password":password,
+            "googleCode":googleCode
         };
         $.ajax({
             type : "POST",
@@ -136,7 +155,11 @@
                         window.location.href = "my.html";
                     },1000);
                     event.preventDefault();
-                }else{
+                }else if (result.code == 1050){
+                    resultCode = result.code;
+                    // 如果需要输入谷歌验证码，则弹出框输入验证码
+                    $(".open_code").show();
+                } else {
                     $(".comm_mes").show().fadeOut(2000).find("p").text(result.message);
                     return;
                 }

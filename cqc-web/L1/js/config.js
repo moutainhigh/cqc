@@ -6,6 +6,9 @@ const register_uri = "/register";
 
 const getInfo_url = "/user/getInfo";
 
+// 获取用户信息
+const get_user_info = "/user/userInfo";
+
 const inviteCode_uri = "/inviteCode/get";
 
 const invite_create_uri = "/inviteCode/create";
@@ -73,7 +76,7 @@ const close_receive_code_uri = "/receiveCode/close";
 // 添加收款码
 const receive_add_uri = "/receiveCode/add";
 //缴纳押金
-const pay_deposit_uri = "/user/payDeposit";
+const PAY_DEPOSIT_URI = "/user/payDeposit";
 
 // 提现
 const with_draw_apply_uri = "/withDraw/add";
@@ -83,3 +86,12 @@ const google_auth_secret_uri = "/googleAuth/secret";
 
 // 绑定谷歌验证器
 const google_auth_bind_uri = "/googleAuth/bind";
+
+//发送短信验证码
+const send_sms_uri = "/sms/send";
+
+//获取谷歌密钥
+const google_secret_uri = "/googleAuth/secret";
+
+// 绑定谷歌验证码
+const google_bind_uri = "/googleAuth/bind";

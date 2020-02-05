@@ -7,6 +7,7 @@ import com.cqc.common.exception.BaseException;
 import com.cqc.model.InviteCode;
 import com.cqc.portal.service.InviteCodeService;
 import com.cqc.portal.service.UserService;
+import com.cqc.portal.utils.RandomUtil;
 import com.cqc.security.util.PortalUserUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -61,21 +62,13 @@ public class InviteCodeController {
         }
         userService.checkUser(userId);
         // 创建邀请码
-        String base = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
-
-        int len = 8;
-        StringBuilder sb = new StringBuilder("");
-        Random rd = new Random();
-        for (int i = 0; i < len; i++) {
-            int nextInt = rd.nextInt(30);
-            sb.append(base.charAt(nextInt));
-        }
+        String code = RandomUtil.generateChar(8);
 
         int expire = (int) (System.currentTimeMillis() / 1000) + 600;
         // 保存到数据库
         InviteCode inviteCode = new InviteCode();
         inviteCode.setUserId(userId);
-        inviteCode.setInviteCode(sb.toString());
+        inviteCode.setInviteCode(code);
         inviteCode.setExpire(expire);
 
         boolean rs = inviteCodeService.save(inviteCode);

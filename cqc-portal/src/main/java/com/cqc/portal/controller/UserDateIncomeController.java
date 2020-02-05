@@ -1,22 +1,27 @@
 package com.cqc.portal.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.cqc.common.api.Result;
 import com.cqc.common.api.ResultCode;
 import com.cqc.common.exception.BaseException;
 import com.cqc.model.Bank;
+import com.cqc.model.User;
+import com.cqc.model.UserDateIncome;
 import com.cqc.portal.dto.resp.UserIncomeDto;
 import com.cqc.portal.service.UserDateIncomeService;
 import com.cqc.portal.service.UserService;
 import com.cqc.security.util.PortalUserUtil;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -49,9 +54,35 @@ public class UserDateIncomeController {
             throw new BaseException(ResultCode.UNAUTHORIZED);
         }
         userService.checkUser(userId);
-        List<UserIncomeDto> dataList = service.getAgentIncome(userId, date);
-        return Result.success(dataList);
+        //先查询下级
+        List<User> list = userService.getByParent(userId);
+        if (CollectionUtils.isEmpty(list)) {
+            return Result.success();
+        }
+        List<UserIncomeDto> resultList = new ArrayList<>();
+
+        List<String> userIds = new ArrayList<>(list.size());
+        list.stream().forEach(item -> {
+            userIds.add(item.getId());
+            resultList.add(new UserIncomeDto(item.getId(), item.getAccount(), date));
+        });
+        // 从收益表里查询
+        List<UserDateIncome> incomeList = service.getAgentIncome(userIds, date);
+
+        if (CollectionUtils.isEmpty(incomeList)) {
+            return Result.success(resultList);
+        }
+        for (UserIncomeDto incomeDto : resultList) {
+            for (UserDateIncome income : incomeList) {
+                if (incomeDto.getUserId().equals(income.getUserId())) {
+                    incomeDto.setIncome(income.getIncome());
+                    incomeDto.setTeamIncome(income.getTeamIncome());
+                }
+            }
+        }
+        return Result.success(resultList);
     }
+
 
 }
 

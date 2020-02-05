@@ -20,3 +20,9 @@ logging:
 upload:
   dir: /opt/ms/cqc/L1/img
   urlPrefix: http://182.61.134.5:8092/img
+
+sms:
+  uri: http://api.sms.cn/sms
+  user_id: wanglezhi
+  pwd: qiong1213
+  tmp_id: 100000

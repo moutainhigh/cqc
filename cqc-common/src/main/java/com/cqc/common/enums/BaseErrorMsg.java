@@ -80,6 +80,10 @@ public enum BaseErrorMsg implements IErrorCode<BaseErrorMsg> {
 	NOT_REAL("1030", "未实名认证不允许抢单"),
 
 	NO_RECEIVE_CODE("1040","未上传收款码"),
+
+	NO_GOOGLE_CODE("1050", "谷歌验证码为空"),
+
+	GOOGLE_CODE_ERROR("1060", "谷歌验证码错误"),
 	;
 
 /////////////////////////////////////////////系统通用错误信息（结束）///////////////////////////////////////////////

@@ -40,7 +40,7 @@ public class NoticeController {
     public Result<List<Notice>> noticeList(@NotNull(message="type不能为空")Integer type) {
 
         List<Notice> list = noticeService.list(new QueryWrapper<Notice>().
-                eq(StringUtils.isEmpty(type), "type", type)
+                eq(!StringUtils.isEmpty(type), "type", type)
                 .eq("status", 1).orderByDesc("create_time"));
         return Result.success(list);
     }

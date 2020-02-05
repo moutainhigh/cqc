@@ -1,17 +1,13 @@
 package com.cqc.portal.service.impl;
 
+import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cqc.common.enums.BaseErrorMsg;
 import com.cqc.common.exception.BaseException;
-import com.cqc.model.Order;
-import com.cqc.model.ReceiveCode;
-import com.cqc.model.User;
-import com.cqc.model.UserFund;
+import com.cqc.model.*;
 import com.cqc.portal.mapper.OrderMapper;
-import com.cqc.portal.service.OrderService;
-import com.cqc.portal.service.RateService;
-import com.cqc.portal.service.UserFundService;
+import com.cqc.portal.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -21,10 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -50,6 +43,15 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     @Autowired
     private RateService rateService;
+
+    @Autowired
+    private UserRecommendService userRecommendService;
+
+    @Autowired
+    private UserDateIncomeService userDateIncomeService;
+
+    @Autowired
+    private UserService userService;
 
     @Async
     @Override
@@ -89,8 +91,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             throw new BaseException("", "重复付款");
         }
         // 获取订单金额  将用户cqc冻结金额减少
-        boolean b = userFundService.cutFreezeBalance(userId, order.getAmount(),6 , "确认付款");
-        if (!b) {
+        boolean rs = userFundService.cutFreezeBalance(userId, order.getAmount(),6 , "确认付款");
+        if (!rs) {
             return false;
         }
         // 将订单状态改为确认付款
@@ -102,6 +104,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         int i = orderMapper.updateById(entity);
         // 保存佣金记录
         userFundService.addIncome(userId, order.getIncome());
+        // 保存上级佣金记录
+        String date = DateUtil.format(new Date(), "yyyyMMdd");
+        userDateIncomeService.saveUserIncome(userId, order.getAmount(), date);
         // 保存
         return i == 1;
     }
@@ -133,6 +138,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         // 读取费率
         BigDecimal income = BigDecimal.ZERO;
         BigDecimal rate = rateService.getRate(order.getChannel());
+        int count = userRecommendService.count(new QueryWrapper<UserRecommend>().eq("user_id", user.getId()));
+        BigDecimal a = new BigDecimal("0.001").multiply(new BigDecimal(count));
+        rate = rate.subtract(a);
         if (rate.compareTo(BigDecimal.ZERO) > 0) {
             // 如果佣金费率大于0
             income = order.getAmount().multiply(rate);
@@ -143,6 +151,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         entity.setUserId(user.getId());
         entity.setBuyTime(new Date());
         entity.setIncome(income);
+        entity.setRate(rate);
         entity.setAccount(user.getAccount());
         entity.setReceiveCodeId(receiveCode.getId());
         entity.setReceiveCodeImg(receiveCode.getCodeImg());

@@ -1,6 +1,7 @@
 package com.cqc.portal.controller;
 
 
+import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cqc.common.api.Result;
@@ -17,10 +18,14 @@ import com.cqc.portal.service.UserVirtualFundService;
 import com.cqc.security.util.PortalUserUtil;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Date;
+import java.util.Objects;
 
 /**
  * <p>
@@ -63,9 +68,31 @@ public class UserFundController {
             throw new BaseException(ResultCode.UNAUTHORIZED);
         }
         userService.checkUser(userId);
+
+        Date startDate = null;
+        Date endDate = null;
+        try {
+            if (!StringUtils.isEmpty(param.getStartTimeStr())) {
+                startDate = DateUtil.parse(param.getStartTimeStr(), "yyyy-MM-dd HH:mm");
+            }
+        } catch (Exception e) {
+            endDate = null;
+        }
+        try {
+            if (!StringUtils.isEmpty(param.getEndTimeStr())) {
+                endDate = DateUtil.parse(param.getEndTimeStr(), "yyyy-MM-dd HH:mm");
+            }
+        } catch (Exception e) {
+            endDate = null;
+        }
+        if (Objects.equals(0, param.getType())) {
+            param.setType(null);
+        }
         Page<UserFundRecord> page = new Page<>(param.getPageNum(), param.getPageSize());
         QueryWrapper wrapper = new QueryWrapper<UserFundRecord>().eq("user_id", userId)
                 .eq(param.getType() != null, "type", param.getType())
+                .gt(startDate != null, "create_time", startDate)
+                .lt(endDate != null, "create_time", endDate)
                 .orderByDesc("create_time");
 
         userFundRecordService.page(page, wrapper);

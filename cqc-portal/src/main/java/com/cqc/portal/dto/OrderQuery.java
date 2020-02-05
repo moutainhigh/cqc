@@ -12,8 +12,6 @@ public class OrderQuery extends PageQuery {
 
     private Integer channel;
 
-    private Integer type;
-
     private Integer status;
 
 }

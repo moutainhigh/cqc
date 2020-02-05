@@ -14,6 +14,10 @@
     <link rel="stylesheet" href="./css/common.css" />
     <!-- 导入jquery -->
     <script src="./js/jquery.min.js"></script>
+
+    <script src="./js/config.js"></script>
+    <script src="./js/request.js"></script>
+
     <!-- 根据设备宽度，计算html根节点的font-size -->
     <script>
         // 获取html根节点要素内容
@@ -106,7 +110,8 @@
                 </div>
                 <div class="pro_each" style="margin-top: .5rem;">
                     <a href="" class="btn_input">下载谷歌验证器</a>
-                    <a href="" class="btn_input">重置GOOGLE验证器</a>
+                    <a id="bind" style="display: none" href="./google_bind.html" class="btn_input">绑定GOOGLE验证器</a>
+                    <a id="reset" style="display: none" href="./google_reset.html" class="btn_input">重置GOOGLE验证器</a>
                 </div>
             </div>
         </div>
@@ -114,5 +119,30 @@
     </div>
 </body>
 <script>
+    $(function () {
+
+        getGoogleSecretStatus();
+    });
+
+    function getGoogleSecretStatus() {
+        if (!hashToken()) {
+            $(".comm_mes").show().fadeOut(2000).find("p").text("请先登录");
+            alert("请先登录");
+            return false;
+        }
+        getForAuth(host + get_user_info, null, function (result) {
+            if (result.code == 200) {
+                // 如果已经绑定谷歌
+                var status = result.data.googleBind;
+                if (status == 1) {
+                    $("#bind").hide();
+                    $("#reset").show();
+                }else {
+                    $("#bind").show();
+                    $("#reset").hide();
+                }
+            }
+        });
+    }
 </script>
 </html>

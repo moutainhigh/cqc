@@ -1,9 +1,11 @@
 package com.cqc.portal.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cqc.common.api.ResultCode;
 import com.cqc.common.exception.BaseException;
 import com.cqc.model.User;
+import com.cqc.model.UserRecommend;
 import com.cqc.portal.dto.ModifyAreaParam;
 import com.cqc.portal.dto.ModifyPasswordParam;
 import com.cqc.portal.mapper.UserMapper;
@@ -13,7 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author wanglz
@@ -51,7 +58,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new BaseException("", "用户不存在");
         }
         if (user.getStatus() == 2) {
-            throw new BaseException(ResultCode.CLOSE);
+            if (user.getCloseTime() != null && user.getCloseTime().after(new Date())) {
+                throw new BaseException(ResultCode.CLOSE);
+            }
         }
         return user;
     }
@@ -130,4 +139,59 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     }
 
+    @Override
+    public List<UserRecommend> queryParents(String userId) {
+        User user = userMapper.selectById(userId);
+        if (null == user) {
+            return null;
+        }
+        LinkedList<UserRecommend> list = new LinkedList<>();
+        findParent(list, user);
+        if (CollectionUtils.isEmpty(list)) {
+            return null;
+        }
+        for (UserRecommend userRecommend : list) {
+            userRecommend.setUserId(user.getId());
+            userRecommend.setAccount(user.getAccount());
+        }
+        return list;
+    }
+
+    @Override
+    public List<User> getByParent(String parentUserId) {
+        List<User> userList = userMapper.selectList(new QueryWrapper<User>().eq("ref_user_id", parentUserId));
+        return userList;
+    }
+
+    private void findParent(LinkedList<UserRecommend> list, User user) {
+        if (user == null || StringUtils.isEmpty(user.getRefUserId())) {
+            return;
+        }
+        String parentId = user.getRefUserId();
+        User parent = findParent(parentId);
+        if (parent == null) {
+            return;
+        }
+        int size = list.size();
+        UserRecommend userRecommend = new UserRecommend();
+        userRecommend.setLevel(++size);
+        userRecommend.setRefUserId(parent.getId());
+        userRecommend.setRefUserAccount(parent.getAccount());
+
+        list.add(userRecommend);
+
+        findParent(list, parent);
+    }
+
+    private User findParent(String refUserId) {
+        return userMapper.selectById(refUserId);
+    }
+
+
+    @Override
+    public boolean checkMobileReg(String mobile) {
+        QueryWrapper wrapper = new QueryWrapper<User>().eq("mobile", mobile);
+        User user = userMapper.selectOne(wrapper);
+        return user == null;
+    }
 }
