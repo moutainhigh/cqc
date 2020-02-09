@@ -3,6 +3,7 @@ package com.cqc.portal.service.impl;
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.cqc.common.constant.Constants;
 import com.cqc.common.enums.BaseErrorMsg;
 import com.cqc.common.exception.BaseException;
 import com.cqc.model.*;
@@ -70,7 +71,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         list.stream().forEach(item -> {
             channelSet.add(item.getChannel());
         });
-        BigDecimal availableBalance = fund.getAvailableBalance();
+        // 抢单限制 用户只要能用70%余额抢单
+        BigDecimal availableBalance = fund.getAvailableBalance().multiply(Constants.BUY_ORDER_PERCENT);
+        if (availableBalance.compareTo(BigDecimal.ZERO) <= 0) {
+            return;
+        }
         // 查询金额足够支付的订单
         Order order = orderMapper.selectNewOrder(availableBalance, channelSet);
         if (order == null) {

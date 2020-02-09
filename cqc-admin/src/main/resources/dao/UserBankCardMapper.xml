@@ -3,7 +3,8 @@
 <mapper namespace="com.cqc.admin.mapper.UserBankCardMapper">
 
     <select id="pageList" resultType="com.cqc.admin.dto.resp.UserBankCardListDto">
-        select ubc.id, u.id as user_id, u.account, ubc.bank_name, ubc.card_no, ubc.bank_logo
+        select ubc.id, u.id as user_id, u.account, ubc.bank_name, ubc.card_no, ubc.bank_logo,
+            ubc.status, ubc.create_time
         from user_bank_card ubc inner join `user` as u on ubc.user_id = u.id
         where 1=1
         <if test="p.status != null ">

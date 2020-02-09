@@ -9,4 +9,7 @@ public class Constants {
 
     // 注册
     public final static int SMS_TYPE_REG = 1;
+
+    // 抢单限制
+    public final static BigDecimal BUY_ORDER_PERCENT = new BigDecimal("0.7");
 }

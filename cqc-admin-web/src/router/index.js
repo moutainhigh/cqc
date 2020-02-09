@@ -108,11 +108,27 @@ export const constantRouterMap = [
         name: 'withdraw',
         component: () => import('@/views/ums/withdraw/index'),
         meta: {title: '提现管理', icon: 'sms-coupon'}
+      }
+    ]
+  },
+  {
+    path:'/bms',
+    component: Layout,
+    redirect: '/bms',
+    name: 'bms',
+    meta: {title: '银行卡管理', icon: 'sms'},
+    alwaysShow: true,
+    children: [
+      {
+        path: 'bank',
+        name: 'bank',
+        component: () => import('@/views/bms/bank/index'),
+        meta: {title: '银行数量管理', icon: 'sms-coupon'}
       },
       {
-        path: 'card',
-        name: 'card',
-        component: () => import('@/views/ums/card/index'),
+        path: 'usercard',
+        name: 'usercard',
+        component: () => import('@/views/bms/usercard/index'),
         meta: {title: '银行卡管理', icon: 'sms-coupon'}
       }
     ]

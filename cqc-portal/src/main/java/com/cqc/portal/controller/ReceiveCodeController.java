@@ -49,7 +49,7 @@ public class ReceiveCodeController {
         userService.checkUser(userId);
         QueryWrapper<ReceiveCode> wrapper = new QueryWrapper<ReceiveCode>()
                 .eq("user_id", userId)
-                .like(!StringUtils.isEmpty(param.getName()), "name", param.getName())
+                .like(!StringUtils.isEmpty(param.getName()), "receive_name", param.getName())
                 .eq(param.getType() != null, "channel", param.getType());
         List<ReceiveCode> list = receiveCodeService.list(wrapper);
         return Result.success(list);

@@ -35,7 +35,6 @@
     <el-card class="operate-container" shadow="never">
       <i class="el-icon-tickets"></i>
       <span>银行卡列表</span>
-      <el-button size="mini" class="btn-add" @click="handleAddOrder()">手动放单</el-button>
     </el-card>
     <div class="table-container">
       <el-table ref="faqTable"

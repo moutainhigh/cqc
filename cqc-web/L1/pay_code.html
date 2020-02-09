@@ -169,6 +169,7 @@
 </body>
 <script>
     var params = {}
+    var autoOrderStatus = 0;
 
     var each_btn = $(".cate .each_btn");
     var pro_each = $(".pro_each");
@@ -177,6 +178,7 @@
     console.log($(pro_each[0]).find(".name"));
 
     $(function () {
+        getAutoOrderStatus();
         getReceiveCode();
     });
     function getReceiveCode(params) {
@@ -261,8 +263,22 @@
 
             });
         }
+        if (autoOrderStatus == 0) {
+            $(".notice_content_text").text("开启自动接单成功需要缴纳50.00PKC，缴纳成功后绑定...");
+        } else if (autoOrderStatus == 1) {
+            $(".notice_content_text").text("如需关闭自动接单请返回首页点击停止接单即可关闭自动接单");
+        }
         $('#sure').click(function () {
-            openAutoBuy();
+            // 未开启自动抢单
+            if (autoOrderStatus == 0) {
+                $(".notice_content_text").text("开启自动接单成功需要缴纳50.00PKC，缴纳成功后绑定...");
+                openAutoBuy();
+            } else if (autoOrderStatus == 1) {
+                // 关闭弹框
+                $(".notice_content_text").text("如需关闭自动接单请返回首页点击停止接单即可关闭自动接单");
+            }
+            $(".notice_box").hide();
+            $(".gray_bg").hide();
         });
     }
     // 开启二维码收款
@@ -402,26 +418,30 @@
         getForAuth(host + open_auto_buy_uri, null, function(result){
             if (result.code == 200) {
                 $(".comm_mes").show().fadeOut(2000).find("p").text("已经开启自动抢单");
-                start();
+                window.location = "./index.html";
             } else  {
-                alert(result.message);
+                $(".comm_mes").show().fadeOut(2000).find("p").text(result.message);
                 return false;
             }
         });
     }
-    var t1, t2, t3;
-    function start() {
-        t1 = setInterval(function() {
-            buyOrder();
-        },3000);
-    }
-    function buyOrder() {
-        getForAuth(host + buy_order_uri, null, function(result){
-            if (result.code == 200){
-                console.log("抢到一单");
+
+    function getAutoOrderStatus() {
+        if (!hashToken()) {
+            return false;
+        }
+        getForAuth(host + get_auto_order_status, null, function(result){
+            if (result.code == 200) {
+                if (result.data.autoOrderStatus){
+                    // 如果开启了自动抢单 点击自动抢单时，提醒
+                    autoOrderStatus = 1;
+                } else {
+                    autoOrderStatus = 0;
+                }
             }
         });
     }
+
 
 </script>
 </html>

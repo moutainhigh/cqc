@@ -78,6 +78,8 @@ public enum BaseErrorMsg implements IErrorCode<BaseErrorMsg> {
 	BALANCE_LESS("1020","余额为0，无法抢单"),
 
 	NOT_REAL("1030", "未实名认证不允许抢单"),
+	// 已经开启了自动抢单
+	ALREADY_AUTO_BUY("1031", "已经开启了自动抢单"),
 
 	NO_RECEIVE_CODE("1040","未上传收款码"),
 

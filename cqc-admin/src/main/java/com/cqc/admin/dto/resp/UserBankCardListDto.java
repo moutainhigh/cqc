@@ -2,6 +2,8 @@ package com.cqc.admin.dto.resp;
 
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class UserBankCardListDto {
 
@@ -17,5 +19,8 @@ public class UserBankCardListDto {
 
     private String bankLogo;
 
+    private Integer status;
+
+    private Date createTime;
 
 }

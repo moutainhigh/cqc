@@ -78,7 +78,7 @@
         <div class="content_common">
             <div class="model_my">
                 <div class="user_info">
-                    <h1 id="no_login">未登录 点击登录</h1>
+                    <h1 id="no_login" onclick="goLogin()">未登录 点击登录</h1>
                     <span>未认证</span>
                 </div>
                 <div class="swiper-container">
@@ -214,18 +214,13 @@
     });
     // 等页面加载完毕
     $(function(){
-        goLogin();
         getUserInfo();
     });
 
     function goLogin() {
-        $("#no_login").click(function () {
-            if (!hashToken()) {
-                window.location = "./sign_in.html";
-            }else {
-                return;
-            }
-        });
+        if (!hashToken()) {
+            window.location = "./sign_in.html";
+        }
     }
 
     function getUserInfo() {

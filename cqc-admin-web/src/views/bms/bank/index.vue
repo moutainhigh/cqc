@@ -20,95 +20,81 @@
       </div>
       <div style="margin-top: 15px">
         <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
-          <el-form-item label="卡状态：">
-            <el-select v-model="listQuery.status" placeholder="全部" clearable class="input-width">
-              <el-option v-for="item in recommendOptions"
-                         :key="item.value"
-                         :label="item.label"
-                         :value="item.value">
-              </el-option>
-            </el-select>
+          <el-form-item label="银行名称：">
+            <el-input v-model="listQuery.name" class="input-width" placeholder="名称"></el-input>
           </el-form-item>
         </el-form>
       </div>
     </el-card>
     <el-card class="operate-container" shadow="never">
       <i class="el-icon-tickets"></i>
-      <span>银行卡列表</span>
-      <el-button size="mini" class="btn-add" @click="handleAddOrder()">手动放单</el-button>
+      <span>银行列表</span>
+      <el-button size="mini" class="btn-add" @click="handleAddBank()">添加</el-button>
     </el-card>
     <div class="table-container">
-      <el-table ref="faqTable"
+      <el-table ref="bankTable"
                 :data="list"
                 style="width: 100%;"
                 @selection-change="handleSelectionChange"
                 v-loading="listLoading" border>
         <el-table-column type="selection" width="60" align="center"></el-table-column>
-        <el-table-column hidden="hidden" label="卡id" width="280" align="center" v-show="0">
+        <el-table-column hidden="hidden" label="id" width="280" align="center" v-show="0">
           <template slot-scope="scope">{{scope.row.id}}</template>
         </el-table-column>
-        <el-table-column label="用户账号" align="center" width="100">
-          <template slot-scope="scope">{{scope.row.account}}</template>
+        <el-table-column label="银行名称" align="center" width="300">
+          <template slot-scope="scope">{{scope.row.name}}</template>
         </el-table-column>
-        <el-table-column label="银行卡号" align="center" width="180">
-          <template slot-scope="scope">{{scope.row.cardNo}}</template>
+        <el-table-column label="银行logo" align="center" width="300">
+          <template slot-scope="scope">{{scope.row.logo}}</template>
         </el-table-column>
-        <el-table-column label="银行" width="180" align="center">
-          <template slot-scope="scope">{{scope.row.bankName}}</template>
-        </el-table-column>
-        <el-table-column label="绑卡时间" width="180" align="center">
-          <template slot-scope="scope">{{scope.row.createTime}}</template>
-        </el-table-column>
-        <el-table-column label="状态" width="100" align="center">
-          <template slot-scope="scope">{{scope.row.status | formatStatus}}</template>
-        </el-table-column>
+
       </el-table>
     </div>
 
-    <div class="pagination-container">
-      <el-pagination
-        background
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        layout="total, sizes,prev, pager, next,jumper"
-        :page-size="listQuery.pageSize"
-        :page-sizes="[1,10,15]"
-        :current-page.sync="listQuery.pageNum"
-        :total="total">
-      </el-pagination>
-    </div>
+
+    <el-dialog title="添加银行"
+               :visible.sync="addBankDialogVisible"
+               width="60%">
+
+      <el-form :model="addBankDialogData" :rules="addBankRules" ref="addBankDialogData"
+               label-width="100px">
+        <el-form-item label="银行名称：" prop="name">
+          <el-input name="name" v-model="addBankDialogData.name" style="width: 300px"></el-input>
+        </el-form-item>
+        <el-form-item label="银行logo：" prop="logo">
+          <el-input name="logo"  v-model="addBankDialogData.logo" style="width: 300px;"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer">
+          <el-button @click="addBankDialogVisible = false" size="small">取 消</el-button>
+          <el-button type="primary" @click="handleSaveBank" size="small">确定保存</el-button>
+        </span>
+
+    </el-dialog>
 
   </div>
 </template>
 <script>
-  import {fetchList, push, audit} from '@/api/card';
+  import {fetchList, add} from '@/api/bank';
   import {formatDate} from '@/utils/date';
 
   const defaultListQuery = {
+    name:null,
     pageNum: 1,
     pageSize: 10
   };
-  const defaultUserDialogData = {
-    account : null,
-    password: null,
-    confirmPassword: null
-  };
-  const defaultRecommendOptions = [
-    {
-      label: '不可用',
-      value: 0
-    },
-    {
-      label: '正常',
-      value: 1
-    }
-  ];
   export default {
     name: 'faqList',
     data() {
+      const validateName = (rule, value, callback) => {
+        if (!value) {
+          callback(new Error('请输入银行名称'))
+        } else {
+          callback()
+        }
+      };
       return {
         listQuery: Object.assign({}, defaultListQuery),
-        recommendOptions: Object.assign({}, defaultRecommendOptions),
         list: null,
         total: null,
         listLoading: false,
@@ -120,16 +106,14 @@
           }
         ],
         operateType: null,
-        addOrderDialogVisible: false,
-        addOrderDialogData:{
-          publisher:"",
-          channel : 0,
-          amount:0
+        addBankDialogVisible: false,
+        addBankDialogData:{
+          name: null,
+          logo : null
         },
-        addOrderRules: {
-        },
-        showReceiveCodeDialogVisible: false,
-        receiveCodeImg: null
+        addBankRules: {
+          name:[{required: true, trigger: 'blur', validator: validateName}]
+        }
       }
     },
     created() {
@@ -146,15 +130,6 @@
           return '不可用';
         } else {
           return '无效';
-        }
-      },
-      formatChannel(channel){
-        if (channel === 1){
-          return '支付宝';
-        }else if (channel == 2) {
-          return '微信';
-        }else {
-          return '未知';
         }
       },
       formatTime(time) {
@@ -213,9 +188,30 @@
         this.listLoading = true;
         fetchList(this.listQuery).then(response => {
           this.listLoading = false;
-          this.list = response.data.records;
-          this.total = response.data.total;
+          this.list = response.data;
         })
+      },
+      handleAddBank(){
+        this.addBankDialogVisible = true;
+        this.addBankDialogData.name = '';
+        this.addBankDialogData.logo = '';
+      },
+      handleSaveBank(){
+        this.$refs.addBankDialogData.validate(valid => {
+          if (valid) {
+            add(this.addBankDialogData).then(response => {
+              this.addBankDialogVisible = false;
+              this.getList();
+              this.$message({
+                type: 'success',
+                message: '添加银行成功!'
+              });
+            });
+          } else {
+            console.log('参数验证不合法！');
+            return false
+          }
+        });
       }
     }
   }

@@ -173,7 +173,10 @@ public class UserController {
         if (StringUtils.isEmpty(userId)) {
             throw new BaseException(ResultCode.UNAUTHORIZED);
         }
-        userService.checkUser(userId);
+        User user = userService.checkUser(userId);
+        if (user.getAutoOrderStatus()) {
+            return Result.failed(BaseErrorMsg.ALREADY_AUTO_BUY);
+        }
         UserFund fund = userFundService.getFund(userId);
         if (fund.getAvailableBalance().compareTo(BigDecimal.ZERO) <= 0) {
             return Result.failed(BaseErrorMsg.BALANCE_LESS);
@@ -182,12 +185,12 @@ public class UserController {
         UserRealInfo realInfo = userRealInfoService.getRealInfo(userId);
         if (realInfo == null) {
             // 如果没实名 不允许抢单
-            throw new BaseException(BaseErrorMsg.NOT_REAL);
+            return Result.failed(BaseErrorMsg.NOT_REAL);
         }
         //未上传收款码
         int codeNumber = receiveCodeService.getCodeNumber(userId);
         if (codeNumber <= 0) {
-            throw new BaseException(BaseErrorMsg.NO_RECEIVE_CODE);
+            return Result.failed(BaseErrorMsg.NO_RECEIVE_CODE);
         }
         boolean b = userService.openCloseAutoOrder(userId, 1);
         if (!b) {
