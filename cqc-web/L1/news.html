@@ -91,30 +91,59 @@
                 var item = list[i];
                 html += '<div class="news_each">' +
                     '<a href="javascript:void(0);">' +
-                    '<h2>'+item.title+'</h2>' +
-                    '<p>'+item.content+'</p>' +
-                    '<span class="time">'+item.createTime+'</span>' +
+                    '<h2>' + item.title + '</h2>' +
+                    '<p>' + item.content + '</p>' +
+                    '<span class="time">' + item.createTime + '</span>' +
+                    '<span class="bq">'+getType(item.type)+'</span>' +
                     '</a></div>'
                 ;
             }
             $(".content_news").html(html);
             // 显示通告赋值
             var news_each = $(".news_each");
-            for(i=0;i<news_each.length; i++){
-                $(news_each[i]).click(function(){
+            for (i = 0; i < news_each.length; i++) {
+                $(news_each[i]).click(function () {
                     var notice_title = $(this).find("h2").text();
                     var notice_content_text = $(this).find("p").text();
-                    console.log(notice_title,notice_content_text);
+                    console.log(notice_title, notice_content_text);
                     $(".notice_box").find(".notice_title").text(notice_title);
                     $(".notice_box").find(".notice_content_text").text(notice_content_text);
                     $(".gray_bg,.notice_box").fadeIn(300);
-                    $(".notice_cancel").click(function(){
+                    $(".notice_cancel").click(function () {
                         $(".gray_bg,.notice_box").fadeOut(300);
                     });
                 });
             }
 
         });
+    }
+
+    function getType(value) {
+        if (value === 1) {
+            return '佣金加成';
+        } else if (value === 2) {
+            return '全天佣金加成';
+        } else if (value === 3) {
+            return '重要通知';
+        } else if (value === 4) {
+            return '夜间佣金加成';
+        } else if (value === 5) {
+            return '全天加成';
+        } else if (value === 6) {
+            return '夜间活动';
+        } else if (value === 7) {
+            return '温馨提示';
+        } else if (value === 8) {
+            return '爆单提醒';
+        } else if (value === 9) {
+            return '同城派单提醒';
+        } else if (value === 10) {
+            return '充值注意事项';
+        } else if (value === 11) {
+            return '信用积分说明';
+        } else {
+            return '';
+        }
     }
 
 </script>

@@ -14,6 +14,10 @@
     <link rel="stylesheet" href="./css/common.css" />
     <!-- 导入jquery -->
     <script src="./js/jquery.min.js"></script>
+
+    <script src="./js/config.js"></script>
+    <script src="./js/request.js"></script>
+
     <!-- 根据设备宽度，计算html根节点的font-size -->
     <script>
         // 获取html根节点要素内容
@@ -115,5 +119,30 @@
     </div>
 </body>
 <script>
+
+    $(function () {
+        list();
+
+    });
+    function list(params) {
+        getData(host + city_hot_uri, params, function (result) {
+            var html = '';
+            var list = result.data;
+            if (!list) {
+                return;
+            }
+            var len = list.length;
+            for (let i = 0; i < len; i++) {
+                var item = list[i]
+                html += '<div class="pro_each">' +
+                    '<span>'+(i+1)+'</span>' +
+                    '<span>'+item.city+'</span>' +
+                    '<meter min="0" max="10" low="3" high="6" value="'+item.hot+'" optimum="2"></meter>' +
+                    '</div>' ;
+            }
+            $(".model_two").html(html);
+        });
+    }
+
 </script>
 </html>

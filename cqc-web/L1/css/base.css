@@ -639,6 +639,19 @@ img {
   display: block;
   overflow: hidden;
 }
+.news_each{
+      position: relative;
+}
+.news_each .bq{
+      position: absolute;
+      right: .2rem;
+      top: .15rem;
+      bakcground:#3e7fff;
+      color: white;
+      padding: .05rem .2rem;
+      border-radius: .1rem;
+      font-size: .3rem;
+}
 .wrap_news .news_each {
   padding: 0.15rem 0.2rem;
   border-bottom: 1px solid #f1f1f1;

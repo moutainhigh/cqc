@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cqc.common.enums.BaseErrorMsg;
 import com.cqc.common.exception.BaseException;
 import com.cqc.model.*;
+import com.cqc.portal.dto.resp.CityHotDataDto;
 import com.cqc.portal.mapper.OrderMapper;
 import com.cqc.portal.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -175,4 +176,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         return orderMapper.waitPayIncome(userId);
     }
 
+
+    @Override
+    public List<CityHotDataDto> cityHot() {
+        return orderMapper.cityHot();
+    }
 }

@@ -106,7 +106,7 @@
                 <h2 class="notice_title">开启自动接单</h2>
                 <span class="notice_content_text">开启自动接单成功需要缴纳50.00PKC，缴纳成功后绑定...</span>
             </div>
-            <a href="javascript:;" class="notice_cancel b-color">确认</a>
+            <a href="javascript:;" class="notice_cancel b-color" id="sure">确认</a>
             <a href="javascript:;" class="notice_cancel r-color" id="cancel">取消</a>
         </div>
     </div>
@@ -128,12 +128,13 @@
         <div class="content_news">
             <div class="news_each">
                 <h3>请输入名称</h3>
-                <input type="text" class="input_text">
+                <input type="text" class="input_text" id="name">
                 <h3>账号类型</h3>
                 <div class="cate">
-                    <span class="each_btn" data-type = "1">全部</span>
+                    <span class="each_btn">全部</span>
+                    <span class="each_btn" data-type = "1">支付宝扫码</span>
                     <span class="each_btn" data-type = "2">微信扫描</span>
-                    <span class="each_btn" data-type = "3">支付宝扫码</span>
+
                     <!-- <span class="each_btn">拼多多微信</span>
                     <span class="each_btn">拼多多支付宝</span>
                     <span class="each_btn">聚合扫码</span> -->
@@ -157,8 +158,18 @@
             <a href="javascript:void(0);" class="btn2">取消</a>
         </div>
     </div>
+
+    <div class="wrap_common"  style="overflow: auto;">
+        <!-- 内容end -->
+        <div class="comm_mes">
+            <p></p>
+        </div>
+    </div>
+
 </body>
 <script>
+    var params = {}
+
     var each_btn = $(".cate .each_btn");
     var pro_each = $(".pro_each");
     console.log($(".pro_each .name:contains(米)"));
@@ -168,8 +179,8 @@
     $(function () {
         getReceiveCode();
     });
-    function getReceiveCode() {
-        getForAuth(host + receive_list, null, function (result) {
+    function getReceiveCode(params) {
+        getForAuth(host + receive_list, params, function (result) {
             var html = '';
             var list = result.data;
             if (!list) {
@@ -231,14 +242,28 @@
     }
     // 开启自动接单
     function startAuto(){
+        if (!hashToken()) {
+            $(".comm_mes").show().fadeOut(2000).find("p").text("请先登录");
+            alert("请先登录");
+            return false;
+        }
+        if (hashClose()) {
+            $(".comm_mes").show().fadeOut(2000).find("p").text("账号被封，请联系管理员解封");
+            alert("账号被封，请联系管理员解封");
+            return false;
+        }
         $(".gray_bg").show();
         $(".notice_box").show();
         if($(".gray_bg").is(":visible")){
             $(".gray_bg,#cancel").click(function(){
                 $(".notice_box").hide();
                 $(".gray_bg").hide();
+
             });
-        } 
+        }
+        $('#sure').click(function () {
+            openAutoBuy();
+        });
     }
     // 开启二维码收款
     function openCode(obj){
@@ -337,6 +362,15 @@
         }
         $(".screen_comm").hide();
         $(".wrap_common").show();
+        $(".model_two .pro_each").show();
+        var name = $("#name").val();
+        if (name) {
+            params["name"] = name;
+        }
+        if (cate) {
+            params["type"] = cate;
+        }
+        getReceiveCode(params);
     });
     // 文字筛选
     function textRecord(){
@@ -362,5 +396,32 @@
             }
         }
     }
+
+
+    function openAutoBuy() {
+        getForAuth(host + open_auto_buy_uri, null, function(result){
+            if (result.code == 200) {
+                $(".comm_mes").show().fadeOut(2000).find("p").text("已经开启自动抢单");
+                start();
+            } else  {
+                alert(result.message);
+                return false;
+            }
+        });
+    }
+    var t1, t2, t3;
+    function start() {
+        t1 = setInterval(function() {
+            buyOrder();
+        },3000);
+    }
+    function buyOrder() {
+        getForAuth(host + buy_order_uri, null, function(result){
+            if (result.code == 200){
+                console.log("抢到一单");
+            }
+        });
+    }
+
 </script>
 </html>

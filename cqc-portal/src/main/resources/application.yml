@@ -35,6 +35,7 @@ secure:
     urls: #安全路径白名单
       - /notice/**
       - /sms/**
+      - /statistic/**
       - /message/**
       - /bank/**
       - /swagger-ui.html

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.cqc.model.Order;
 import com.cqc.model.ReceiveCode;
 import com.cqc.model.User;
+import com.cqc.portal.dto.resp.CityHotDataDto;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -39,4 +40,10 @@ public interface OrderService extends IService<Order> {
      */
     BigDecimal getWaitPayIncome(String userId);
 
+    /**
+     * 以城市排行统计订单数量
+     *
+     * @return
+     */
+    List<CityHotDataDto> cityHot();
 }

@@ -95,3 +95,6 @@ const google_secret_uri = "/googleAuth/secret";
 
 // 绑定谷歌验证码
 const google_bind_uri = "/googleAuth/bind";
+
+// 城市热度榜
+const city_hot_uri = "/statistic/cityHot";

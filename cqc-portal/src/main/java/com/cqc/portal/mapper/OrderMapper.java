@@ -2,6 +2,7 @@ package com.cqc.portal.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.cqc.model.Order;
+import com.cqc.portal.dto.resp.CityHotDataDto;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -44,4 +45,10 @@ public interface OrderMapper extends BaseMapper<Order> {
      */
     @Select("select ifnull(sum(o.income), 0) from `order` as o where user_id = #{userId} and `status` = 0")
     BigDecimal waitPayIncome(String userId);
+
+    /**
+     * 以城市排行统计订单数量
+     * @return
+     */
+    List<CityHotDataDto> cityHot();
 }

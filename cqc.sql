@@ -1,5 +1,5 @@
 /*
- Navicat MySQL Data Transfer
+ Navicat Premium Data Transfer
 
  Source Server         : 百度云
  Source Server Type    : MySQL
@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 30/01/2020 19:48:35
+ Date: 07/02/2020 19:09:14
 */
 
 SET NAMES utf8mb4;
@@ -46,9 +46,9 @@ CREATE TABLE `faq`  (
   `img` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '图标',
   `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT '内容',
   `author` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '创建者 后台用户账号',
-  `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+  `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `editor` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '修改者 后台用户账号',
-  `modify_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '修改时间',
+  `modify_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '修改时间',
   `status` tinyint(1) NOT NULL DEFAULT 1 COMMENT '状态 1-有效 0无效',
   `display_order` int(255) NULL DEFAULT 0 COMMENT '排序 升序',
   PRIMARY KEY (`id`) USING BTREE
@@ -74,7 +74,7 @@ CREATE TABLE `invite_code`  (
   `invite_code` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '邀请码，唯一',
   `user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '用户id',
   `expire` int(11) NULL DEFAULT NULL COMMENT '过期时间',
-  `create_time` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+  `create_time` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `idx_invite_code`(`invite_code`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
@@ -82,14 +82,8 @@ CREATE TABLE `invite_code`  (
 -- ----------------------------
 -- Records of invite_code
 -- ----------------------------
-INSERT INTO `invite_code` VALUES ('169b02f6ac0135b124a249fc698623ce', 'KPWL7UU0', '2350cc1c23a050a6b7f43b26779b2eb0', 1579792059, '2020-01-23 22:57:39');
-INSERT INTO `invite_code` VALUES ('311682fee9573eddb55808e5ba677935', 'EWCNJ0LA', '1', 1579402511, '2020-01-19 10:45:11');
-INSERT INTO `invite_code` VALUES ('5fd01139ee72083f9bad5d0ea49ab92d', 'LSPAGEHP', '1', 1579490079, '2020-01-20 11:04:41');
-INSERT INTO `invite_code` VALUES ('611a41b9dabef0a789ace4e4ac34c3df', 'X77PPXA1', '1', 1579516267, '2020-01-20 18:21:08');
-INSERT INTO `invite_code` VALUES ('61f820fdb8408218bc617a349815ab28', '3AEMEMFP', 'f410aaa4483927c21bdd7c7ce7d22b24', 1580189958, '2020-01-28 13:29:18');
-INSERT INTO `invite_code` VALUES ('69cb33d1bf2224bed0fd98e0bf841513', 'HNHRVPCM', '1', 1579415930, '2020-01-19 14:28:52');
-INSERT INTO `invite_code` VALUES ('79665e953ad3659ef50fd02ec102fcca', 'A8EB45PJ', '1', 1579409436, '2020-01-19 12:40:37');
-INSERT INTO `invite_code` VALUES ('f0ea5ac9328ed2a646b0efe814c5e938', 'ORQFXMST', '53a21ff9ec643be6eff8db808a21b18d', 1579793612, '2020-01-23 23:23:32');
+INSERT INTO `invite_code` VALUES ('c5a2d09d5b3779b4155058860ce52469', 'MA35U2J3', 'b7353d3952169bfdb1a33e256eaad180', 1580799367, '2020-02-04 14:46:06');
+INSERT INTO `invite_code` VALUES ('dc2d8b1d1f112a486804e749c31cf451', 'CDBU8U2M', '257ad4a0ba8003cd3a533f5ee662b9da', 1580795346, '2020-02-04 13:39:06');
 
 -- ----------------------------
 -- Table structure for message
@@ -102,7 +96,7 @@ CREATE TABLE `message`  (
   `title` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '标题',
   `content` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '内容',
   `author` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '创建者 后台用户账号',
-  `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+  `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status` tinyint(1) NULL DEFAULT 1 COMMENT '状态：0-无效 1-通过',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '消息' ROW_FORMAT = Dynamic;
@@ -110,6 +104,7 @@ CREATE TABLE `message`  (
 -- ----------------------------
 -- Records of message
 -- ----------------------------
+INSERT INTO `message` VALUES ('070aac38c4f8c22a0f6d7e323badd1cd', '', 6, 'qaaa', '1111222', 'admin', '2020-02-02 18:30:38', 1);
 INSERT INTO `message` VALUES ('0c8310dd3ffe0cdc81e9f1900b933a3b', '', 3, '1111111', '1111111111', 'admin', '2020-01-23 23:05:55', 1);
 INSERT INTO `message` VALUES ('1', '1', 1, '一个提醒', '这是内容', NULL, '2020-01-22 10:01:21', 1);
 INSERT INTO `message` VALUES ('2', '1', 2, '全天加成说明', '全天做单的话就是这样', NULL, '2020-01-22 10:20:22', 1);
@@ -117,6 +112,7 @@ INSERT INTO `message` VALUES ('2fb549b6547a3c6e2fdcfb549270ae8c', '', 3, '测试
 INSERT INTO `message` VALUES ('b44e44aa83376c5e23c54c68523350ab', '', 5, '添加一条消息', '这是第3条消息了不要管我', 'admin', '2020-01-22 12:14:53', 1);
 INSERT INTO `message` VALUES ('e89911c8055860a2ff8468fda6d76d30', '', 1, '1111', '1111', 'admin', '2020-01-23 23:05:18', 1);
 INSERT INTO `message` VALUES ('ee0d0562364fce54ff0f2e5aa38a515a', '', 1, '测试-佣金加成消息', '佣金加成消息', 'admin', '2020-01-24 23:36:37', 1);
+INSERT INTO `message` VALUES ('fccfdb7da9893ad648e3eeafae2a5e77', '', 1, '1', '2', 'admin', '2020-02-02 18:31:01', 1);
 
 -- ----------------------------
 -- Table structure for notice
@@ -129,7 +125,7 @@ CREATE TABLE `notice`  (
   `title` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '标题',
   `content` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '内容',
   `author` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '创建者 后台用户账号',
-  `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+  `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '公告' ROW_FORMAT = Dynamic;
 
@@ -138,6 +134,9 @@ CREATE TABLE `notice`  (
 -- ----------------------------
 INSERT INTO `notice` VALUES ('494b1852eacc0de8e7f718103c005c52', 3, 1, '测试-存取款公告', '存取款公告', 'admin', '2020-01-24 23:39:45');
 INSERT INTO `notice` VALUES ('5063ddd010bb9072a9cd5dab9aaf48ce', 2, 1, '测试-首页慢放公告', '首页慢放公告', 'admin', '2020-01-24 23:39:13');
+INSERT INTO `notice` VALUES ('915f45492cd25e6cb2a15064b49d3163', 1, 1, 'ww', '1122', 'admin', '2020-02-02 18:32:57');
+INSERT INTO `notice` VALUES ('a4ad266da5f2260e8a03f413c966288d', 2, 1, '1q', '11', 'admin', '2020-02-02 18:34:00');
+INSERT INTO `notice` VALUES ('f8e3b5e099b7800fcf099ae8367bd729', 3, 1, '1qq', 'aa', 'admin', '2020-02-02 18:34:51');
 
 -- ----------------------------
 -- Table structure for order
@@ -155,11 +154,16 @@ CREATE TABLE `order`  (
   `account` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '抢单用户账号',
   `receive_code_img` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '收款码图片',
   `receive_code_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '收款码id',
+  `rate` decimal(5, 4) NULL DEFAULT 0.0000 COMMENT '费率',
   `income` decimal(16, 8) NULL DEFAULT 0.00000000 COMMENT '佣金',
-  `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '发布时间',
+  `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '发布时间',
   `expire_time` timestamp(0) NULL DEFAULT NULL COMMENT '过期时间',
   `pay_time` timestamp(0) NULL DEFAULT NULL COMMENT '付款时间',
   `buy_time` timestamp(0) NULL DEFAULT NULL COMMENT '抢单时间',
+  `country` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '国家名称',
+  `province` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '省',
+  `city` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '市',
+  `region` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '区',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `idx_order_sn`(`order_sn`) USING BTREE COMMENT '订单号唯一'
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '订单' ROW_FORMAT = Dynamic;
@@ -167,8 +171,8 @@ CREATE TABLE `order`  (
 -- ----------------------------
 -- Records of order
 -- ----------------------------
-INSERT INTO `order` VALUES ('186a13b8c8a4b7fe5d74a412f4ea1c15', '202001271629291000001822964762', '', 'hong345', 1, 18.0000, 0, 'f410aaa4483927c21bdd7c7ce7d22b24', 'test', 'D:\\work_space\\cqc\\cqc-web\\L1\\img\\receive\\8_8f3bccf3-aa6b-4164-a45a-13cf2d5e0c60_590x.png', 'f8eb2b1be26748aee93df63d4adae9cd', 0.42120000, '2020-01-27 16:29:28', NULL, NULL, '2020-01-27 04:17:50');
-INSERT INTO `order` VALUES ('47d317dd9661955cf0f2e101063cba4d', '202001271623181000000307265120', '', '飞吧', 2, 30.0000, 0, 'f410aaa4483927c21bdd7c7ce7d22b24', 'test', 'http://182.61.134.5:8092/img/receive/9fe151ddb155d1ae229384767c2e407.png', '8db5a2dff7c0ef0e988d466514721f74', 0.70200000, '2020-01-27 16:23:18', NULL, NULL, '2020-01-27 11:44:29');
+INSERT INTO `order` VALUES ('2f05094d06ea7d336841693ab1127d62', '202002041609531000001205795124', '', '山哥', 2, 50.0000, 1, '2d74b21b4d8a94f4de5ef63513576d7d', 'test_two', 'http://182.61.134.5:8092/img/receive/9fe151ddb155d1ae229384767c2e407.png', '08a3d22453f274498c38d4e6c65b7489', 0.0080, 0.40000000, '2020-02-04 16:09:53', NULL, '2020-02-04 16:20:37', '2020-02-04 16:19:11', '中国', '湖南省', '衡阳市', '雁峰区');
+INSERT INTO `order` VALUES ('64356d9265d8cd64befca5fa1391efca', '202002041654341000000688911084', '', '小华', 2, 20.0000, 1, '2d74b21b4d8a94f4de5ef63513576d7d', 'test_two', 'http://182.61.134.5:8092/img/receive/9fe151ddb155d1ae229384767c2e407.png', '08a3d22453f274498c38d4e6c65b7489', 0.0080, 0.16000000, '2020-02-04 16:54:34', NULL, '2020-02-04 16:55:34', '2020-02-04 16:54:57', '中国', '湖南省', '衡阳市', '雁峰区');
 
 -- ----------------------------
 -- Table structure for order_publish
@@ -182,14 +186,10 @@ CREATE TABLE `order_publish`  (
   `channel` tinyint(32) NOT NULL COMMENT '渠道 1 支付宝 2微信',
   `amount` decimal(16, 4) NOT NULL DEFAULT 0.0000 COMMENT '金额',
   `status` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0 代付款 1被抢  2已支付 3已入账 3订单已过期',
-  `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '发布时间',
+  `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '发布时间',
   `pay_time` timestamp(0) NULL DEFAULT NULL COMMENT '付款时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of order_publish
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for rate
@@ -204,8 +204,8 @@ CREATE TABLE `rate`  (
 -- ----------------------------
 -- Records of rate
 -- ----------------------------
-INSERT INTO `rate` VALUES ('1', 0.0234000);
-INSERT INTO `rate` VALUES ('2', 0.0234000);
+INSERT INTO `rate` VALUES ('1', 0.0100000);
+INSERT INTO `rate` VALUES ('2', 0.0100000);
 
 -- ----------------------------
 -- Table structure for receive_code
@@ -227,7 +227,10 @@ CREATE TABLE `receive_code`  (
 -- ----------------------------
 -- Records of receive_code
 -- ----------------------------
-INSERT INTO `receive_code` VALUES ('8db5a2dff7c0ef0e988d466514721f74', 'f410aaa4483927c21bdd7c7ce7d22b24', 'test', 2, '王乐之', '', 'http://182.61.134.5:8092/img/receive/9fe151ddb155d1ae229384767c2e407.png', 0, 1);
+INSERT INTO `receive_code` VALUES ('08a3d22453f274498c38d4e6c65b7489', '2d74b21b4d8a94f4de5ef63513576d7d', 'test_two', 2, '王乐之', '', 'http://182.61.134.5:8092/img/receive/9fe151ddb155d1ae229384767c2e407.png', 0, 1);
+INSERT INTO `receive_code` VALUES ('5431aab92c038262a64cab615669b8a2', '2d74b21b4d8a94f4de5ef63513576d7d', 'test_two', 2, '王', '', 'http://182.61.134.5:8092/img/receive/9fe151ddb155d1ae229384767c2e407.png', 0, 1);
+INSERT INTO `receive_code` VALUES ('ae49d9c59bbeb12a37b28257add87ac1', 'b7353d3952169bfdb1a33e256eaad180', 'test_one', 2, '王乐之', '', 'http://182.61.134.5:8092/img/receive/9fe151ddb155d1ae229384767c2e407.png', 0, 1);
+INSERT INTO `receive_code` VALUES ('edfef115fd9666b4a2c2923b17301aef', '257ad4a0ba8003cd3a533f5ee662b9da', 'test', 2, '吴', '', 'http://182.61.134.5:8092/img/receive/9fe151ddb155d1ae229384767c2e407.png', 0, 1);
 
 -- ----------------------------
 -- Table structure for setting
@@ -239,10 +242,6 @@ CREATE TABLE `setting`  (
   `value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '值',
   PRIMARY KEY (`code`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '系统设置' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of setting
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for ums_admin
@@ -297,10 +296,6 @@ CREATE TABLE `ums_admin_permission_relation`  (
   `type` int(1) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '后台用户和权限关系表(除角色中定义的权限以外的加减权限)' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of ums_admin_permission_relation
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for ums_admin_role_relation
@@ -437,10 +432,11 @@ CREATE TABLE `user`  (
   `city` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '市',
   `region` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '区',
   `status` tinyint(1) NOT NULL DEFAULT 1 COMMENT '状态 -1-删除 0-锁定 1-正常 2封禁',
-  `create_time` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+  `create_time` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `del_time` timestamp(0) NULL DEFAULT NULL COMMENT '删除时间',
   `close_time` timestamp(0) NULL DEFAULT NULL COMMENT '封号时间',
   `auto_order_status` bit(1) NOT NULL DEFAULT b'0' COMMENT '抢单状态 0-未自动抢单 1-自动抢单中',
+  `google_secret` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '谷歌验证器密钥',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_ref_uer_id`(`ref_user_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户表' ROW_FORMAT = Dynamic;
@@ -448,46 +444,38 @@ CREATE TABLE `user`  (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('0b7ee8434341c6490232d21dc97aa430', '', '123456w', '', '$2a$10$8kQJuvCSYaFKty1YgOmCR.NRCYGCLJWfpRDv26d0fNSQjsOXvGtI.', NULL, '', '', 0, NULL, NULL, NULL, '', NULL, NULL, NULL, 1, '2020-01-24 23:59:49', NULL, NULL, b'0');
-INSERT INTO `user` VALUES ('1', '', 'first', '', '$2a$10$EwFWEEHvQrL3MEg8xd3xhuX.TOm5IhaK9sqFiq1coyJBUyfyWPIRO', '$2a$10$y8QsGdDIsvrd01EbwRa3duZqKn0dJpMDgRLGVNFbw0KtSLvIvz6rK', '', '', 0, NULL, NULL, NULL, '', '广东省', '珠海市', '珠海市', 1, '2020-01-08 19:09:53', NULL, '2020-01-20 10:00:00', b'0');
-INSERT INTO `user` VALUES ('2350cc1c23a050a6b7f43b26779b2eb0', '', '12345678901', '', '$2a$10$y3/66qf5LHGxf7UZAyeTUeqjFH6Dr6n0i3Dy3sum4wqlYBsvHM802', '$2a$10$auG7zi6AfNnrQssJ7xEHr.e09kiCWVLJJ0RacYdqIV1T98F.FX2qK', '', '', 0, NULL, NULL, NULL, '', '广东省', '深圳市', '深圳市', -1, '2020-01-23 22:46:18', NULL, NULL, b'0');
-INSERT INTO `user` VALUES ('53a21ff9ec643be6eff8db808a21b18d', '', '123456789011', '', '$2a$10$Yi9Uf5/aCXlhJnkoMSc/vua/b3QMxtKyiTSBxd3RgdUeuzYp7VAbC', NULL, '', '', 0, NULL, NULL, NULL, '', NULL, NULL, NULL, 1, '2020-01-23 23:22:43', NULL, '2020-01-30 10:00:00', b'0');
-INSERT INTO `user` VALUES ('5f1ee8d709d7a782f5fc68c63ba3966d', '', '123456q', '', '$2a$10$HcuL.ZYNkGPev08vMPMR4.VwqfU9VyzThRpVvtkFKDuWKQZlXfRPq', NULL, '', '', 0, NULL, NULL, NULL, '', NULL, NULL, NULL, -1, '2020-01-24 23:43:58', NULL, NULL, b'0');
-INSERT INTO `user` VALUES ('81eaba47169a917a0590f3b646c7274a', '', '123456q', '', '$2a$10$x5BJKsFRuJN/3cxMhSqgWeWE/W82P9EeVkpU04zFcnBPWUajndv7.', NULL, '', '', 0, NULL, NULL, NULL, '', NULL, NULL, NULL, 1, '2020-01-24 23:44:23', NULL, NULL, b'0');
-INSERT INTO `user` VALUES ('9a356b11aeca0661b09a005d7e6457c6', '', '1234567890111', '', '$2a$10$BxkntrS1I0XAhstEkOZHUO.ri/DEvH1I7c4wE1ebCoL1Kwy5I2Pjm', NULL, '', '', 0, NULL, NULL, NULL, '', NULL, NULL, NULL, 1, '2020-01-24 21:59:00', NULL, NULL, b'0');
-INSERT INTO `user` VALUES ('e827e24d32b8e9e0f2b527783eb0652a', '53a21ff9ec643be6eff8db808a21b18d', '12311111', '15627551441', '$2a$10$Sz9PUapC/D7ZaR1629E4PuLZqPP7iGFrxLlYXH4Ej5gphV7z5owoa', NULL, '', '', 0, NULL, NULL, NULL, '', NULL, NULL, NULL, 1, '2020-01-23 23:24:49', NULL, NULL, b'0');
-INSERT INTO `user` VALUES ('f410aaa4483927c21bdd7c7ce7d22b24', '', 'test', '', '$2a$10$e44MWspyunxemZymLZU4HOkgiJlGEa9QOM0oMAw4Gxi5DXWW1f.Me', NULL, '', '', 0, NULL, NULL, NULL, '', NULL, NULL, NULL, 1, '2020-01-24 14:17:13', NULL, NULL, b'0');
+INSERT INTO `user` VALUES ('257ad4a0ba8003cd3a533f5ee662b9da', '', 'test', '', '$2a$10$AYzBNbwCOVZzWXumrgCyT.0sfe2/.nzbmkkYMyZN412uUjWJgN8JC', NULL, '', '', 0, NULL, NULL, NULL, '', NULL, NULL, NULL, 1, '2020-02-03 22:06:13', NULL, NULL, b'0', 'PGSWXWOUBLESQSJT');
+INSERT INTO `user` VALUES ('2d74b21b4d8a94f4de5ef63513576d7d', 'b7353d3952169bfdb1a33e256eaad180', 'test_two', '13590303546', '$2a$10$5WofxFD5FIAnvtllFXKVS.CsO17G3bgBnimEMHNYK79VrdtmfWZS2', NULL, '', '', 0, NULL, NULL, NULL, '中国', '湖南省', '衡阳市', '雁峰区', 1, '2020-02-04 14:46:38', NULL, NULL, b'0', '');
+INSERT INTO `user` VALUES ('5e94c7ff134f5dd82bc92f49a57c8d15', '', '123456789011', '', '$2a$10$cJIM2RFC.Z80YQQ3LMqvU.aNK6zD/zp.0nYZ8juWSTLlcRwRmM4zG', NULL, '', '', 0, NULL, NULL, NULL, '', NULL, NULL, NULL, 1, '2020-02-05 21:18:09', NULL, NULL, b'0', '');
+INSERT INTO `user` VALUES ('b7353d3952169bfdb1a33e256eaad180', '257ad4a0ba8003cd3a533f5ee662b9da', 'test_one', '13590303547', '$2a$10$uqfxieFniQv6zzhhho3uEuIZJ7eixS1u4ZyR1ufMHC63Te7aEfxaG', NULL, '', '', 0, NULL, NULL, NULL, '', NULL, NULL, NULL, 1, '2020-02-04 13:39:59', NULL, NULL, b'0', '');
+INSERT INTO `user` VALUES ('f0395ae2f69b257f3597ad2fda6b3ab5', '', 'test_sdfjsfk', '13590303545', '$2a$10$TDSvrw59uXfbshGtsK/P5OkVX3Dp/cuKAFx2Ui7VTnQQopoYZJcWO', NULL, '', '', 0, NULL, NULL, NULL, '', NULL, NULL, NULL, 1, '2020-02-05 18:15:33', NULL, NULL, b'0', '');
 
 -- ----------------------------
 -- Table structure for user_bank_card
 -- ----------------------------
 DROP TABLE IF EXISTS `user_bank_card`;
 CREATE TABLE `user_bank_card`  (
-  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '主键ID',
-  `user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '用户id',
-  `bank_name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '银行名称',
-  `bank_code` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '银行简称',
-  `bank_logo` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '银行logo',
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '主键ID',
+  `user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户id',
+  `bank_name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '银行名称',
+  `bank_code` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '银行简称',
+  `bank_logo` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '银行logo',
   `card_type` tinyint(1) NOT NULL DEFAULT 1 COMMENT '银行卡类型：1-借记卡 2-贷记合一 3-贷记卡',
-  `card_no` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '银行卡号',
-  `real_name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '姓名',
+  `card_no` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '银行卡号',
+  `real_name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '姓名',
   `account_type` tinyint(1) NULL DEFAULT 1 COMMENT '账户类型 1-个人账户 2企业账户',
-  `mobile` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '手机号码',
-  `create_time` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+  `mobile` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '手机号码',
+  `create_time` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `status` tinyint(1) NULL DEFAULT 1 COMMENT '状态 0认证中 1认证通过 2 不通过',
   `is_default` bit(1) NULL DEFAULT b'0' COMMENT '是否是默认',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `idx_card_no`(`card_no`) USING BTREE COMMENT '银行卡号必须唯一'
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '用户-银行卡' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户-银行卡' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user_bank_card
 -- ----------------------------
-INSERT INTO `user_bank_card` VALUES ('1', '1', '中国银行', '', 'img/China.png', 1, '12313131313', '', 1, NULL, '2020-01-19 10:56:31', 1, b'0');
-INSERT INTO `user_bank_card` VALUES ('2e7e212ef865af596e8aafc9782b2a6d', '1', '中国建设银行', '', 'img/js.png', 1, '**** 1576', '', 1, NULL, '2020-01-19 14:09:02', 1, b'0');
-INSERT INTO `user_bank_card` VALUES ('a5558b4b47d70526efece975d6b6887c', '1', '中国建设银行', '', 'img/js.png', 1, '**** 1313', '', 1, NULL, '2020-01-19 14:13:00', 1, b'1');
-INSERT INTO `user_bank_card` VALUES ('b7cedcdf4948f50fbea478b4f8ced9dc', 'f410aaa4483927c21bdd7c7ce7d22b24', '中国银行', '', 'img/China.png', 1, '72348325202304204', '', 1, NULL, '2020-01-27 22:52:46', 1, b'0');
-INSERT INTO `user_bank_card` VALUES ('eab05022528aafbe636a6140363da89b', '1', '招商银行', '', 'img/zs.png', 1, '**** 2-32', '', 1, NULL, '2020-01-19 14:12:20', 1, b'0');
+INSERT INTO `user_bank_card` VALUES ('755f83e1eaa0b5872c9db0746e65f814', '257ad4a0ba8003cd3a533f5ee662b9da', '中国农业银行', '', 'img/ABC.png', 1, '62248904946030499', '', 1, NULL, '2020-02-05 16:16:41', 1, b'0');
 
 -- ----------------------------
 -- Table structure for user_date_income
@@ -495,19 +483,20 @@ INSERT INTO `user_bank_card` VALUES ('eab05022528aafbe636a6140363da89b', '1', '�
 DROP TABLE IF EXISTS `user_date_income`;
 CREATE TABLE `user_date_income`  (
   `user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户id，联合主键',
+  `user_account` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户账号',
   `date` varchar(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '日期，联合主键',
   `ref_user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '推荐用户id',
-  `ref_user_account` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '推荐用户账号',
   `income` decimal(16, 8) NOT NULL DEFAULT 0.00000000 COMMENT '自身收益',
-  `team_income` decimal(16, 8) NULL DEFAULT NULL COMMENT '团队收益',
+  `team_income` decimal(16, 8) NULL DEFAULT 0.00000000 COMMENT '团队收益',
   PRIMARY KEY (`user_id`, `date`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user_date_income
 -- ----------------------------
-INSERT INTO `user_date_income` VALUES ('1', '20200120', NULL, NULL, 0.00840000, NULL);
-INSERT INTO `user_date_income` VALUES ('5', '20200121', '6', '1', 0.00100000, 0.00100000);
+INSERT INTO `user_date_income` VALUES ('257ad4a0ba8003cd3a533f5ee662b9da', 'test', '20200204', '', 0.07000000, 0.07000000);
+INSERT INTO `user_date_income` VALUES ('2d74b21b4d8a94f4de5ef63513576d7d', 'test_two', '20200204', 'b7353d3952169bfdb1a33e256eaad180', 0.56000000, 0.56000000);
+INSERT INTO `user_date_income` VALUES ('b7353d3952169bfdb1a33e256eaad180', 'test_one', '20200204', '257ad4a0ba8003cd3a533f5ee662b9da', 0.07000000, 0.07000000);
 
 -- ----------------------------
 -- Table structure for user_fund
@@ -516,11 +505,11 @@ DROP TABLE IF EXISTS `user_fund`;
 CREATE TABLE `user_fund`  (
   `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'ID，主键',
   `user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户id',
-  `balance` decimal(20, 8) NOT NULL COMMENT '余额',
+  `balance` decimal(20, 8) NOT NULL DEFAULT 0.00000000 COMMENT '余额',
   `freeze_balance` decimal(20, 8) NOT NULL DEFAULT 0.00000000 COMMENT '冻结金额',
   `available_balance` decimal(20, 8) NOT NULL DEFAULT 0.00000000 COMMENT '可用金额',
   `deposit` decimal(20, 8) NOT NULL DEFAULT 0.00000000 COMMENT '押金',
-  `commission` decimal(20, 8) NOT NULL COMMENT '佣金',
+  `commission` decimal(20, 8) NOT NULL DEFAULT 0.00000000 COMMENT '佣金',
   `cqc` decimal(20, 8) NOT NULL DEFAULT 0.00000000 COMMENT 'cqc金额',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `idx_user_id`(`user_id`) USING BTREE
@@ -529,16 +518,11 @@ CREATE TABLE `user_fund`  (
 -- ----------------------------
 -- Records of user_fund
 -- ----------------------------
-INSERT INTO `user_fund` VALUES ('021773391e096be2f6d6acd765c788cd', '53a21ff9ec643be6eff8db808a21b18d', 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000);
-INSERT INTO `user_fund` VALUES ('1', '1', 4.90640000, 2.00000000, 2.90640000, 0.00000000, 0.00000000, 0.00000000);
-INSERT INTO `user_fund` VALUES ('103721d4388b706c2f99a1fad005e09f', '81eaba47169a917a0590f3b646c7274a', 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000);
-INSERT INTO `user_fund` VALUES ('11d5f108e5a7e22340b3a68254390f26', '0b7ee8434341c6490232d21dc97aa430', 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000);
-INSERT INTO `user_fund` VALUES ('12cda644a457dd41b2575cbfa9cac53b', 'e827e24d32b8e9e0f2b527783eb0652a', 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000);
-INSERT INTO `user_fund` VALUES ('2', '2', 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000);
-INSERT INTO `user_fund` VALUES ('422c2fbd54f576489449356ef4ee8954', '5f1ee8d709d7a782f5fc68c63ba3966d', 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000);
-INSERT INTO `user_fund` VALUES ('6e8098786ac7406b766b12b25e91f826', '2350cc1c23a050a6b7f43b26779b2eb0', 122222.00000000, 0.00000000, 122222.00000000, 0.00000000, 0.00000000, 0.00000000);
-INSERT INTO `user_fund` VALUES ('c97795f34002dbff9cef8c1da0841551', 'f410aaa4483927c21bdd7c7ce7d22b24', 198.00000000, 48.00000000, 150.00000000, 0.00000000, 0.00000000, 0.00000000);
-INSERT INTO `user_fund` VALUES ('e41cd2dc58bd69c8bae80d1c95bb2d65', '9a356b11aeca0661b09a005d7e6457c6', 0.00000000, 2.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000);
+INSERT INTO `user_fund` VALUES ('1', '257ad4a0ba8003cd3a533f5ee662b9da', 0.07000000, 0.00000000, 0.07000000, 0.00000000, 0.00000000, 0.00000000);
+INSERT INTO `user_fund` VALUES ('2', '2d74b21b4d8a94f4de5ef63513576d7d', 130.56000000, 0.00000000, 130.56000000, 0.00000000, 0.00000000, 0.00000000);
+INSERT INTO `user_fund` VALUES ('3', 'b7353d3952169bfdb1a33e256eaad180', 0.07000000, 0.00000000, 0.07000000, 0.00000000, 0.00000000, 0.00000000);
+INSERT INTO `user_fund` VALUES ('cc10d0865652da4c1856be2f40f3fc52', '5e94c7ff134f5dd82bc92f49a57c8d15', 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000);
+INSERT INTO `user_fund` VALUES ('e4eb29b8479835b923a032fdc4796f23', 'f0395ae2f69b257f3597ad2fda6b3ab5', 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000);
 
 -- ----------------------------
 -- Table structure for user_fund_record
@@ -552,17 +536,22 @@ CREATE TABLE `user_fund_record`  (
   `direct` tinyint(255) NOT NULL DEFAULT 1 COMMENT '方向 1 增加 2减少',
   `balance` decimal(20, 8) NOT NULL DEFAULT 0.00000000 COMMENT '当前余额',
   `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '备注',
-  `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+  `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '用户-虚拟币记录' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user_fund_record
 -- ----------------------------
-INSERT INTO `user_fund_record` VALUES ('156c2a2d68175a5241f6b4717b639a55', 'f410aaa4483927c21bdd7c7ce7d22b24', 2.00000000, 4, 2, 157.00000000, '提现', '2020-01-27 23:01:31');
-INSERT INTO `user_fund_record` VALUES ('161124e51e34bdb920ef3863e2e67649', 'f410aaa4483927c21bdd7c7ce7d22b24', 23.00000000, 5, 1, 198.00000000, '后台打回提现', '2020-01-27 23:16:46');
-INSERT INTO `user_fund_record` VALUES ('6839d054b54e0327aca78ffc4838cf14', 'f410aaa4483927c21bdd7c7ce7d22b24', 200.00000000, 1, 1, 200.00000000, '后台管理员手工充值', '2020-01-27 16:22:19');
-INSERT INTO `user_fund_record` VALUES ('bf8cd2eafaaae8f63b460376ea98f76b', 'f410aaa4483927c21bdd7c7ce7d22b24', 23.00000000, 4, 2, 159.00000000, '提现', '2020-01-27 22:54:36');
+INSERT INTO `user_fund_record` VALUES ('016af407b9198774a45c94c37a1bee2b', '257ad4a0ba8003cd3a533f5ee662b9da', 0.05000000, 8, 1, 0.05000000, '推广佣金', '2020-02-04 16:21:32');
+INSERT INTO `user_fund_record` VALUES ('534c75650d244ab082e02550ca9d3f05', '257ad4a0ba8003cd3a533f5ee662b9da', 0.02000000, 8, 1, 0.07000000, '推广佣金', '2020-02-04 16:55:45');
+INSERT INTO `user_fund_record` VALUES ('5b0105137461af8404020ea20d6f5d86', '2d74b21b4d8a94f4de5ef63513576d7d', 0.40000000, 7, 1, 150.40000000, '抢单佣金', '2020-02-04 16:20:36');
+INSERT INTO `user_fund_record` VALUES ('6b5e0c6ad1f289fe4a327858c2f141d8', 'b7353d3952169bfdb1a33e256eaad180', 0.05000000, 8, 1, 0.05000000, '推广佣金', '2020-02-04 16:20:59');
+INSERT INTO `user_fund_record` VALUES ('94fa2102cdfb6780a3500bb056968af1', '2d74b21b4d8a94f4de5ef63513576d7d', 50.00000000, 6, 2, 150.00000000, '确认付款', '2020-02-04 16:20:35');
+INSERT INTO `user_fund_record` VALUES ('96993d6f5573a22ebe09d7ba3f9e6b5d', '2d74b21b4d8a94f4de5ef63513576d7d', 0.16000000, 7, 1, 130.56000000, '抢单佣金', '2020-02-04 16:55:33');
+INSERT INTO `user_fund_record` VALUES ('9fb280028bfb658eb7081bba9398bae5', '2d74b21b4d8a94f4de5ef63513576d7d', 200.00000000, 1, 1, 200.00000000, '后台管理员手工充值', '2020-02-04 16:12:49');
+INSERT INTO `user_fund_record` VALUES ('b3acce1b9177c17692825365021767d9', '2d74b21b4d8a94f4de5ef63513576d7d', 20.00000000, 6, 2, 130.40000000, '确认付款', '2020-02-04 16:55:32');
+INSERT INTO `user_fund_record` VALUES ('eac3d1d9194cdc5c858c2c3fde0fb5f0', 'b7353d3952169bfdb1a33e256eaad180', 0.02000000, 8, 1, 0.07000000, '推广佣金', '2020-02-04 16:55:41');
 
 -- ----------------------------
 -- Table structure for user_rate
@@ -580,29 +569,41 @@ CREATE TABLE `user_rate`  (
 -- Records of user_rate
 -- ----------------------------
 INSERT INTO `user_rate` VALUES ('1', '1', 2, 0.0085);
+INSERT INTO `user_rate` VALUES ('10c83b533382e1107368c4e79be3b6b9', 'b8860bb194b5409894d68f84d8e509f6', 1, 0.0000);
 INSERT INTO `user_rate` VALUES ('1873d3f60fb4940080b368a2ef84ad2b', '8fbe2f5b65eece0a3f7095c1ee23e026', 2, 0.0000);
 INSERT INTO `user_rate` VALUES ('1962d99077a7d6d4501d5e2c1ffeb770', '2350cc1c23a050a6b7f43b26779b2eb0', 2, 0.0000);
 INSERT INTO `user_rate` VALUES ('2', '1', 1, 0.0084);
+INSERT INTO `user_rate` VALUES ('2b9cba5734c947f68a369ddee4c2bedf', '2dc99ce2ac112ad6e4fddafe4430fff3', 2, 0.0000);
 INSERT INTO `user_rate` VALUES ('3', '2', 1, 0.0000);
+INSERT INTO `user_rate` VALUES ('30f1e2221f2382ac0779b0a99a1a57b4', '6f50411a3c0ec9e95db01c4819376437', 1, 0.0000);
+INSERT INTO `user_rate` VALUES ('36fb4dd4663fa8ace6c6634637291252', '32d11153b6a9676620875b08750e153c', 2, 0.0000);
 INSERT INTO `user_rate` VALUES ('374a25c79a46c23f995d292164568d78', '9a356b11aeca0661b09a005d7e6457c6', 2, 1.0000);
 INSERT INTO `user_rate` VALUES ('3934c151174ee4bcf290a4e008c9755a', 'f410aaa4483927c21bdd7c7ce7d22b24', 2, 0.0000);
 INSERT INTO `user_rate` VALUES ('4', '2', 2, 0.0000);
 INSERT INTO `user_rate` VALUES ('55e4e4619c619bcec2aec8a202aa2d93', '0b7ee8434341c6490232d21dc97aa430', 2, 0.0000);
 INSERT INTO `user_rate` VALUES ('5ff4b144b763c222216c6735cf91c013', 'f410aaa4483927c21bdd7c7ce7d22b24', 1, 0.0000);
 INSERT INTO `user_rate` VALUES ('61d3d37417e73191606270a81afe21b9', '53a21ff9ec643be6eff8db808a21b18d', 1, 1.0000);
+INSERT INTO `user_rate` VALUES ('64f873bda13341173464651b6408dc13', '257ad4a0ba8003cd3a533f5ee662b9da', 2, 0.0000);
+INSERT INTO `user_rate` VALUES ('6c29e03b98a44c0c955cb4c6fa8bbae1', '5e94c7ff134f5dd82bc92f49a57c8d15', 1, 0.0000);
 INSERT INTO `user_rate` VALUES ('7ae552c7cdfbd01456cf98c2a5701005', '81eaba47169a917a0590f3b646c7274a', 1, 0.0000);
 INSERT INTO `user_rate` VALUES ('7e0e7ce5f93d99eb1ad027044b686883', '0b7ee8434341c6490232d21dc97aa430', 1, 0.0000);
 INSERT INTO `user_rate` VALUES ('811fe08515758f9f15c3aabf08edbd23', 'b933daeebaa2d3ab2102a7050d582a21', 2, 0.0000);
+INSERT INTO `user_rate` VALUES ('91622e1d6921558bd13e97c5fe7cb067', '257ad4a0ba8003cd3a533f5ee662b9da', 1, 0.0000);
 INSERT INTO `user_rate` VALUES ('98da290d6a5442ae6b40309ecf0a5274', '81eaba47169a917a0590f3b646c7274a', 2, 0.0000);
+INSERT INTO `user_rate` VALUES ('a4427c558547d64d0c79e67acf881453', 'b8860bb194b5409894d68f84d8e509f6', 2, 0.0000);
 INSERT INTO `user_rate` VALUES ('a85180ed929b7a5165b9c4a7140da3df', '5f1ee8d709d7a782f5fc68c63ba3966d', 2, 0.0000);
 INSERT INTO `user_rate` VALUES ('aa4de35d17fd95de0c4b2a9e8ee1762a', '5f1ee8d709d7a782f5fc68c63ba3966d', 1, 0.0000);
 INSERT INTO `user_rate` VALUES ('b12be83fafc92987b34fd7193a1c939c', '9a356b11aeca0661b09a005d7e6457c6', 1, 1.0000);
 INSERT INTO `user_rate` VALUES ('bd76f8a65ab4818d932806f634f9d1f5', '8fbe2f5b65eece0a3f7095c1ee23e026', 1, 0.0000);
 INSERT INTO `user_rate` VALUES ('c37dee82174290c38d8f47d31653dd4d', '53a21ff9ec643be6eff8db808a21b18d', 2, 2.0000);
+INSERT INTO `user_rate` VALUES ('c5776b3aa04fda6cabd874a6dd52d412', '2dc99ce2ac112ad6e4fddafe4430fff3', 1, 0.0000);
 INSERT INTO `user_rate` VALUES ('c82c2bbb209de57e745c7f02332b3dda', '2350cc1c23a050a6b7f43b26779b2eb0', 1, 0.0000);
 INSERT INTO `user_rate` VALUES ('cacca74aefad554d2b8fefe7cd88e827', 'b933daeebaa2d3ab2102a7050d582a21', 1, 0.0000);
 INSERT INTO `user_rate` VALUES ('deda9c9b5d3a73a2abb26195ac6d21d6', '9df17dc55103608c2b0e71cd6b1c843c', 2, 0.0000);
+INSERT INTO `user_rate` VALUES ('e6b2a57646c4c7bb949cff7ce62f9f87', '5e94c7ff134f5dd82bc92f49a57c8d15', 2, 0.0000);
 INSERT INTO `user_rate` VALUES ('e864342e48674993021989d5e0339157', '9df17dc55103608c2b0e71cd6b1c843c', 1, 0.0000);
+INSERT INTO `user_rate` VALUES ('f4111f2523b285e1dab9f09a06491d88', '32d11153b6a9676620875b08750e153c', 1, 0.0000);
+INSERT INTO `user_rate` VALUES ('f9172b16cf7cb746ae4c0c184bd8738c', '6f50411a3c0ec9e95db01c4819376437', 2, 0.0000);
 
 -- ----------------------------
 -- Table structure for user_real_audit
@@ -614,14 +615,10 @@ CREATE TABLE `user_real_audit`  (
   `type` tinyint(1) NOT NULL DEFAULT 1 COMMENT '1- 人工审核 2-系统审核',
   `status` tinyint(1) NULL DEFAULT NULL COMMENT '状态：1 通过 2不通过',
   `audit_account` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '审核人用户id',
-  `audit_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '审核时间',
+  `audit_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '审核时间',
   `audit_opinion` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '审核意见',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '用户实名审核记录' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of user_real_audit
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for user_real_info
@@ -639,7 +636,7 @@ CREATE TABLE `user_real_info`  (
   `email` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '邮箱',
   `telephone` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '电话',
   `status` tinyint(1) NOT NULL DEFAULT 0 COMMENT '状态 -1删除 0 审核中 1 审核通过 ',
-  `create_time` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+  `create_time` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `idx_user_id_type_status`(`user_id`, `type`, `status`) USING BTREE COMMENT '一个用户只有一种类型的实名信息'
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户实名信息' ROW_FORMAT = Dynamic;
@@ -649,7 +646,31 @@ CREATE TABLE `user_real_info`  (
 -- ----------------------------
 INSERT INTO `user_real_info` VALUES ('10c9ef84bf6e6c0674dd5a9e32f51ef1', '2350cc1c23a050a6b7f43b26779b2eb0', 1, '张三', '440232432525255265', NULL, NULL, '1111222222', '1234@qq.com', '15627553211', 1, '2020-01-23 23:00:15');
 INSERT INTO `user_real_info` VALUES ('6ad10aec7bc775a512d792ef4ab6782c', 'f410aaa4483927c21bdd7c7ce7d22b24', 1, '小王', '430422199408263928', NULL, NULL, '719031672', '719031672@qq.com', '13590303545', 1, '2020-01-27 16:06:13');
+INSERT INTO `user_real_info` VALUES ('7777fe9eb37a0fe82b61f9c8e4c84f49', 'b7353d3952169bfdb1a33e256eaad180', 1, '王乐之', '430422199408263928', NULL, NULL, '719031672', '719031672@qq.com', '13590303545', 1, '2020-02-04 13:52:28');
+INSERT INTO `user_real_info` VALUES ('8df8bff5695013ef0858d4d7006b53bc', '8df6257560d1aa0a5dc2cf3d1fdcd44d', 1, '张三', '440302111111111111', NULL, NULL, '111111', '111111111@qq.com', '13262662661', 1, '2020-02-02 20:03:44');
 INSERT INTO `user_real_info` VALUES ('970662ad32b736f22a368fc792afe3ff', '1', 1, '张三', '430422199408263930', NULL, NULL, '719031672', '719031672@qq.com', '13590303545', 0, '2020-01-19 15:50:24');
+INSERT INTO `user_real_info` VALUES ('cd6f23cb750e918e3c6547567d9147cc', '2d74b21b4d8a94f4de5ef63513576d7d', 1, '小王', '430422199408263928', NULL, NULL, '719031672', '719031672@qq.com', '13590303545', 1, '2020-02-04 14:48:09');
+INSERT INTO `user_real_info` VALUES ('e6fa00614003f918a44b2c9b9b7b1bc6', '53a21ff9ec643be6eff8db808a21b18d', 1, '张三三', '441376766686868686', NULL, NULL, '46566868', '4949646464@qq.com', '15683466645', 1, '2020-01-31 11:16:09');
+
+-- ----------------------------
+-- Table structure for user_recommend
+-- ----------------------------
+DROP TABLE IF EXISTS `user_recommend`;
+CREATE TABLE `user_recommend`  (
+  `user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户id',
+  `level` tinyint(1) NOT NULL COMMENT '1表示只有1级上级 2表示有2级上级，最大5  注册的时候有程序决定',
+  `account` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户账号',
+  `ref_user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '上级用户id',
+  `ref_user_account` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '上级用户账号',
+  PRIMARY KEY (`user_id`, `level`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of user_recommend
+-- ----------------------------
+INSERT INTO `user_recommend` VALUES ('2d74b21b4d8a94f4de5ef63513576d7d', 1, 'test_two', 'b7353d3952169bfdb1a33e256eaad180', 'test_one');
+INSERT INTO `user_recommend` VALUES ('2d74b21b4d8a94f4de5ef63513576d7d', 2, 'test_two', '257ad4a0ba8003cd3a533f5ee662b9da', 'test');
+INSERT INTO `user_recommend` VALUES ('b7353d3952169bfdb1a33e256eaad180', 1, 'test_one', '257ad4a0ba8003cd3a533f5ee662b9da', 'test');
 
 -- ----------------------------
 -- Table structure for user_withdraw
@@ -667,16 +688,9 @@ CREATE TABLE `user_withdraw`  (
   `status` tinyint(1) NOT NULL DEFAULT 0 COMMENT '状态：0-提现中 1-成功 2-后台退回 4-失败',
   `third_trade_no` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '第三方转账单号',
   `remark` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+  `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `success_time` timestamp(0) NULL DEFAULT NULL COMMENT '到账时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '提现记录' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of user_withdraw
--- ----------------------------
-INSERT INTO `user_withdraw` VALUES ('d8aa86fa1ad5122909327c93a7392a9b', 'f410aaa4483927c21bdd7c7ce7d22b24', 23.00, '中国银行', '72348325202304204', 'img/China.png', NULL, 0.0000, 2, NULL, '用户提现', '2020-01-27 22:54:36', NULL);
-INSERT INTO `user_withdraw` VALUES ('dce2f9acb05f39496194436bdd178bcc', '1', 1.00, '中国建设银行', '**** 1313', 'img/js.png', NULL, 0.0000, 0, NULL, '用户提现', '2020-01-26 01:29:47', NULL);
-INSERT INTO `user_withdraw` VALUES ('f2a0c9ed016dbd5512a23c460bbe6b6e', 'f410aaa4483927c21bdd7c7ce7d22b24', 2.00, '中国银行', '72348325202304204', 'img/China.png', NULL, 0.0000, 1, NULL, '用户提现', '2020-01-27 23:01:31', NULL);
 
 SET FOREIGN_KEY_CHECKS = 1;

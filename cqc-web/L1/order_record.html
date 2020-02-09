@@ -93,7 +93,7 @@
             <h3>起始时间:</h3>
             <div class="start_time">
                 <div class="iDate full">
-                    <input type="text">
+                    <input type="text" class="date_time" id="date_start">
                     <button type="button" class="addOn"></button>
                 </div>
                 <!-- <span class="day">2019-11-25</span> -->
@@ -102,7 +102,7 @@
             <h3>结束时间:</h3>
             <div class="end_time">
                 <div class="iDate full">
-                    <input type="text">
+                    <input type="text" class="date_time">
                     <button type="button" class="addOn"></button>
                 </div>
                 <!-- <span class="day">2019-11-25</span> -->
@@ -139,6 +139,28 @@
 </div>
 </body>
 <script>
+    var day = new Date();
+    day.setTime(day.getTime()-24*60*60*1000 * 30);
+    var month = day.getMonth()+1;
+    var date = day.getDate();
+    if (month <= 9) {
+        month = "0" + month;
+    }
+    if (date <= 9) {
+        date = "0" + date;
+    }
+    var dateStr = day.getFullYear()+ ""+ month + ""+ date;
+    $("#date_start").val(dateStr);
+
+    var params = {
+        "pageNum": 1,
+        "pageSize": 100,
+        "channel": null,
+        "status": null,
+        "startTimeStr": null,
+        "endTimeStr": null
+    }
+
     // 筛选显示data-type属性判断
     var wrap_news = $(".wrap_news");
     var cate_btn = $(".cate .each_btn");        //类型按钮
@@ -191,6 +213,24 @@
             $(wrap_news[1]).hide();
             $(wrap_news[0]).show();
         }
+        $(".close").click();
+        $(".two_model li").show();
+        var start_end = $(".date_time");
+        var start_time = $(start_end[0]).val();           //开始时间
+        var end_time = $(start_end[1]).val();
+        if (cate) {
+            params.status = cate;
+        }
+        if (pay_cate) {
+            params.channel = pay_cate;
+        }
+        if (start_time) {
+            params["startTimeStr"] = start_time;
+        }
+        if (end_time) {
+            params["endTimeStr"] = end_time;
+        }
+        orderList(params);
     }
     // 支付类型选择
     $(".pay_cate .each_btn").click(function () {
@@ -299,17 +339,21 @@
             $(".iDate.full").datetimepicker({
                 locale: "zh-cn",
                 // format: "YYYY-MM-DD a hh:mm",
-                format: "YYYY-MM-DD hh:mm",
+                format: "YYYY-MM-DD",
                 dayViewHeaderFormat: "YYYY年 MMMM"
             });
         }
 
-        orderList();
+        orderList(params);
     });
 
 
-    function orderList() {
-        getForAuth(host + my_order_list, null, function (result) {
+    function orderList(params) {
+        if (!params) {
+            params = {}
+        }
+        console.log("参数:", params);
+        getForAuth(host + my_order_list, params, function (result) {
             var html = '';
             var list = result.data.records;
             if (!list) {
@@ -330,8 +374,11 @@
                     '<a href="javascript:void(0);" class="four">删除</a>' +
                     '</li>';
             }
-            $(".two_model ul").append(html);
-
+            if (params.pageNum == 1) {
+                $(".two_model ul").html(html);
+            } else {
+                $(".two_model ul").append(html);
+            }
         });
     }
 

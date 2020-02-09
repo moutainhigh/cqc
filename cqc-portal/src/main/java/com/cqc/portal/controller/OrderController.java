@@ -70,14 +70,14 @@ public class OrderController {
         Date endDate = null;
         try {
             if (!StringUtils.isEmpty(param.getStartTimeStr())) {
-                startDate = DateUtil.parse(param.getStartTimeStr(), "yyyy-MM-dd HH:mm");
+                startDate = DateUtil.parse(param.getStartTimeStr(), "yyyy-MM-dd");
             }
         } catch (Exception e) {
             endDate = null;
         }
         try {
             if (!StringUtils.isEmpty(param.getEndTimeStr())) {
-                endDate = DateUtil.parse(param.getEndTimeStr(), "yyyy-MM-dd HH:mm");
+                endDate = DateUtil.parse(param.getEndTimeStr(), "yyyy-MM-dd");
             }
         } catch (Exception e) {
             endDate = null;
@@ -88,7 +88,8 @@ public class OrderController {
         Page<Order> page = new Page<>(param.getPageNum(), param.getPageSize());
         orderService.page(page, new QueryWrapper<Order>()
                 .eq("user_id", userId)
-                .eq(!StringUtils.isEmpty(param.getStatus()), "status", param.getStatus())
+                .eq(param.getStatus() != null, "status", param.getStatus())
+                .eq(param.getChannel() != null, "channel", param.getChannel())
                 .gt(startDate != null, "create_time", startDate)
                 .lt(endDate != null, "create_time", endDate)
                 .orderByDesc("create_time"));

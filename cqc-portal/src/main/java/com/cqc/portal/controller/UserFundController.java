@@ -73,14 +73,14 @@ public class UserFundController {
         Date endDate = null;
         try {
             if (!StringUtils.isEmpty(param.getStartTimeStr())) {
-                startDate = DateUtil.parse(param.getStartTimeStr(), "yyyy-MM-dd HH:mm");
+                startDate = DateUtil.parse(param.getStartTimeStr(), "yyyy-MM-dd");
             }
         } catch (Exception e) {
             endDate = null;
         }
         try {
             if (!StringUtils.isEmpty(param.getEndTimeStr())) {
-                endDate = DateUtil.parse(param.getEndTimeStr(), "yyyy-MM-dd HH:mm");
+                endDate = DateUtil.parse(param.getEndTimeStr(), "yyyy-MM-dd");
             }
         } catch (Exception e) {
             endDate = null;

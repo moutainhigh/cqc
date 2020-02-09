@@ -304,3 +304,4 @@ img {
   background: url(../img/Google_Play_logo.png) no-repeat left;
   background-size: 0.3rem;
 }
+input.bind{width:50%; padding:.3rem 0; background:#3e7fff; text-align:center; margin-left:25%; border-radius:.2rem; color:white; font-size:.3rem;}
