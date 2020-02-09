@@ -4,6 +4,7 @@ import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.cqc.common.api.Result;
 import com.cqc.common.api.ResultCode;
+import com.cqc.common.constant.Constants;
 import com.cqc.common.enums.BaseErrorMsg;
 import com.cqc.common.exception.BaseException;
 import com.cqc.model.User;
@@ -226,7 +227,7 @@ public class UserController {
         UserFundDto userFundDto = new UserFundDto();
         // 查余额
         UserFund fund = userFundService.getFund(userId);
-        userFundDto.setCqc(fund.getAvailableBalance());
+        userFundDto.setCqc(fund.getAvailableBalance().multiply(Constants.BUY_ORDER_PERCENT));
 
         userFundDto.setAutoOrderStatus(user.getAutoOrderStatus());
         return Result.success(userFundDto);
