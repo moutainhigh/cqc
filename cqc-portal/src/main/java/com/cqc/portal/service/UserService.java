@@ -23,6 +23,13 @@ public interface UserService extends IService<User> {
     User getUser(String userId);
 
     /**
+     * 根据手机号码获取用户
+     * @param mobile
+     * @return
+     */
+    User getByMobile(String mobile);
+
+    /**
      * 获取可用的用户
      * @param userId
      * @return
@@ -78,7 +85,7 @@ public interface UserService extends IService<User> {
     /**
      * 检查手机号码是否注册
      * @param mobile
-     * @return
+     * @return  已注册 true  未注册 false
      */
     boolean checkMobileReg(String mobile);
 }

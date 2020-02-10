@@ -7,7 +7,15 @@ public class ConstantEnums {
         /**
          * 注册模板id
          */
-        REGISTER(1, "100000"),
+        REGISTER(1, "527963"),
+
+
+
+
+        /**
+         * 重置google验证器
+         */
+        RESET_GOOGLE(3, "528133"),
         ;
         private String tmpId;
         private int type;

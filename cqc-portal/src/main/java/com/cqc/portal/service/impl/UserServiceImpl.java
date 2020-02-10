@@ -49,6 +49,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
 
     @Override
+    public User getByMobile(String mobile) {
+        QueryWrapper wrapper = new QueryWrapper<User>().eq("mobile", mobile);
+        User user = userMapper.selectOne(wrapper);
+        return user;
+    }
+
+    @Override
     public User checkUser(String userId) {
         User user = userMapper.selectById(userId);
         if (user == null) {
@@ -192,6 +199,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public boolean checkMobileReg(String mobile) {
         QueryWrapper wrapper = new QueryWrapper<User>().eq("mobile", mobile);
         User user = userMapper.selectOne(wrapper);
-        return user == null;
+        return user != null;
     }
 }

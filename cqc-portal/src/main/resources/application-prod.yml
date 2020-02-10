@@ -23,6 +23,6 @@ upload:
 
 sms:
   uri: http://api.sms.cn/sms
-  user_id: wanglezhi
-  pwd: qiong1213
-  tmp_id: 100000
+  user_id: ls112233
+  pwd: ls112233
+  tmp_id: 527963

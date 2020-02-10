@@ -2,7 +2,7 @@ package com.cqc.portal.dto;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 
 /**
  * @Description：
@@ -13,21 +13,21 @@ import javax.validation.constraints.NotEmpty;
 @Data
 public class RegisterParam {
 
-    @NotEmpty(message = "手机号码不能为空")
+    @NotBlank(message = "手机号码不能为空")
     private String mobile;
 
-    @NotEmpty(message = "用户名不能为空")
+    @NotBlank(message = "用户名不能为空")
     private String account;
 
     private String inviteCode;
 
-    @NotEmpty(message = "密码不能为空")
+    @NotBlank(message = "密码不能为空")
     private String password;
 
-    @NotEmpty(message = "确认密码不能为空")
+    @NotBlank(message = "确认密码不能为空")
     private String confirmPassword;
 
-    @NotEmpty(message = "短信验证码不能为空")
+    @NotBlank(message = "短信验证码不能为空")
     private String smsCode;
 
 
