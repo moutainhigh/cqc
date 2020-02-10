@@ -81,12 +81,6 @@ const PAY_DEPOSIT_URI = "/user/payDeposit";
 // 提现
 const with_draw_apply_uri = "/withDraw/add";
 
-// 获取密钥和二维码
-const google_auth_secret_uri = "/googleAuth/secret";
-
-// 绑定谷歌验证器
-const google_auth_bind_uri = "/googleAuth/bind";
-
 //发送短信验证码
 const send_sms_uri = "/sms/send";
 
@@ -98,3 +92,10 @@ const google_bind_uri = "/googleAuth/bind";
 
 // 城市热度榜
 const city_hot_uri = "/statistic/cityHot";
+
+//拼多多商家账号列表
+const pdd_account_list_uri = "/pddAccount/list";
+
+// 添加拼多多账号
+const pdd_account_add_uri = "/pddAccount/add";
+

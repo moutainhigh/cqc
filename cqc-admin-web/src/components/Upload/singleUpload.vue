@@ -19,7 +19,6 @@
   </div>
 </template>
 <script>
-  import {policy} from '@/api/oss'
 
   export default {
     name: 'singleUpload',
@@ -63,9 +62,9 @@
           // callback:'',
         },
         dialogVisible: false,
-        useOss:true, //使用oss->true;使用MinIO->false
+        useOss:false, //使用oss->true;使用MinIO->false
         ossUploadUrl:'http://macro-oss.oss-cn-shenzhen.aliyuncs.com',
-        minioUploadUrl:'http://localhost:8080/minio/upload',
+        minioUploadUrl:'http://localhost:8080/upload/uploadImg',
       };
     },
     methods: {
@@ -101,12 +100,13 @@
         })
       },
       handleUploadSuccess(res, file) {
+          console.log(res, file);
         this.showFileList = true;
         this.fileList.pop();
         let url = this.dataObj.host + '/' + this.dataObj.dir + '/' + file.name;
         if(!this.useOss){
           //不使用oss直接获取图片路径
-          url = res.data.url;
+          url = res.data;
         }
         this.fileList.push({name: file.name, url: url});
         this.emitInput(this.fileList[0].url);

@@ -28,9 +28,9 @@ public class UploadImgController {
 
         String filename = file.getOriginalFilename();
         InputStream inputStream = file.getInputStream();
-        FileUtils.copyInputStreamToFile(inputStream, new File(uploadDir, filename));
+        FileUtils.copyInputStreamToFile(inputStream, new File(uploadDir + "/bank/", filename));
         // 返回
-        String url = urlPrefix +"\\receive" + "\\" + filename;
+        String url = urlPrefix + "/bank/" + filename;
 
         return Result.success(url);
 

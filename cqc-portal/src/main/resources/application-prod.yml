@@ -18,8 +18,8 @@ logging:
 
 
 upload:
-  dir: /opt/ms/cqc/L1/img
-  urlPrefix: http://182.61.134.5:8092/img
+  dir: /opt/ms/cqc/static/img
+  urlPrefix: http://182.61.134.5:8095/img
 
 sms:
   uri: http://api.sms.cn/sms

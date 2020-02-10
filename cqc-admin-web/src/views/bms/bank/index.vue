@@ -45,7 +45,9 @@
           <template slot-scope="scope">{{scope.row.name}}</template>
         </el-table-column>
         <el-table-column label="银行logo" align="center" width="300">
-          <template slot-scope="scope">{{scope.row.logo}}</template>
+          <template slot-scope="scope">
+            <img style="height:50px" :src="scope.row.logo">
+          </template>
         </el-table-column>
 
       </el-table>
@@ -61,9 +63,11 @@
         <el-form-item label="银行名称：" prop="name">
           <el-input name="name" v-model="addBankDialogData.name" style="width: 300px"></el-input>
         </el-form-item>
+
         <el-form-item label="银行logo：" prop="logo">
-          <el-input name="logo"  v-model="addBankDialogData.logo" style="width: 300px;"></el-input>
+          <single-upload v-model="addBankDialogData.logo"></single-upload>
         </el-form-item>
+
       </el-form>
       <span slot="footer">
           <el-button @click="addBankDialogVisible = false" size="small">取 消</el-button>
@@ -76,6 +80,7 @@
 </template>
 <script>
   import {fetchList, add} from '@/api/bank';
+  import SingleUpload from '@/components/Upload/singleUpload'
   import {formatDate} from '@/utils/date';
 
   const defaultListQuery = {
@@ -84,15 +89,9 @@
     pageSize: 10
   };
   export default {
-    name: 'faqList',
+    name: 'bank',
+    components:{SingleUpload},
     data() {
-      const validateName = (rule, value, callback) => {
-        if (!value) {
-          callback(new Error('请输入银行名称'))
-        } else {
-          callback()
-        }
-      };
       return {
         listQuery: Object.assign({}, defaultListQuery),
         list: null,
@@ -112,7 +111,13 @@
           logo : null
         },
         addBankRules: {
-          name:[{required: true, trigger: 'blur', validator: validateName}]
+          name:[
+              {required: true, trigger: 'blur', message: '请输入银行名称'},
+              {min: 2, max: 140, message: '长度在 2 到 140 个字符', trigger: 'blur'}
+          ],
+          logo: [
+              {required: true, message: '请上传品牌logo', trigger: 'blur'}
+          ]
         }
       }
     },

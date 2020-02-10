@@ -19,5 +19,5 @@ logging:
 host: http://182.61.134.5
 
 upload:
-  dir: /opt/ms/cqc/dist/static/img
-  urlPrefix: http://182.61.134.5:8090/static/img
+  dir: /opt/ms/cqc/static/img
+  urlPrefix: http://182.61.134.5:8095/img
