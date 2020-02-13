@@ -3,15 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <!-- -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no ">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no ">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>base</title>
+    <title>页面</title>
     <!-- 网页ico -->
-    <link rel="shortcut icon" href="./favicon.ico">
+    <link rel="shortcut icon" href="">
     <!-- 导入基础base.css文件 -->
     <link rel="stylesheet" href="./css/base.css" />
-    <!-- 导入本类.css文件 -->
-    <link rel="stylesheet" href="./css/common.css" />
     <!-- 导入jquery -->
     <script src="./js/jquery.min.js"></script>
     <!-- 根据设备宽度，计算html根节点的font-size -->
@@ -33,24 +32,32 @@
             htmlEle.style.fontSize = 100 * (deviceWidth / 750) + "px";
         }
     </script>
-    <style>
-       .wrap_common{ background: white !important;}
-       .wrap_common a{margin-top: .5rem;}
-       .bc_img{ position: fixed; top: 3rem; left: 25%; width:50%; height: 50vw;}
-       .sign_btn{ position: fixed; bottom: 1rem; left: 7.5%; width: 85%;}
-    </style>
 </head>
+<style>
+    .content_page{ height: auto;}
+    .kf{ width: 100%; position: fixed; bottom: 0; left: 0;}
+</style>
 <body>
-    <!-- zdy改成本自定义名称 -->
-    <div class="wrap_common">
-        <img src="./bc_img.png" alt="" class="bc_img">
-        <div class="sign_btn">
-            <a href="./sign_in.html" class="btn_comm bg_qb">登录</a>
-            <a href="./register.html" class="btn_comm bg_qb">注册</a>
+    <div class="wrap_page">
+        <div class="top_wrap">
+            <div class="top">
+                <!-- 标题 -->
+                <h2>在线客服(建立连接...)</h2>
+                <!-- 左边返回样式 -->
+                <a href="javascript:history.go(-1)" class="ret"></a>
+            </div>
+        </div>
+        <!-- 顶部end -->
+        <!-- 内容start -->
+        <div class="content_page">
+        <object data="https://api.pop800.com/chat/716824"  type="text/html" id="data_path" class="kf"></object>
         </div>
     </div>
 </body>
 <script>
-   
+    $(function(){
+        var h = $(document).height();
+        $(".kf").css("height",h);
+    });
 </script>
 </html>

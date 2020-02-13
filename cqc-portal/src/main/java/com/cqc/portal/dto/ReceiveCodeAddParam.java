@@ -1,6 +1,7 @@
 package com.cqc.portal.dto;
 
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 
 /**
  * @Description：
@@ -18,5 +19,8 @@ public class ReceiveCodeAddParam {
     private Integer type;
 
     private String codeImg;
+
+    @Length(max = 6, message = "最大长度6")
+    private String googleCode;
 
 }

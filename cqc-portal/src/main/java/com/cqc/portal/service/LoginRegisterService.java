@@ -109,7 +109,7 @@ public class LoginRegisterService {
         if (!getByUserName(param.getAccount())) {
             throw new BaseException("", "该用户名已被注册");
         }
-        if (!StringUtils.isEmpty(param.getMobile()) && !userService.checkMobileReg(param.getMobile())) {
+        if (!StringUtils.isEmpty(param.getMobile()) && userService.checkMobileReg(param.getMobile())) {
             throw new BaseException("", "该手机号码已被注册");
         }
         User user = new User();

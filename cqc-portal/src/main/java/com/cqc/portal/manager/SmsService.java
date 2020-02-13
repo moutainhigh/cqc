@@ -77,9 +77,6 @@ public class SmsService {
 
     public boolean validSmsCode(String code, String mobile, int type) {
         String key = mobile + "_" + type;
-        if ("8888".equals(code)) {
-            return true;
-        }
         String cacheCode = ehcacheUtil.get(key);
         if (code.equals(cacheCode)) {
             return true;

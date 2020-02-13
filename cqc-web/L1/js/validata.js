@@ -69,7 +69,7 @@ function valiData(mes,url,invite_code, user,mobile,code,va_code,pass,pass_c,emai
             var url = host + send_sms_uri + "?type=1&mobile="+$(mobile).val();
             getForAuth(url, null, function (result) {
                 if (result.code == 200) {
-
+                    $(this).attr("disabled","disabled");
                     var time = 60;						            //重新发送时间时间
                     function timeCountDown(){
                         if(time==0){				                //倒计时完了
@@ -84,8 +84,6 @@ function valiData(mes,url,invite_code, user,mobile,code,va_code,pass,pass_c,emai
                     }
                     timeCountDown();
                     var timer = setInterval(timeCountDown,1000);    //开始循环timeCountDown函数
-                    $(this).attr("disabled","true");
-
                 } else {
                     $(".comm_mes").show().fadeOut(2000).find("p").text(result.message);
                 }

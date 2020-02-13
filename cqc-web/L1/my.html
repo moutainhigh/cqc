@@ -66,7 +66,7 @@
                 <!-- 标题 -->
                 <h2></h2>
                 <!-- 右边客服样式 -->
-                <a href="tel:8888888" class="link">客服</a>
+                <a href="./kf.html" class="link">客服</a>
                 <!-- 左边设置样式 -->
                 <a href="./set.html" class="set"></a>
                 <!-- 左边返回样式
@@ -78,6 +78,7 @@
         <div class="content_common">
             <div class="model_my">
                 <div class="user_info">
+                    <h1 id="user" style="display: none;"></h1>
                     <h1 id="no_login" onclick="goLogin()">未登录 点击登录</h1>
                     <span>未认证</span>
                 </div>
@@ -214,13 +215,15 @@
     });
     // 等页面加载完毕
     $(function(){
+        if (hashToken()) {
+            $("#user").show();
+            $("#no_login").hide();
+        }
         getUserInfo();
     });
 
     function goLogin() {
-        if (!hashToken()) {
-            window.location = "./sign_in.html";
-        }
+        window.location = "./sign_in.html";
     }
 
     function getUserInfo() {
@@ -233,7 +236,9 @@
             if (result.code == '200') {
                 // 成功 展示数据
                 var userInfo = result.data;
-                $(".user_info h1").text(userInfo.account);
+                $("#user").show();
+                $("#user").text(userInfo.account);
+                $("#no_login").hide();
                 $("#cqc").text(userInfo.cqc.toFixed(4));
                 $("#cqc_total").text(userInfo.cqcTotal.toFixed(4));
 

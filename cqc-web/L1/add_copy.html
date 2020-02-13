@@ -59,6 +59,19 @@
                 <a href="javascript:history.back(-1)" class="ret"></a>
             </div>
         </div>
+
+        <div class="open_google_code notice_box">
+            <div class="notice_content">
+                <h2 class="notice_title">请输入google验证码</h2>
+            </div>
+            <div style="height: 50px; margin-top: 10px;">
+                <input style="margin-top: 10px; height: 25px" id="google_code"/>
+            </div>
+            <a href="javascript:;" class="notice_cancel b-color sure" id="sure">确认</a>
+            <a href="javascript: $('.open_google_code').hide();$('.gray_bg').hide();"
+               class="notice_cancel r-color" id="cancel">取消</a>
+        </div>
+
         <!-- 顶部end -->
         <!-- 筛选内容start -->
         <div class="content_news">
@@ -86,11 +99,17 @@
 
                     </div>
                 </div>
-                <a href="#" class="sure_btn" id="sure_btn">提交</a>
+                <a href="#" class="sure_btn sure" id="sure_btn">提交</a>
             </div>
             <!-- 筛选内容end -->
+
+
+
         </div>
+
     </div>
+
+
 
     <div class="wrap_common"  style="overflow: auto;">
         <!-- 内容end -->
@@ -101,6 +120,8 @@
     <!-- 筛选end -->
 </body>
 <script>
+
+    var resultCode = 0;
 
     window.onload = function () {
         let $img = document.getElementById('img_view')
@@ -160,7 +181,7 @@
              $(this).addClass("bg_blue").siblings().removeClass("bg_blue");
          });
 
-         $("#sure_btn").click(function () {
+         $(".sure").click(function () {
              // 判断type name不能为空
              var type = $(".bg_blue").attr("data-type");
              if (!type) {
@@ -177,20 +198,36 @@
                  $(".comm_mes").show().fadeOut(2000).find("p").text("请上传收款二维码");
                  return;
              }
+             var googleCode = $("#google_code").val();
+             if (resultCode == 1050 && !googleCode){
+                 $(".comm_mes").show().fadeOut(2000).find("p").text("请输入6位谷歌验证码");
+                 return;
+             }
+
              var data = {
                  "receiveName" : $("#name").val(),
                  "codeImg":$("#code_img").val(),
-                 "type": type
+                 "type": type,
+                 "googleCode":googleCode
              };
              console.log(data);
+
              postForAuth(host + receive_add_uri, data, function (result) {
                  handleResult(result);
                  console.log(result);
                  if (result.code == '200') {
                      $(".comm_mes").show().fadeOut(2000).find("p").text("添加收款码成功");
                      window.location = "./pay_code.html";
+                 } else if (result.code == 1050){
+                     resultCode = result.code;
+                     // 如果需要输入谷歌验证码，则弹出框输入验证码
+                     $(".gray_bg").show();
+                     $(".open_google_code").show();
+                 } else {
+                     $(".comm_mes").show().fadeOut(2000).find("p").text(result.message);
                  }
              });
+
          });
 
      });
