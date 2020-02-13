@@ -5,15 +5,15 @@
     <meta charset="UTF-8">
     <!-- -->
     <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no ">
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no ">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>base</title>
     <!-- 网页ico -->
     <link rel="shortcut icon" href="./favicon.ico">
     <!-- 导入基础base.css文件 -->
-    <link rel="stylesheet" href="./css/base.css" />
+    <link rel="stylesheet" href="./css/base.css"/>
     <!-- 导入本类.css文件 -->
-    <link rel="stylesheet" href="./css/common.css" />
+    <link rel="stylesheet" href="./css/common.css"/>
     <!-- 导入jquery -->
     <script src="./js/jquery.min.js"></script>
     <script src="./js/config.js"></script>
@@ -45,11 +45,13 @@
             width: 90%;
             overflow: hidden;
         }
-        .swiper-pagination{
+
+        .swiper-pagination {
             width: 100%;
             position: relative !important;
         }
-        .swiper-pagination span{
+
+        .swiper-pagination span {
             margin-right: .2rem;
             margin-top: .2rem;
             width: .1rem;
@@ -59,147 +61,162 @@
 </head>
 
 <body>
-    <!-- zdy改成本自定义名称 -->
-    <div class="wrap_common"  style="overflow: auto;">
-        <div class="top_wrap">
-            <div class="top">
-                <!-- 标题 -->
-                <h2></h2>
-                <!-- 右边客服样式 -->
-                <a href="./kf.html" class="link">客服</a>
-                <!-- 左边设置样式 -->
-                <a href="./set.html" class="set"></a>
-                <!-- 左边返回样式
-                <a href="javascript:history.go(-1)" class="ret"></a> -->
-            </div>
-        </div>
-        <!-- 内容start -->
-        <!-- 将zdy改成自定义名字 -->
-        <div class="content_common">
-            <div class="model_my">
-                <div class="user_info">
-                    <h1 id="user" style="display: none;"></h1>
-                    <h1 id="no_login" onclick="goLogin()">未登录 点击登录</h1>
-                    <span>未认证</span>
-                </div>
-                <div class="swiper-container">
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <div class="pla_info">
-                                <h3>可抢cqc</h3>
-                                <h1 id="cqc">0.00</h1>
-                                <ul>
-                                    <li>
-                                        <h4>当前cqc</h4>
-                                        <span id="cqc_total">0.00</span>
-                                    </li>
-                                    <li>
-                                        <h4>待入cqc</h4>
-                                        <span id="wait_pay_income">0.00</span>
-                                    </li>
-                                    <li>
-                                        <h4>今日收益</h4>
-                                        <span id="income_today">0.00</span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="pla_info">
-                                <h3>拼多多商家押金</h3>
-                                <h1>0.00</h1>
-                                <a href="#">缴纳押金</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- 如果需要分页器 -->
-                <div class="swiper-pagination"></div>
-            </div>
-            <div class="model_two" style="max-height: 100%; min-height: 100%;">
-                <a href="./invitation_code.html">
-                    <div class="pro_each">
-                        <img src="./img/yaoqing.png" alt="">
-                        <span>我的邀请码</span>
-                        <em class="comm"></em>
-                    </div>
-                </a>
-                <a href="./safe.html">
-                    <div class="pro_each">
-                        <img src="./img/safe.png" alt="">
-                        <span>安全中心</span>
-                        <em class="comm"></em>
-                    </div>
-                </a>
-                <a href="./bank_card.html">
-                    <div class="pro_each">
-                        <img src="./img/bank.png" alt="">
-                        <span>银行卡管理</span>
-                        <em class="comm"></em>
-                    </div>
-                </a>
-                <a href="pay_code.html">
-                    <div class="pro_each">
-                        <img src="./img/pay_code.png" alt="">
-                        <span>收款账号</span>
-                        <em class="comm"></em>
-                    </div>
-                </a>
-                <a href="./record.html">
-                    <div class="pro_each">
-                        <img src="./img/jilu.png" alt="">
-                        <span>账变记录</span>
-                        <em class="comm"></em>
-                    </div>
-                </a>
-                <a href="./agent.html">
-                    <div class="pro_each">
-                        <img src="./img/tj.png" alt="">
-                        <span>代理统计</span>
-                        <em class="comm"></em>
-                    </div>
-                </a>
-                <a href="./rate.html">
-                    <div class="pro_each">
-                        <img src="./img/yj.png" alt="">
-                        <span>佣金费率</span>
-                        <em class="comm"></em>
-                    </div>
-                </a>
-                <a href="./network.html">
-                    <div class="pro_each">
-                        <img src="./img/network.png" alt="">
-                        <span>切换网络</span>
-                        <em class="comm"></em>
-                    </div>
-                </a>
-                <a href="./pinduoduo.html">
-                    <div class="pro_each">
-                        <img src="./img/pinduoduo.png" alt="">
-                        <span>拼多多</span>
-                        <em class="comm"></em>
-                    </div>
-                </a>
-            </div>
-        </div>
-        <!-- 内容end -->
-        <!-- 底部start -->
-        <div class="footer">
-            <div class="list_btn">
-                <ul>
-                    <li><a href="./index.html">首页</a></li>
-                    <li><a href="./access.html">存取款</a></li>
-                    <li><a href="./problem.html">常见问题</a></li>
-                    <li><a href="./my.html">我的</a></li>
-                </ul>
-            </div>
-        </div>
-        <!-- 底部end -->
-        <!-- 内容end -->
-        <div class="comm_mes">
-            <p></p>
+<!-- 遮罩层 -->
+<div class="gray_bg"></div>
+<!-- zdy改成本自定义名称 -->
+<div class="wrap_common" style="overflow: auto;">
+    <div class="top_wrap">
+        <div class="top">
+            <!-- 标题 -->
+            <h2></h2>
+            <!-- 右边客服样式 -->
+            <a href="./kf.html" class="link">客服</a>
+            <!-- 左边设置样式 -->
+            <a href="./set.html" class="set"></a>
+            <!-- 左边返回样式
+            <a href="javascript:history.go(-1)" class="ret"></a> -->
         </div>
     </div>
+    <!-- 内容start -->
+    <!-- 将zdy改成自定义名字 -->
+    <div class="content_common">
+        <div class="model_my">
+            <div class="user_info">
+                <h1 id="user" style="display: none;"></h1>
+                <h1 id="no_login" onclick="goLogin()">未登录 点击登录</h1>
+                <span>未认证</span>
+            </div>
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <div class="pla_info">
+                            <h3>可抢cqc</h3>
+                            <h1 id="cqc">0.00</h1>
+                            <ul>
+                                <li>
+                                    <h4>当前cqc</h4>
+                                    <span id="cqc_total">0.00</span>
+                                </li>
+                                <li>
+                                    <h4>待入cqc</h4>
+                                    <span id="wait_pay_income">0.00</span>
+                                </li>
+                                <li>
+                                    <h4>今日收益</h4>
+                                    <span id="income_today">0.00</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="pla_info">
+                            <h3>拼多多商家押金</h3>
+                            <h1 id="pdd_deposit">0.00</h1>
+                            <a class="jnyj_a" href="javascript:void(0)">缴纳押金</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 如果需要分页器 -->
+            <div class="swiper-pagination"></div>
+        </div>
+
+        <div class="notice_box" style="display: none;" id="jnyj">
+            <div class="notice_content">
+                <h2 class="notice_title">缴纳押金</h2>
+                <span class="notice_content_text">缴纳说明：<br>1：缴纳商家押金需3000cqc<br>2：缴纳买家押金需3000cqc</span>
+
+            </div>
+            <div class="pin_form">
+                <a href="#" data-type="1" class="btn_input bg_b" style="margin-bottom:.2rem;">缴纳商家押金</a>
+                <a href="#" data-type="2" class="btn_input bg_r" style="margin-bottom:.2rem;">缴纳买家押金</a>
+            </div>
+        </div>
+
+        <div class="model_two" style="max-height: 100%; min-height: 100%;">
+            <a href="./invitation_code.html">
+                <div class="pro_each">
+                    <img src="./img/yaoqing.png" alt="">
+                    <span>我的邀请码</span>
+                    <em class="comm"></em>
+                </div>
+            </a>
+            <a href="./safe.html">
+                <div class="pro_each">
+                    <img src="./img/safe.png" alt="">
+                    <span>安全中心</span>
+                    <em class="comm"></em>
+                </div>
+            </a>
+            <a href="./bank_card.html">
+                <div class="pro_each">
+                    <img src="./img/bank.png" alt="">
+                    <span>银行卡管理</span>
+                    <em class="comm"></em>
+                </div>
+            </a>
+            <a href="pay_code.html">
+                <div class="pro_each">
+                    <img src="./img/pay_code.png" alt="">
+                    <span>收款账号</span>
+                    <em class="comm"></em>
+                </div>
+            </a>
+            <a href="./record.html">
+                <div class="pro_each">
+                    <img src="./img/jilu.png" alt="">
+                    <span>账变记录</span>
+                    <em class="comm"></em>
+                </div>
+            </a>
+            <a href="./agent.html">
+                <div class="pro_each">
+                    <img src="./img/tj.png" alt="">
+                    <span>代理统计</span>
+                    <em class="comm"></em>
+                </div>
+            </a>
+            <a href="./rate.html">
+                <div class="pro_each">
+                    <img src="./img/yj.png" alt="">
+                    <span>佣金费率</span>
+                    <em class="comm"></em>
+                </div>
+            </a>
+            <a href="./network.html">
+                <div class="pro_each">
+                    <img src="./img/network.png" alt="">
+                    <span>切换网络</span>
+                    <em class="comm"></em>
+                </div>
+            </a>
+            <a href="./pinduoduo.html">
+                <div class="pro_each">
+                    <img src="./img/pinduoduo.png" alt="">
+                    <span>拼多多</span>
+                    <em class="comm"></em>
+                </div>
+            </a>
+        </div>
+    </div>
+    <!-- 内容end -->
+    <!-- 底部start -->
+    <div class="footer">
+        <div class="list_btn">
+            <ul>
+                <li><a href="./index.html">首页</a></li>
+                <li><a href="./access.html">存取款</a></li>
+                <li><a href="./problem.html">常见问题</a></li>
+                <li><a href="./my.html">我的</a></li>
+            </ul>
+        </div>
+    </div>
+    <!-- 底部end -->
+    <!-- 内容end -->
+    <div class="comm_mes">
+        <p></p>
+    </div>
+</div>
 </body>
 <script>
     var mySwiper = new Swiper('.swiper-container', {
@@ -211,14 +228,28 @@
         },
         // 如果需要滚动条
         scrollbar: '.swiper-scrollbar',
-        effect : 'fade',
+        effect: 'fade',
     });
     // 等页面加载完毕
-    $(function(){
+    $(function () {
         if (hashToken()) {
             $("#user").show();
             $("#no_login").hide();
         }
+
+        $(".jnyj_a").click(function(){
+            console.log("点击");
+            $("#jnyj,.gray_bg").show();
+            if(!$("#jnyj").is(":hidden")){
+                $(".gray_bg").click(function(){
+                    $("#jnyj,.gray_bg").hide();
+                });
+            }
+        });
+        $(".pin_form a").click(function () {
+            var type = $(this).attr("data-type");
+            payDeposit(type);
+        });
         getUserInfo();
     });
 
@@ -227,7 +258,7 @@
     }
 
     function getUserInfo() {
-        getForAuth(host + getInfo_url, null, function(result){
+        getForAuth(host + getInfo_url, null, function (result) {
             handleResult(result);
             if (result.code == '401') {
                 // 页面内容更改
@@ -242,13 +273,33 @@
                 $("#cqc").text(userInfo.cqc.toFixed(4));
                 $("#cqc_total").text(userInfo.cqcTotal.toFixed(4));
 
+                var pdd_deposit = userInfo.pddSeller.toFixed(4) + " / " + userInfo.pddBuyer.toFixed(4);
+                $("#pdd_deposit").text(pdd_deposit);
 
-                $("#wait_pay_income").text(userInfo.waitPayIncome.toFixed(4));
-                $("#income_today").text(userInfo.incomeToday.toFixed(4));
-                if (userInfo.real == 1){
+
+                $("#wait_pay_income").text(userInfo.waitPayIncome.toFixed(2));
+                $("#income_today").text(userInfo.incomeToday.toFixed(2));
+                if (userInfo.real == 1) {
                     $(".user_info span").text("3c认证");
                 }
 
+            }
+        });
+    }
+
+    function payDeposit(type) {
+        if (type < 1 || type > 2) {
+            return;
+        }
+        var url = PAY_DEPOSIT_URI + "?type="+type;
+        getForAuth(host + url, null, function (result) {
+            handleResult(result);
+            if (result.code == '200') {
+                // 成功 展示数据
+                window.location.reload();
+            } else {
+                $("#jnyj,.gray_bg").hide();
+                $(".comm_mes").show().fadeOut(3000).find("p").text(result.message);
             }
         });
     }

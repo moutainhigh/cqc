@@ -53,7 +53,7 @@
         <el-table-column label="发布者" align="center" width="180">
           <template slot-scope="scope">{{scope.row.publisher}}</template>
         </el-table-column>
-        <el-table-column label="收款渠道" width="80" align="center">
+        <el-table-column label="收款渠道" width="120" align="center">
           <template slot-scope="scope">{{scope.row.channel | formatChannel}}</template>
         </el-table-column>
         <el-table-column label="放单时间" width="180" align="center">
@@ -67,11 +67,16 @@
         </el-table-column>
         <el-table-column label="抢单人收款码" width="160" align="center">
           <template slot-scope="scope">
-            <el-button type="text"
+            <el-button type="text" v-show="scope.row.receiveCodeImg"
               @click="handleViewDetail(scope.$index, scope.row)">点击查看
             </el-button>
           </template>
         </el-table-column>
+        <el-table-column label="抢单人拼多多账号" width="200" align="center">
+          <template slot-scope="scope">{{scope.row.pddAccount}}</template>
+        </el-table-column>
+
+
       </el-table>
     </div>
 
@@ -237,7 +242,15 @@
           {
             label: '微信',
             value: 2
-          }
+          },
+            {
+                label: '拼多多商家',
+                value: 3
+            },
+            {
+                label: '拼多多买家',
+                value: 4
+            }
         ],
         operateType: null,
         addOrderDialogVisible: false,
@@ -282,7 +295,14 @@
           return '支付宝';
         }else if (channel == 2) {
           return '微信';
-        }else {
+        }
+        else if (channel == 3) {
+            return '拼多多商家';
+        }
+        else if (channel == 4) {
+            return '拼多多买家';
+        }
+        else {
           return '未知';
         }
       },

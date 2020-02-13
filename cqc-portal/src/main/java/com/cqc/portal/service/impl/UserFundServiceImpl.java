@@ -184,4 +184,37 @@ public class UserFundServiceImpl extends ServiceImpl<UserFundMapper, UserFund> i
         userFundRecordMapper.insert(record);
         return true;
     }
+
+    @Override
+    public boolean deposit(String userId, int type, BigDecimal amount) {
+        UserFund userFund = this.getFund(userId);
+        if (userFund.getAvailableBalance().compareTo(amount) < 0) {
+            // 报错
+            throw new BaseException("", "可用余额不足");
+        }
+        int i = 0;
+        if (type == 1) {
+            if (userFund.getPddSeller().compareTo(BigDecimal.ZERO) > 0) {
+                throw new BaseException("", "已经缴纳了拼多多商家押金");
+            }
+            i = userFundMapper.cutBalance4PddSeller(userId, amount);
+        } else if (type == 2) {
+            if (userFund.getPddBuyer().compareTo(BigDecimal.ZERO) > 0) {
+                throw new BaseException("", "已经缴纳了拼多多买家押金");
+            }
+            i = userFundMapper.cutBalance4PddBuyer(userId, amount);
+        }
+        if (i != 1) {
+            return false;
+        }
+        UserFundRecord record = new UserFundRecord();
+        record.setUserId(userId);
+        record.setType(16);
+        record.setAmount(amount);
+        record.setDirect(2);
+        record.setBalance(userFund.getAvailableBalance().subtract(amount));
+        record.setRemark("提现");
+        userFundRecordMapper.insert(record);
+        return true;
+    }
 }

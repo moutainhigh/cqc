@@ -28,4 +28,21 @@
             and balance >= #{amount} and freeze_balance >= #{amount}
     </update>
 
+
+    <update id="cutBalance4PddSeller">
+        update user_fund set balance = balance - #{amount},
+            available_balance = available_balance - #{amount},
+            pdd_seller = #{amount}
+            where user_id = #{userId}
+            and balance >= #{amount} and available_balance >= #{amount}
+    </update>
+
+    <update id="cutBalance4PddBuyer">
+        update user_fund set balance = balance - #{amount},
+            available_balance = available_balance - #{amount},
+            pdd_buyer = #{amount}
+            where user_id = #{userId}
+            and balance >= #{amount} and available_balance >= #{amount}
+    </update>
+
 </mapper>

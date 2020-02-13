@@ -70,7 +70,7 @@
             <el-button
               size="mini"
               @click="handleViewDetail(scope.$index, scope.row)"
-              v-show="scope.row.status===0">认证</el-button>
+              v-show="scope.row.status != 1">认证</el-button>
 
           </template>
         </el-table-column>

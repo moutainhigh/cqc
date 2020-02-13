@@ -22,7 +22,7 @@ public class UserInfo {
     private boolean autoOrderStatus;
 
     /**
-     * 可用cqc
+     * 可抢cqc
      */
     private BigDecimal cqc = BigDecimal.ZERO;
 
@@ -49,5 +49,17 @@ public class UserInfo {
     private String region;
 
     private int googleBind;
+
+    /**
+     * 拼多多商家押金
+     */
+    private BigDecimal pddSeller = BigDecimal.ZERO;
+
+
+    /**
+     * 拼多多买家押金
+     */
+    private BigDecimal pddBuyer = BigDecimal.ZERO;
+
 
 }

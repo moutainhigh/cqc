@@ -111,4 +111,9 @@ public class Order implements Serializable {
 
     private String region;
 
+
+    private String pddAccountId;
+
+    private String pddAccount;
+
 }

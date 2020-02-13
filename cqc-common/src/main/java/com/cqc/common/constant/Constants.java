@@ -12,4 +12,14 @@ public class Constants {
 
     // 抢单限制
     public final static BigDecimal BUY_ORDER_PERCENT = new BigDecimal("0.7");
+
+
+    // 拼多多卖家押金
+    public final static BigDecimal DEPOSIT_SELLER = new BigDecimal("3000");
+
+
+    // 拼多多买家押金
+    public final static BigDecimal DEPOSIT_BUYER = new BigDecimal("3000");
+
+
 }

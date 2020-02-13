@@ -73,4 +73,13 @@ public interface UserFundService extends IService<UserFund> {
      * @return
      */
     boolean withDraw(String userId, BigDecimal amount);
+
+    /**
+     * 缴纳押金
+     * @param userId
+     * @param type 1-商家 2-买家
+     * @param amount
+     * @return
+     */
+    boolean deposit(String userId, int type, BigDecimal amount);
 }

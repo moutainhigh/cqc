@@ -14,6 +14,10 @@
     <link rel="stylesheet" href="./css/common.css" />
     <!-- 导入jquery -->
     <script src="./js/jquery.min.js"></script>
+
+    <script src="./js/config.js"></script>
+    <script src="./js/request.js"></script>
+
     <!-- 根据设备宽度，计算html根节点的font-size -->
     <script>
         // 获取html根节点要素内容
@@ -35,12 +39,13 @@
     </script>
 </head>
 <style>
-     /* 重置样式 */
+    /* 重置样式 */
     /* .pro_each:first-child span{
         color: gray !important;
         font-size: .25rem;
     } */
     .pro_each span{
+        color: gray !important;
         font-size: .3rem;
         color: black !important;
         font-weight: bold;
@@ -57,34 +62,148 @@
     }
 </style>
 <body>
-    <!-- 遮罩层 -->
-    <div class="gray_bg"></div>
-    <!-- zdy改成本自定义名称 -->
-    <div class="wrap_common">
-        <!-- 顶部start -->
-        <div class="top_wrap">
-            <div class="top">
-                <!-- 标题 -->
-                <h2>拼多多买家</h2>
-                <!-- 左边返回样式-->
-                <a href="javascript:history.back(-1)" class="ret"></a>
-            </div>
+<!-- 遮罩层 -->
+<div class="gray_bg"></div>
+<!-- zdy改成本自定义名称 -->
+<div class="wrap_common">
+    <!-- 顶部start -->
+    <div class="top_wrap">
+        <div class="top">
+            <!-- 标题 -->
+            <h2>拼多多买家</h2>
+            <!-- 左边返回样式-->
+            <a href="javascript:history.back(-1)" class="ret"></a>
         </div>
-        <!-- 内容start -->
-        <!-- 将zdy改成自定义名字 -->
-        <div class="content_common">
-            <div class="model_one" style="height:10%; padding-top: .5rem;">
-                <a href="" class="add_bank">添加买家</a>
-            </div>
-            <div class="model_two" style="min-height: 90%; max-height: 90%;">
-                <div class="pro_each">
-                    <span>Sxy502</span>
-                </div>
-            </div>
-        </div>
-        <!-- 内容end -->
     </div>
+    <!-- 内容start -->
+    <!-- 将zdy改成自定义名字 -->
+    <div class="content_common">
+        <div class="model_one" style="height:10%; padding-top: .5rem;">
+            <a href="javascript:;" class="add_bank">添加买家</a>
+        </div>
+        <div class="model_two" style="min-height: 90%; max-height: 90%;">
+            <!--<div class="pro_each">
+                <span>Sxy502</span>
+            </div>-->
+        </div>
+    </div>
+    <!-- 内容end -->
+    <!-- 内容通告 -->
+    <div class="notice_box">
+        <div class="notice_content">
+            <h2 class="notice_title">拼多多买家</h2>
+            <span class="notice_content_text">请输入拼多多买家账号或者手机号码<br><br>注意：我们会保存拼多多买家账号和密码，以便账号失效后任然能自动使用</span>
+        </div>
+        <div class="pin_form">
+            <form id="add" action method>
+                <input type="text" name="number" value="" placeholder="拼多多账号或手机号" class="text_user" id="pdd_account">
+                <input type="password" name="pass" value="" placeholder="拼多多密码" class="text_pass" id="password">
+                <input type="text" name="pass" value="" placeholder="谷歌验证码"
+                       class="text_user" id="google_code" style="display: none;">
+                <input type="button" value="确定" class="btn_input bg_b" id="sure">
+                <input type="button" value="取消" class="btn_input bg_r" id="cancel">
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<div class="wrap_common"  style="overflow: auto;">
+    <!-- 内容end -->
+    <div class="comm_mes">
+        <p></p>
+    </div>
+</div>
+
 </body>
 <script>
+
+    var resultCode = 0;
+
+    var params = {
+        "type" : 2
+    }
+
+    $(".add_bank").click(function(){
+        $(".gray_bg,.notice_box").show();
+        $("#google_code").hide();
+        $("#add")[0].reset();
+        $("#cancel").click(function(){
+            $(".gray_bg,.notice_box").hide();
+        });
+    });
+
+    $("#sure").click(function(){
+        var pdd_account = $("#pdd_account").val();
+        if (!pdd_account) {
+            $(".comm_mes").show().fadeOut(3000).find("p").text("请输入账号");
+            return;
+        }
+        var password = $("#password").val();
+        if (!password) {
+            $(".comm_mes").show().fadeOut(3000).find("p").text("请输入密码");
+            return;
+        }
+        var googleCode = $("#google_code").val();
+        if (resultCode == 1050){
+            if (!googleCode) {
+                $(".comm_mes").show().fadeOut(3000).find("p").text("请输入6位谷歌验证码");
+                return;
+            }
+            if (googleCode.length > 6) {
+                $(".comm_mes").show().fadeOut(3000).find("p").text("谷歌验证码错误");
+                return;
+            }
+
+        }
+        var data = {
+            "pddAccount" : pdd_account,
+            "password" : password,
+            "type" : 2,
+            "googleCode":googleCode
+        }
+        postForAuth(host + pdd_account_add_uri, data, function (result) {
+            handleResult(result);
+            console.log(result);
+            if (result.code == '200') {
+                $(".comm_mes").show().fadeOut(2000).find("p").text("添加拼多多账号成功");
+                $(".gray_bg,.notice_box").hide();
+
+                getList(params);
+            }else if (result.code == 1050){
+                resultCode = result.code;
+                // 如果需要输入谷歌验证码，则弹出框输入验证码
+                $("#google_code").show();
+            } else {
+                $(".comm_mes").show().fadeOut(2000).find("p").text(result.message);
+            }
+        });
+
+    });
+
+
+    $(function () {
+        getList(params);
+    });
+
+    function getList(params) {
+        getForAuth(host + pdd_account_list_uri, params, function (result) {
+            var list = result.data;
+            if (!list) {
+                return;
+            }
+            var html = '';
+            var len = list.length;
+            for (let i = 0; i < len; i++) {
+                var item = list[i];
+
+                html += '<div class="pro_each">' +
+                    '<span>'+item.pddAccount+'</span>' +
+                    '</div>';
+            }
+            $(".model_two").html(html);
+        });
+    }
+
 </script>
 </html>

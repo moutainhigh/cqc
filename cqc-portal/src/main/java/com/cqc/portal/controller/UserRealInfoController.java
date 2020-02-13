@@ -3,6 +3,7 @@ package com.cqc.portal.controller;
 
 import com.cqc.common.api.Result;
 import com.cqc.common.api.ResultCode;
+import com.cqc.common.enums.BaseErrorMsg;
 import com.cqc.common.exception.BaseException;
 import com.cqc.model.UmsAdmin;
 import com.cqc.model.UserRealInfo;
@@ -38,7 +39,7 @@ public class UserRealInfoController {
     @Autowired
     private UserService userService;
 
-    @ApiOperation(value = "提交实名信息")
+    @ApiOperation(value = "查看实名信息")
     @GetMapping("/get")
     public Result<UserRealInfo> get() {
         String userId = PortalUserUtil.getCurrentUserId();
@@ -48,9 +49,9 @@ public class UserRealInfoController {
         userService.checkUser(userId);
         UserRealInfo realInfo = service.getRealInfo(userId);
         if (realInfo == null) {
-            return Result.failed("暂未实名");
+            return Result.failed(BaseErrorMsg.NOT_REAL);
         }
-        return Result.success(realInfo);
+        return Result.success();
     }
 
     @ApiOperation(value = "提交实名信息")

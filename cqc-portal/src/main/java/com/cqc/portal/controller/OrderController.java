@@ -136,10 +136,6 @@ public class OrderController {
             throw new BaseException(ResultCode.UNAUTHORIZED);
         }
         User user = userService.checkUser(userId);
-        UserFund fund = userFundService.getFund(userId);
-        if (fund.getAvailableBalance().compareTo(BigDecimal.ZERO) <= 0) {
-            return Result.failed(BaseErrorMsg.BALANCE_LESS);
-        }
         // 查实名信息
         UserRealInfo realInfo = userRealInfoService.getRealInfo(userId);
         if (realInfo == null) {

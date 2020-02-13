@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -77,8 +78,10 @@ public class UserController {
         }
         // 查余额
         UserFund fund = userFundService.getFund(userId);
-        userInfo.setCqcTotal(fund.getBalance());
-        userInfo.setCqc(fund.getAvailableBalance());
+        userInfo.setCqcTotal(fund.getAvailableBalance());
+        userInfo.setCqc(fund.getAvailableBalance().multiply(Constants.BUY_ORDER_PERCENT));
+        userInfo.setPddSeller(fund.getPddSeller());
+        userInfo.setPddBuyer(fund.getPddBuyer());
         // 查待入cqc，今日已入收益
         userInfo.setWaitPayIncome(orderService.getWaitPayIncome(userId));
         userInfo.setIncomeToday(userDateIncomeService.getIncomeByDate(userId, DateUtil.format(new Date(), "yyyyMMdd")));
@@ -232,6 +235,7 @@ public class UserController {
         userFundDto.setAutoOrderStatus(user.getAutoOrderStatus());
         return Result.success(userFundDto);
     }
+
 
 
 }

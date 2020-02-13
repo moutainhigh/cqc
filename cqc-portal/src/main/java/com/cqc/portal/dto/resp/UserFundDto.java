@@ -19,4 +19,15 @@ public class UserFundDto {
     private BigDecimal cqc = BigDecimal.ZERO;
 
 
+    /**
+     * 拼多多商家押金
+     */
+    private BigDecimal pddSeller = BigDecimal.ZERO;
+
+
+    /**
+     * 拼多多买家押金
+     */
+    private BigDecimal pddBuyer = BigDecimal.ZERO;
+
 }

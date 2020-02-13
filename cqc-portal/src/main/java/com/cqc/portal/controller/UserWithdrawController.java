@@ -32,7 +32,7 @@ public class UserWithdrawController {
     private UserWithdrawService service;
 
 
-    @ApiOperation(value = "添加银行卡")
+    @ApiOperation(value = "提现")
     @PostMapping("/add")
     public Result<Boolean> add(@Validated @RequestBody WithDrawAddParam param) {
         String userId = PortalUserUtil.getCurrentUserId();

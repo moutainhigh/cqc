@@ -76,7 +76,7 @@ const close_receive_code_uri = "/receiveCode/close";
 // 添加收款码
 const receive_add_uri = "/receiveCode/add";
 //缴纳押金
-const PAY_DEPOSIT_URI = "/user/payDeposit";
+const PAY_DEPOSIT_URI = "/userFund/payDeposit";
 
 // 提现
 const with_draw_apply_uri = "/withDraw/add";

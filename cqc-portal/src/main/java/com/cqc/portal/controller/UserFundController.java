@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cqc.common.api.Result;
 import com.cqc.common.api.ResultCode;
+import com.cqc.common.constant.Constants;
 import com.cqc.common.exception.BaseException;
 import com.cqc.model.UserFund;
 import com.cqc.model.UserFundRecord;
@@ -24,6 +25,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotBlank;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
 
@@ -50,13 +53,23 @@ public class UserFundController {
 
     @ApiOperation("缴纳做单押金")
     @GetMapping("/payDeposit")
-    public Result<Boolean> payDeposit(){
+    public Result<Boolean> payDeposit(@NotBlank(message = "type不能为空") Integer type){
         String userId = PortalUserUtil.getCurrentUserId();
         if (StringUtils.isEmpty(userId)) {
             throw new BaseException(ResultCode.UNAUTHORIZED);
         }
         userService.checkUser(userId);
-        return Result.success();
+
+        boolean rs = false;
+        if (type == 1) {
+            rs = service.deposit(userId, 1, Constants.DEPOSIT_SELLER);
+        } else if (type == 2) {
+            rs = service.deposit(userId, 2, Constants.DEPOSIT_BUYER);
+        }
+        if (!rs) {
+            return Result.failed("缴纳押金失败");
+        }
+        return Result.success(true);
     }
 
 

@@ -55,6 +55,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     @Autowired
     private UserService userService;
 
+
+    @Autowired
+    private PddAccountService pddAccountService;
+
     @Async
     @Override
     @Transactional(rollbackFor = Throwable.class)
@@ -71,6 +75,29 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         list.stream().forEach(item -> {
             channelSet.add(item.getChannel());
         });
+
+        List<PddAccount> pddList = new ArrayList<>();
+        List<PddAccount> pddAccountList = pddAccountService.getByUser(user.getId());
+
+
+        if (!CollectionUtils.isEmpty(pddAccountList)) {
+            pddAccountList.forEach(item -> {
+                if (item.getType() == 1 && fund.getPddSeller().compareTo(BigDecimal.ZERO) > 0) {
+                    pddList.add(item);
+                }
+                if (item.getType() == 2 && fund.getPddBuyer().compareTo(BigDecimal.ZERO) > 0) {
+                    pddList.add(item);
+                }
+            });
+        }
+        pddList.forEach(item -> {
+            if (item.getType() == 1) {
+                channelSet.add(3);
+            } else if (item.getType() == 2) {
+                channelSet.add(4);
+            }
+        });
+
         // 抢单限制 用户只要能用70%余额抢单
         BigDecimal availableBalance = fund.getAvailableBalance().multiply(Constants.BUY_ORDER_PERCENT);
         if (availableBalance.compareTo(BigDecimal.ZERO) <= 0) {
@@ -82,7 +109,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             // 没有可抢的订单
             return;
         }
-        buyOrder(user, order.getId(), list);
+        buyOrder(user, order.getId(), list, pddList);
     }
 
     @Transactional(rollbackFor = Throwable.class)
@@ -97,7 +124,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             throw new BaseException("", "重复付款");
         }
         // 获取订单金额  将用户cqc冻结金额减少
-        boolean rs = userFundService.cutFreezeBalance(userId, order.getAmount(),6 , "确认付款");
+        boolean rs = userFundService.cutFreezeBalance(userId, order.getAmount(), 6, "确认付款");
         if (!rs) {
             return false;
         }
@@ -119,27 +146,39 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     /**
      * 下单
+     *
      * @param user
      * @return
      */
 
     @Transactional(rollbackFor = Throwable.class, propagation = Propagation.REQUIRES_NEW)
-    public void buyOrder(User user, String orderId, List<ReceiveCode> receiveCodeList) {
+    public void buyOrder(User user, String orderId, List<ReceiveCode> receiveCodeList, List<PddAccount> pddList) {
         // 再次查询数据库
         Order order = orderMapper.selectById(orderId);
         if (order == null || order.getStatus() != -1) {
             return;
         }
+        ReceiveCode receiveCode = new ReceiveCode();
         // 取一个收款码
-        List<ReceiveCode> collect = receiveCodeList.stream().filter(item -> {
-            return item.getChannel().equals(order.getChannel());
+        List<ReceiveCode> collect = receiveCodeList.stream().filter(item -> {return item.getChannel().equals(order.getChannel());
         }).collect(Collectors.toList());
         // 得到一个收款码
-        ReceiveCode receiveCode = collect.get(0);
+        if (!CollectionUtils.isEmpty(collect)) {
+            receiveCode = collect.get(0);
+        }
         // 冻结金额
         boolean b = userFundService.freezeBalance(user.getId(), order.getAmount());
         if (!b) {
             throw new BaseException("", "可用余额不足，不足以抢单");
+        }
+        PddAccount pddAccount = new PddAccount();
+        if (order.getChannel() == 3) {
+            pddList = pddList.stream().filter(item -> {return item.getType().equals(1);}).collect(Collectors.toList());
+        } else if (order.getChannel() == 4) {
+            pddList = pddList.stream().filter(item -> {return item.getType().equals(2);}).collect(Collectors.toList());
+        }
+        if (!CollectionUtils.isEmpty(pddList)) {
+            pddAccount = pddList.get(0);
         }
         // 读取费率
         BigDecimal income = BigDecimal.ZERO;
@@ -165,6 +204,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         entity.setProvince(user.getProvince());
         entity.setCity(user.getCity());
         entity.setRegion(user.getRegion());
+        entity.setPddAccountId(pddAccount.getId());
+        entity.setPddAccount(pddAccount.getPddAccount());
+
         // todo 加锁
         int i = orderMapper.update(entity, new QueryWrapper<Order>().eq("id", orderId)
                 .eq("status", -1));

@@ -86,6 +86,19 @@ public class UserBankCardController {
         if (!CollectionUtils.isEmpty(list) && list.size() == 1) {
             list.get(0).setIsDefault(true);
         }
+        // 加*
+        if (!CollectionUtils.isEmpty(list)) {
+            list.forEach( card -> {
+                String cardNo = card.getCardNo();
+                if (!StringUtils.isEmpty(cardNo)) {
+                    if (cardNo.length() >= 4) {
+                        card.setCardNo("**** " + cardNo.substring(cardNo.length() - 4));
+                    } else {
+                        card.setCardNo("**** " + cardNo);
+                    }
+                }
+            });
+        }
         return Result.success(list);
     }
 

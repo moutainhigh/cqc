@@ -196,7 +196,7 @@
 
         t3 = setInterval(function() {
             getNewOrder();
-        },3000);
+        },2000);
     }
 
     function stop() {
@@ -394,6 +394,8 @@
             logo = "img/Alipay.png";
         } else if (channel == 2) {
             logo = "img/WeChat.png";
+        }else if (channel == 3 || channel == 4) {
+            logo = "img/pinduoduo.png";
         }
         return logo;
     }
