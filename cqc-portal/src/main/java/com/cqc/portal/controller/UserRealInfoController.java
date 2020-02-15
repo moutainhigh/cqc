@@ -54,6 +54,9 @@ public class UserRealInfoController {
         return Result.success();
     }
 
+
+
+
     @ApiOperation(value = "提交实名信息")
     @RequestMapping(value = "/apply", method = RequestMethod.POST)
     public Result<Boolean> apply(@RequestBody UserRealInfoAddParam param) {

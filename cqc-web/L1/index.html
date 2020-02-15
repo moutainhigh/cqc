@@ -86,7 +86,7 @@
             <div class="one_model">
                 <div class="city_hot"><a href="./city_hot.html"><img src="./img/hot.png" alt=""></a></div>
                 <div class="go_order">
-                    <div class="go_info">可用 cqc：<span id="cqc_balance">0.00</span></div>
+                    <div class="go_info" style="font-size: 18px">可用 cqc：<span id="cqc_balance" style="font-weight: bold;">0.00</span></div>
                     <div class="start_btn">
                         <img src="./img/btn.png" alt="">
                         <span class="go">开始抢单</span>
@@ -194,9 +194,7 @@
             getAutoOrderStatus();
         },3000);
 
-        t3 = setInterval(function() {
-            getNewOrder();
-        },2000);
+
     }
 
     function stop() {
@@ -207,7 +205,6 @@
         $(".two_model li").css("width","60%");
         window.clearInterval(t1);
         window.clearInterval(t2);
-        window.clearInterval(t3);
 
         closeAutoBuy();
     }
@@ -244,6 +241,11 @@
             confirmPayOrder(orderId);
         });
 
+
+        // 页面加载就拉取订单
+        t3 = setInterval(function() {
+            getNewOrder();
+        },2000);
     });
 
     
@@ -357,7 +359,7 @@
                     '<li>' +
                     '<img src="'+getChannelImg(item.channel)+'" alt="" data-type="2">' +
                     '<div class="two">' +
-                    '<span>'+item.publisher+'</span>' +
+                    '<span>'+item.receiveCodeName+'</span>' +
                     '<span class="order_time">'+item.createTime+'</span>' +
                     '<span>'+item.amount.toFixed(2)+'</span>' +
                     '</div>' +

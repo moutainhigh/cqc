@@ -29,12 +29,17 @@
               </el-option>
             </el-select>
           </el-form-item>
+
+          <el-form-item label="放单号：">
+            <el-input v-model="listQuery.orderSn" class="input-width" placeholder="订单号"></el-input>
+          </el-form-item>
+
         </el-form>
       </div>
     </el-card>
     <el-card class="operate-container" shadow="never">
       <i class="el-icon-tickets"></i>
-      <span>订单列表</span>
+      <span>放单列表</span>
       <el-button size="mini" class="btn-add" @click="handleAddOrder()">手动放单</el-button>
     </el-card>
     <div class="table-container">
@@ -47,9 +52,13 @@
         <el-table-column hidden="hidden" label="编号" width="280" align="center" v-show="0">
           <template slot-scope="scope">{{scope.row.id}}</template>
         </el-table-column>
+        <el-table-column label="放单号" width="280" align="center">
+          <template slot-scope="scope">{{scope.row.orderSn}}</template>
+        </el-table-column>
         <el-table-column label="金额" align="center" width="100">
           <template slot-scope="scope">{{scope.row.amount}}</template>
         </el-table-column>
+
         <el-table-column label="发布者" align="center" width="180">
           <template slot-scope="scope">{{scope.row.publisher}}</template>
         </el-table-column>
@@ -61,19 +70,6 @@
         </el-table-column>
         <el-table-column label="状态" width="100" align="center">
           <template slot-scope="scope">{{scope.row.status | formatStatus}}</template>
-        </el-table-column>
-        <el-table-column label="抢单人账号" width="200" align="center">
-          <template slot-scope="scope">{{scope.row.account}}</template>
-        </el-table-column>
-        <el-table-column label="抢单人收款码" width="160" align="center">
-          <template slot-scope="scope">
-            <el-button type="text" v-show="scope.row.receiveCodeImg"
-              @click="handleViewDetail(scope.$index, scope.row)">点击查看
-            </el-button>
-          </template>
-        </el-table-column>
-        <el-table-column label="抢单人拼多多账号" width="200" align="center">
-          <template slot-scope="scope">{{scope.row.pddAccount}}</template>
         </el-table-column>
 
 
@@ -138,12 +134,13 @@
   </div>
 </template>
 <script>
-  import {fetchList, push, audit} from '@/api/order';
+  import {fetchList, push, audit} from '@/api/pushorder';
   import {formatDate} from '@/utils/date';
 
   const defaultListQuery = {
     pageNum: 1,
-    pageSize: 10
+    pageSize: 10,
+      orderSn: null
   };
   const defaultUserDialogData = {
     account : null,
@@ -167,26 +164,6 @@
      //-1放单中 0 代付款 1已付款 2已入账 3订单取消 4异常 5已过期 6金额不符 7付款失败
       label: '已入账',
       value: 2
-    },
-    {
-      label: '订单取消',
-      value: 3
-    },
-    {
-      label: '异常',
-      value: 4
-    },
-    {
-      label: '已过期',
-      value: 5
-    },
-    {
-      label: '金额不符',
-      value: 6
-    },
-    {
-      label: '付款失败',
-      value: 7
     }
   ];
   export default {
@@ -283,9 +260,7 @@
         } else if (status == -1) {
           return '放单中';
         } else if (status == 2) {
-          return '已收款';
-        } else if (status == 3) {
-          return '订单取消';
+          return '已入账';
         } else {
           return '无效';
         }

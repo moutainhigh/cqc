@@ -31,7 +31,11 @@ public class Order implements Serializable {
 
     private String orderSn;
 
-    private String sellerUserId;
+    /**
+     * 放单id
+     */
+    private String publishOrderId;
+
 
     /**
      * 发布者昵称
@@ -87,6 +91,12 @@ public class Order implements Serializable {
     private Date buyTime;
 
     /**
+     * 取消时间
+     */
+    @JsonFormat( pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date cancelTime;
+
+    /**
      * 佣金
      */
     private BigDecimal income;
@@ -102,6 +112,11 @@ public class Order implements Serializable {
      * 收款码id
      */
     private String receiveCodeId;
+
+    /**
+     * 收款码姓名
+     */
+    private String receiveCodeName;
 
     private String country;
 

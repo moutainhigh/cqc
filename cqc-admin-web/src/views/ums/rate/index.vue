@@ -47,6 +47,10 @@
           return '支付宝';
         }else if (channel == "2") {
           return '微信';
+        }else if (channel == "3") {
+            return '拼多多商家';
+        }else if (channel == "4") {
+            return '拼多多买家';
         }else {
           return '未知';
         }

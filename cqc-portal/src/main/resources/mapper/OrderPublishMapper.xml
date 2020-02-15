@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cqc.portal.mapper.OrderPublishMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.cqc.model.OrderPublish">
+        <id column="id" property="id" />
+        <result column="publisher" property="publisher" />
+        <result column="order_sn" property="orderSn" />
+        <result column="channel" property="channel" />
+        <result column="amount" property="amount" />
+        <result column="status" property="status" />
+        <result column="create_time" property="createTime" />
+        <result column="pay_time" property="payTime" />
+    </resultMap>
+
+    <select id="selectNewOrder" parameterType="java.math.BigDecimal" resultType="com.cqc.model.OrderPublish">
+        select * from `order_publish`
+        where `status` = -1 and amount &lt;= #{balance}
+        and channel in
+        <foreach item="item" collection="channelSet" separator="," open="(" close=")" index="">
+            #{item}
+        </foreach>
+        order by create_time desc limit 1
+    </select>
+
+    <update id="updateStatus">
+        update order_publish set status = #{status}
+        where id = #{id} and status = -1
+    </update>
+
+    <select id="selectByOrderSn" resultType="com.cqc.model.OrderPublish">
+        select * from `order_publish`
+        where order_sn = #{orderSn}
+    </select>
+
+</mapper>

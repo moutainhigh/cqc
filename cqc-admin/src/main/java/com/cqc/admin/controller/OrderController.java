@@ -41,7 +41,7 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    @ApiOperation("已放单列表")
+    @ApiOperation("已抢单列表")
     @GetMapping("/list")
     public Result<Page<Order>> list(OrderQueryParam params) {
 
@@ -49,31 +49,12 @@ public class OrderController {
 
         QueryWrapper<Order> wrapper = new QueryWrapper<Order>()
                 .eq(params.getStatus() != null, "status", params.getStatus())
+                .eq(params.getOrderSn() != null, "order_sn", params.getOrderSn())
                 .orderByDesc("create_time");
 
         orderService.page(page, wrapper);
         return Result.success(page);
     }
-
-
-    @ApiOperation("手动放单")
-    @PostMapping("/push")
-    public Result<Order> push(@Validated @RequestBody OrderPublishParam param) {
-        Order order = new Order();
-        BeanUtils.copyProperties(param, order);
-
-        // 设置订单号
-        order.setOrderSn(OrderUtils.generateOrderSn());
-        order.setStatus(-1);
-
-        boolean rs = orderService.save(order);
-        if (!rs) {
-            return Result.failed("放单失败");
-        }
-        return Result.success(order);
-    }
-
-
 
 }
 

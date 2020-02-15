@@ -42,6 +42,12 @@ public class RateController {
         if (!list.contains(new Rate("2"))) {
             list.add(new Rate("2", BigDecimal.ZERO));
         }
+        if (!list.contains(new Rate("3"))) {
+            list.add(new Rate("3", BigDecimal.ZERO));
+        }
+        if (!list.contains(new Rate("4"))) {
+            list.add(new Rate("4", BigDecimal.ZERO));
+        }
         BigDecimal percent = new BigDecimal(100);
         for (Rate rate : list) {
             rate.setRate(rate.getRate().multiply(percent));

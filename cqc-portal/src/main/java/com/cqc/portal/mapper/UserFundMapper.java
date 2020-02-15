@@ -26,6 +26,14 @@ public interface UserFundMapper extends BaseMapper<UserFund> {
 
     int freezeBalance(String userId, BigDecimal amount);
 
+    /**
+     * 解冻金额
+     * @param userId
+     * @param amount
+     * @return
+     */
+    int unFreezeBalance(String userId, BigDecimal amount);
+
 
     int cutBalance4PddSeller(String userId, BigDecimal amount);
 

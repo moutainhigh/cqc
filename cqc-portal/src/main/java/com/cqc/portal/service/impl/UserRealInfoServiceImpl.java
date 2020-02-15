@@ -37,8 +37,18 @@ public class UserRealInfoServiceImpl extends ServiceImpl<UserRealInfoMapper, Use
         if (realInfo != null) {
             throw new BaseException("", "已经提交实名信息");
         }
+        // 身份证号不能重复
+        UserRealInfo entity = baseMapper.selectOne(new QueryWrapper<UserRealInfo>().eq("id_number", param.getIdNumber())
+                .eq("type", 1));
+        if (entity != null) {
+            throw new BaseException("", "该身份证号已经提交实名");
+        }
+
         realInfo = new UserRealInfo();
         BeanUtils.copyProperties(param, realInfo);
+
+
+
         return super.save(realInfo);
     }
 }

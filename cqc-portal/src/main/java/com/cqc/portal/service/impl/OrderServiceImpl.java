@@ -9,6 +9,7 @@ import com.cqc.common.exception.BaseException;
 import com.cqc.model.*;
 import com.cqc.portal.dto.resp.CityHotDataDto;
 import com.cqc.portal.mapper.OrderMapper;
+import com.cqc.portal.mapper.OrderPublishMapper;
 import com.cqc.portal.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -36,6 +38,8 @@ import java.util.stream.Collectors;
 @Service
 public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements OrderService {
 
+    @Autowired
+    private OrderPublishMapper orderPublishMapper;
 
     @Autowired
     private OrderMapper orderMapper;
@@ -104,12 +108,64 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             return;
         }
         // 查询金额足够支付的订单
-        Order order = orderMapper.selectNewOrder(availableBalance, channelSet);
+        OrderPublish order = orderPublishMapper.selectNewOrder(availableBalance, channelSet);
         if (order == null) {
             // 没有可抢的订单
             return;
         }
         buyOrder(user, order.getId(), list, pddList);
+    }
+
+
+    @Override
+    public void autoCancel() {
+        // 查询15分钟前，且未确认收款的订单
+        List<Order> orders = orderMapper.payTimeOutList();
+        if (CollectionUtils.isEmpty(orders)) {
+            return;
+        }
+        for (Order order : orders) {
+            cancel(order);
+        }
+    }
+
+
+    @Transactional(rollbackFor = Throwable.class)
+    @Override
+    public boolean cancel(Order order) {
+        // 再一次判断订单的状态
+        Order record = orderMapper.selectById(order.getId());
+        if (record.getStatus() != 0) {
+            return false;
+        }
+        // 查询放单
+        OrderPublish orderPublish = orderPublishMapper.selectById(order.getPublishOrderId());
+        if (orderPublish == null || orderPublish.getStatus() != 0) {
+            return false;
+        }
+
+        // 将用户冻结金额解冻
+        boolean b = userFundService.unFreezeBalance(order.getUserId(), order.getAmount());
+        if (!b) {
+            return false;
+        }
+        // 修改订单状态
+        Order entity = new Order();
+        entity.setId(order.getId());
+        entity.setStatus(3);
+        entity.setCancelTime(new Date());
+        int i = orderMapper.updateById(entity);
+        if (i != 1) {
+            throw new BaseException("", "取消订单失败");
+        }
+        // 修改放单状态
+        if (!StringUtils.isEmpty(order.getPublishOrderId())) {
+            OrderPublish entity2 = new OrderPublish();
+            entity2.setId(order.getPublishOrderId());
+            entity2.setStatus(-1);
+            orderPublishMapper.updateById(entity2);
+        }
+        return true;
     }
 
     @Transactional(rollbackFor = Throwable.class)
@@ -135,6 +191,13 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         entity.setPayTime(new Date());
         entity.setAmount(null);
         int i = orderMapper.updateById(entity);
+
+        OrderPublish entity2 = new OrderPublish();
+        entity2.setId(order.getPublishOrderId());
+        entity2.setStatus(-1);
+        entity2.setPayTime(new Date());
+        orderPublishMapper.updateById(entity2);
+
         // 保存佣金记录
         userFundService.addIncome(userId, order.getIncome());
         // 保存上级佣金记录
@@ -154,27 +217,27 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     @Transactional(rollbackFor = Throwable.class, propagation = Propagation.REQUIRES_NEW)
     public void buyOrder(User user, String orderId, List<ReceiveCode> receiveCodeList, List<PddAccount> pddList) {
         // 再次查询数据库
-        Order order = orderMapper.selectById(orderId);
-        if (order == null || order.getStatus() != -1) {
+        OrderPublish orderPublish = orderPublishMapper.selectById(orderId);
+        if (orderPublish == null || orderPublish.getStatus() != -1) {
             return;
         }
         ReceiveCode receiveCode = new ReceiveCode();
         // 取一个收款码
-        List<ReceiveCode> collect = receiveCodeList.stream().filter(item -> {return item.getChannel().equals(order.getChannel());
+        List<ReceiveCode> collect = receiveCodeList.stream().filter(item -> {return item.getChannel().equals(orderPublish.getChannel());
         }).collect(Collectors.toList());
         // 得到一个收款码
         if (!CollectionUtils.isEmpty(collect)) {
             receiveCode = collect.get(0);
         }
         // 冻结金额
-        boolean b = userFundService.freezeBalance(user.getId(), order.getAmount());
+        boolean b = userFundService.freezeBalance(user.getId(), orderPublish.getAmount());
         if (!b) {
             throw new BaseException("", "可用余额不足，不足以抢单");
         }
         PddAccount pddAccount = new PddAccount();
-        if (order.getChannel() == 3) {
+        if (orderPublish.getChannel() == 3) {
             pddList = pddList.stream().filter(item -> {return item.getType().equals(1);}).collect(Collectors.toList());
-        } else if (order.getChannel() == 4) {
+        } else if (orderPublish.getChannel() == 4) {
             pddList = pddList.stream().filter(item -> {return item.getType().equals(2);}).collect(Collectors.toList());
         }
         if (!CollectionUtils.isEmpty(pddList)) {
@@ -182,16 +245,20 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         }
         // 读取费率
         BigDecimal income = BigDecimal.ZERO;
-        BigDecimal rate = rateService.getRate(order.getChannel());
+        BigDecimal rate = rateService.getRate(orderPublish.getChannel());
         int count = userRecommendService.count(new QueryWrapper<UserRecommend>().eq("user_id", user.getId()));
         BigDecimal a = new BigDecimal("0.001").multiply(new BigDecimal(count));
         rate = rate.subtract(a);
         if (rate.compareTo(BigDecimal.ZERO) > 0) {
             // 如果佣金费率大于0
-            income = order.getAmount().multiply(rate);
+            income = orderPublish.getAmount().multiply(rate);
         }
         Order entity = new Order();
-        entity.setId(orderId);
+        entity.setOrderSn(orderPublish.getOrderSn());
+        entity.setPublishOrderId(orderId);
+        entity.setPublisher(orderPublish.getPublisher());
+        entity.setAmount(orderPublish.getAmount());
+        entity.setChannel(orderPublish.getChannel());
         entity.setStatus(0);
         entity.setUserId(user.getId());
         entity.setBuyTime(new Date());
@@ -200,6 +267,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         entity.setAccount(user.getAccount());
         entity.setReceiveCodeId(receiveCode.getId());
         entity.setReceiveCodeImg(receiveCode.getCodeImg());
+        entity.setReceiveCodeName(receiveCode.getReceiveName());
         entity.setCountry(user.getCountry());
         entity.setProvince(user.getProvince());
         entity.setCity(user.getCity());
@@ -207,9 +275,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         entity.setPddAccountId(pddAccount.getId());
         entity.setPddAccount(pddAccount.getPddAccount());
 
+        orderMapper.insert(entity);
         // todo 加锁
-        int i = orderMapper.update(entity, new QueryWrapper<Order>().eq("id", orderId)
-                .eq("status", -1));
+        int i = orderPublishMapper.updateStatus(orderId, 0);
         if (i != 1) {
             // 抢单失败
             throw new BaseException("", "抢单失败，回滚");

@@ -25,4 +25,9 @@
         GROUP BY city
         order by hot desc
     </select>
+
+    <select id="payTimeOutList" resultType="com.cqc.model.Order">
+        select * from `order`
+        where `status` = 0 and buy_time &lt; date_add(now(),interval -15 minute)
+    </select>
 </mapper>

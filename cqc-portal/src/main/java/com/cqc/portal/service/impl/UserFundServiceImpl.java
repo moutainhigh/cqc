@@ -162,6 +162,13 @@ public class UserFundServiceImpl extends ServiceImpl<UserFundMapper, UserFund> i
 
     @Transactional(rollbackFor = Throwable.class)
     @Override
+    public boolean unFreezeBalance(String userId, BigDecimal amount) {
+        int i = userFundMapper.unFreezeBalance(userId, amount);
+        return i == 1;
+    }
+
+    @Transactional(rollbackFor = Throwable.class)
+    @Override
     public boolean withDraw(String userId, BigDecimal amount) {
         UserFund userFund = this.getFund(userId);
         if (userFund.getAvailableBalance().compareTo(amount) < 0) {

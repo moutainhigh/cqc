@@ -43,7 +43,7 @@ public interface OrderMapper extends BaseMapper<Order> {
      * @param userId
      * @return
      */
-    @Select("select ifnull(sum(o.income), 0) from `order` as o where user_id = #{userId} and `status` = 0")
+    @Select("select ifnull(sum(o.amount), 0) from `order` as o where user_id = #{userId} and `status` = 0")
     BigDecimal waitPayIncome(String userId);
 
     /**
@@ -51,4 +51,10 @@ public interface OrderMapper extends BaseMapper<Order> {
      * @return
      */
     List<CityHotDataDto> cityHot();
+
+    /**
+     * 查询超时未支付的订单
+     * @return
+     */
+    List<Order> payTimeOutList();
 }

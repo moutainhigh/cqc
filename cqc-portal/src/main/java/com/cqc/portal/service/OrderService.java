@@ -27,6 +27,19 @@ public interface OrderService extends IService<Order> {
     void autoOrder(User user, List<ReceiveCode> list);
 
     /**
+     * 取消订单
+     */
+    void autoCancel();
+
+
+    /**
+     * 取消订单
+     * @param order
+     * @return
+     */
+    boolean cancel(Order order);
+
+    /**
      * 确认付款
      * @param id
      * @return

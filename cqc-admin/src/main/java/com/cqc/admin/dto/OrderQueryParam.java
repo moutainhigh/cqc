@@ -7,4 +7,7 @@ import lombok.Data;
 public class OrderQueryParam extends PageQuery {
 
     private Integer status;
+
+    private String orderSn;
+
 }

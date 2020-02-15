@@ -139,5 +139,22 @@ public class ReceiveCodeController {
         return Result.success(true);
     }
 
+    @ApiOperation("删除")
+    @GetMapping("/delete")
+    public Result<Boolean> delete(@NotBlank(message = "id不能为空") String id) {
+        String userId = PortalUserUtil.getCurrentUserId();
+        if (StringUtils.isEmpty(userId)) {
+            throw new BaseException(ResultCode.UNAUTHORIZED);
+        }
+        userService.checkUser(userId);
+
+
+        boolean rs = receiveCodeService.removeById(id);
+        if (!rs) {
+            return Result.failed("操作成功");
+        }
+        return Result.success(true);
+    }
+
 }
 

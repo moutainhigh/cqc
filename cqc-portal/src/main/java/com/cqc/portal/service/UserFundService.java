@@ -67,6 +67,14 @@ public interface UserFundService extends IService<UserFund> {
     boolean freezeBalance(String userId, BigDecimal amount);
 
     /**
+     * 解冻金额
+     * @param userId
+     * @param amount
+     * @return
+     */
+    boolean unFreezeBalance(String userId, BigDecimal amount);
+
+    /**
      * 提现
      * @param userId
      * @param amount

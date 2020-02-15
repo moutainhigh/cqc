@@ -19,12 +19,23 @@ function valiData(mes,url,invite_code, user,mobile,code,va_code,pass,pass_c,emai
     var emaile_Boolean = false;         //邮箱
     var Mobile_Boolean = false;         //手机
     var Code_Boolean = false;           //验证码
+
+    if (invite_code) {
+        $(invite_code).blur(function(){
+            if ($(invite_code).val()) {
+                $(invite_code).css("border-bottom","1px solid green").next().text("✔").css("color","green");
+                invite_code_Boolean = true;
+            } else {
+                $(invite_code).css("border-bottom","1px solid red").next().text("×").css("color","red");
+                invite_code_Boolean = false;
+            }
+        });
+    }
+
     // 用户名验证
     if(!user){
         user_Boolean = true;
     }
-
-
 
     if(user){
         console.log(1,$(user));
@@ -173,7 +184,7 @@ function valiData(mes,url,invite_code, user,mobile,code,va_code,pass,pass_c,emai
     // 全部完成通过
     console.log(10,sub_btn);
     $(sub_btn).click(function(){
-        if(user_Boolean && password_Boolean && varconfirm_Boolean && emaile_Boolean && Code_Boolean && Mobile_Boolean == true){
+        if(invite_code_Boolean && user_Boolean && password_Boolean && varconfirm_Boolean && emaile_Boolean && Code_Boolean && Mobile_Boolean == true){
             var data = {
                 "inviteCode": $(invite_code).val(),
                 "account":$(user).val(),

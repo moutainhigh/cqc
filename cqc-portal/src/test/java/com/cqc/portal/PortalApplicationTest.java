@@ -6,6 +6,7 @@ import com.cqc.model.UserRecommend;
 import com.cqc.portal.dto.RegisterParam;
 import com.cqc.portal.manager.SmsService;
 import com.cqc.portal.service.LoginRegisterService;
+import com.cqc.portal.service.OrderPublishService;
 import com.cqc.portal.service.UserDateIncomeService;
 import com.cqc.portal.service.UserService;
 import com.cqc.portal.utils.EhcacheUtil;
@@ -37,6 +38,10 @@ public class PortalApplicationTest {
 
     @Autowired
     private EhcacheUtil ehcacheUtil;
+
+
+    @Autowired
+    private OrderPublishService orderPublishService;
 
     @Test
     public void findParent() {
@@ -95,4 +100,9 @@ public class PortalApplicationTest {
         System.out.println(code);
     }
 
+
+    @Test
+    public void testAddOrderPublish() {
+
+    }
 }

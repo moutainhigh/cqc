@@ -145,7 +145,13 @@ export const constantRouterMap = [
         path: 'pushorder',
         name: 'pushorder',
         component: () => import('@/views/oms/pushorder/index'),
-        meta: {title: '放单列表', icon: 'sms-coupon'}
+        meta: {title: '放单管理', icon: 'sms-coupon'}
+      },
+      {
+        path: 'order',
+        name: 'order',
+        component: () => import('@/views/oms/order/index'),
+        meta: {title: '抢单列表', icon: 'sms-coupon'}
       }
     ]
   },
