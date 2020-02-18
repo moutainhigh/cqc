@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * <p>
@@ -42,7 +43,7 @@ public class UserDateIncomeController {
     @Autowired
     private UserService userService;
 
-    @ApiOperation("银行列表")
+    @ApiOperation("代理列表")
     @GetMapping("/agentIncome")
     public Result<List<UserIncomeDto>> list(String date) {
         // 校验日期格式
@@ -83,6 +84,57 @@ public class UserDateIncomeController {
         return Result.success(resultList);
     }
 
+
+    @ApiOperation("下级列表")
+    @GetMapping("/child")
+    public Result<List<UserIncomeDto>> childList(String childId) {
+        String userId = PortalUserUtil.getCurrentUserId();
+        if (StringUtils.isEmpty(userId)) {
+            throw new BaseException(ResultCode.UNAUTHORIZED);
+        }
+        userService.checkUser(userId);
+
+        User child = userService.getById(childId);
+        if (child == null || !Objects.equals(userId, child.getRefUserId())) {
+            return Result.failed("错误的用户id");
+        }
+        //先查询下级
+        List<User> list = userService.getByParent(childId);
+        if (CollectionUtils.isEmpty(list)) {
+            return Result.success();
+        }
+        List<UserIncomeDto> resultList = new ArrayList<>();
+
+        List<String> userIds = new ArrayList<>(list.size());
+        list.stream().forEach(item -> {
+            userIds.add(item.getId());
+            resultList.add(new UserIncomeDto(item.getId(), item.getAccount(), item.getCreateTime()));
+        });
+
+        return Result.success(resultList);
+    }
+
+
+    @ApiOperation("上级会员")
+    @GetMapping("/parent")
+    public Result<UserIncomeDto> getParent(String childId) {
+        String userId = PortalUserUtil.getCurrentUserId();
+        if (StringUtils.isEmpty(userId)) {
+            throw new BaseException(ResultCode.UNAUTHORIZED);
+        }
+        userService.checkUser(userId);
+
+        User child = userService.getById(childId);
+        if (child == null ) {
+            return Result.failed("错误的用户id");
+        }
+        User parent = userService.getById(child.getRefUserId());
+        if (parent == null) {
+            return Result.success();
+        }
+        UserIncomeDto result = new UserIncomeDto(parent.getId(), parent.getAccount(), parent.getCreateTime());
+        return Result.success(result);
+    }
 
 }
 

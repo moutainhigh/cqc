@@ -12,8 +12,13 @@
     <link rel="stylesheet" href="./css/base.css" />
     <!-- 导入本类.css文件 -->
     <link rel="stylesheet" href="./css/common.css" />
+
+    <link rel="stylesheet" href="./css/jquery-confirm.css" />
     <!-- 导入jquery -->
     <script src="./js/jquery.min.js"></script>
+    <script src="./js/jquery-confirm.js"></script>
+
+
     <script src="./js/config.js"></script>
     <script src="./js/request.js"></script>
     <!-- 根据设备宽度，计算html根节点的font-size -->
@@ -39,6 +44,9 @@
 <style>
     .notice_content_text{
         min-height: auto !important;
+    }
+
+    .del{position: absolute;top:.2rem;right:1.5rem;width:0rem;height:.5rem;background:red;line-height:normal;text-align:center;color:white !important;box-sizing:border-box;font-size:.3rem;padding-top:.05rem;
     }
 </style>
 <body style="background: #3e7fff;">
@@ -180,6 +188,11 @@
     $(function () {
         getAutoOrderStatus();
         getReceiveCode();
+
+        $(".pro_each").click(function(){
+            $(this).find(".del").animate({"width":"1rem"});
+        });
+
     });
     function getReceiveCode(params) {
         getForAuth(host + receive_list, params, function (result) {
@@ -201,6 +214,7 @@
                     '<div class="pro_each">'+
                     '<img src="'+getChannelImg(item.channel)+'" alt="" data-type="2">'+
                     '<span class="name" datatype="'+item.codeImg+'">'+item.receiveName+'</span>'+
+                    '<span class="del" data-type="'+item.id+'">删除</span>'+
                     '<div class="start_end">'+
                      checkBox +
                     '<label for="'+item.id+'" class="check-trail">'+
@@ -218,7 +232,13 @@
                     event.preventDefault();
                 }
             }
-
+            $(".pro_each").click(function(){
+                $(this).find(".del").animate({"width":"1rem"});
+            });
+            $('.del').click(function () {
+                // 弹出确认框 防止误点
+                del($(this));
+            });
         });
     }
     function getChannelImg(channel) {
@@ -347,6 +367,37 @@
                 alert(result.message);
             }
         });
+    }
+
+    function del(obj) {
+        $.confirm({
+            title: '确认',
+            content: '确认删除？',
+            type: 'green',
+            icon: 'glyphicon glyphicon-question-sign',
+            buttons: {
+                ok: {
+                    text: '确认',
+                    btnClass: 'btn-primary',
+                    action: function() {
+                        var id = $(obj).attr("data-type");
+                        var uri = receive_del_uri + "?id=" + id;
+                        getForAuth(host + uri, null, function (result) {
+                            if (result.code == 200) {
+                                $(obj).parent().remove();
+                            } else {
+                                alert(result.message);
+                            }
+                        });
+                    }
+                },
+                cancel: {
+                    text: '取消',
+                    btnClass: 'btn-primary'
+                }
+            }
+        });
+
     }
 
     // 筛选

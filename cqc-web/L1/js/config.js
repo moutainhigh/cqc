@@ -67,6 +67,12 @@ const my_fund_list = "/userFund/myList";
 // 代理收益统计
 const income_agentIncome_uri = "/income/agentIncome";
 
+// 查看下级
+const income_get_child_uri = "/income/child";
+
+// 查看上级
+const income_get_parent_uri = "/income/parent";
+
 // 收款码列表
 const receive_list = "/receiveCode/list";
 // 启用、关闭收款码
@@ -75,6 +81,9 @@ const open_receive_code_uri = "/receiveCode/open";
 const close_receive_code_uri = "/receiveCode/close";
 // 添加收款码
 const receive_add_uri = "/receiveCode/add";
+// 删除收款码
+const receive_del_uri = "/receiveCode/delete";
+
 //缴纳押金
 const PAY_DEPOSIT_URI = "/userFund/payDeposit";
 
