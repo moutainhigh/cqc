@@ -234,7 +234,6 @@
     $(function () {
         if (hashToken()) {
             $("#user").show();
-            $("#no_login").hide();
         }
 
         $(".jnyj_a").click(function(){
@@ -265,6 +264,7 @@
 
             }
             if (result.code == '200') {
+                $("#no_login").hide();
                 // 成功 展示数据
                 var userInfo = result.data;
                 $("#user").show();
