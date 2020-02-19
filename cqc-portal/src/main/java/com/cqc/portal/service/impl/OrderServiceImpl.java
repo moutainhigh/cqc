@@ -176,6 +176,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         if (order == null) {
             throw new BaseException("", "订单错误");
         }
+        if (order.getStatus() == 3) {
+            throw new BaseException("", "订单已取消，无法付款");
+        }
         if (order.getStatus() > 0) {
             throw new BaseException("", "重复付款");
         }
@@ -194,7 +197,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
         OrderPublish entity2 = new OrderPublish();
         entity2.setId(order.getPublishOrderId());
-        entity2.setStatus(-1);
+        entity2.setStatus(1);
         entity2.setPayTime(new Date());
         orderPublishMapper.updateById(entity2);
 
