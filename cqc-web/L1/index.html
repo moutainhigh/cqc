@@ -184,7 +184,6 @@
         order_state = 1;
         $(".start_btn img").attr("src","./img/btn_start.png");
         $(".start_btn span").text("正在抢单").css("color","red");
-        getNewOrder();
 
         t1 = setInterval(function() {
             buyOrder();
@@ -194,7 +193,10 @@
             getAutoOrderStatus();
         },3000);
 
-
+        // 页面加载就拉取订单
+        t3 = setInterval(function() {
+            getNewOrder();
+        },3000);
     }
 
     function stop() {
@@ -241,11 +243,8 @@
             confirmPayOrder(orderId);
         });
 
+        getNewOrder();
 
-        // 页面加载就拉取订单
-        t3 = setInterval(function() {
-            getNewOrder();
-        },2000);
     });
 
     

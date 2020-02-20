@@ -1,5 +1,6 @@
 package com.cqc.portal;
 
+import com.cqc.common.utils.OrderUtils;
 import com.cqc.model.Order;
 import com.cqc.model.OrderPublish;
 import com.cqc.portal.service.OrderPublishService;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,21 +34,14 @@ public class OrderTest {
             return;
         }
 
-        List<OrderPublish> publishList = new ArrayList<>(list.size());
+
         for (Order order : list) {
-            OrderPublish publish = new OrderPublish();
-            publish.setPublisher(order.getPublisher());
+            Order publish = new Order();
+            publish.setId(order.getId());
+            publish.setOrderSn(OrderUtils.generatePublishOrderSn());
 
-            publish.setOrderSn(order.getOrderSn());
-            publish.setChannel(order.getChannel());
-            publish.setAmount(order.getAmount());
-            publish.setStatus(order.getStatus());
-            publish.setCreateTime(order.getCreateTime());
-
-
-            publishList.add(publish);
+            orderService.updateById(publish);
         }
-        orderPublishService.saveBatch(publishList);
 
     }
 

@@ -57,4 +57,14 @@ public interface OrderMapper extends BaseMapper<Order> {
      * @return
      */
     List<Order> payTimeOutList();
+
+    /**
+     *
+     * @param receiveId
+     * @param amount
+     * @return
+     */
+    @Select("select count(1) from `order` as o where receive_code_id = #{receiveId} and `amount` = #{amount} and status = 0")
+    Integer countByReceiveId(String receiveId, BigDecimal amount);
+
 }

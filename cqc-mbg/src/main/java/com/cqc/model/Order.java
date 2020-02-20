@@ -32,6 +32,12 @@ public class Order implements Serializable {
     private String orderSn;
 
     /**
+     * 放单号
+     */
+    private String publishOrderSn;
+
+
+    /**
      * 放单id
      */
     private String publishOrderId;

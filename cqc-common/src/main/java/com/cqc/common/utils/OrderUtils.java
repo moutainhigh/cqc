@@ -14,7 +14,13 @@ public class OrderUtils {
 
     public static String generateOrderSn() {
         String hmmss = DateUtil.format(new Date(), "yyyyMMddHHmmss");
-        return hmmss + getOrderIdByUUId();
+        return "FD"+hmmss + getOrderIdByUUId();
+    }
+
+
+    public static String generatePublishOrderSn () {
+        String hmmss = DateUtil.format(new Date(), "yyyyMMddHHmmss");
+        return "QD"+hmmss + getOrderIdByUUId();
     }
 
     private static String getOrderIdByUUId() {
@@ -28,7 +34,14 @@ public class OrderUtils {
 //         0 代表前面补充0
 //         4 代表长度为4
 //         d 代表参数为正数型
-        return  machineId+ String.format("%015d", hashCodeV);
+        return  machineId+ String.format("%05d", hashCodeV);
     }
+
+
+    public static void main(String[] args) {
+        System.out.println(generatePublishOrderSn());
+    }
+
+
 
 }

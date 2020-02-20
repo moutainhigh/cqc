@@ -1,6 +1,7 @@
 package com.cqc.portal.controller;
 
 
+import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -66,11 +67,15 @@ public class OrderController {
             throw new BaseException(ResultCode.UNAUTHORIZED);
         }
         userService.checkUser(userId);
+        Date now = new Date();
         Date startDate = null;
         Date endDate = null;
         try {
             if (!StringUtils.isEmpty(param.getStartTimeStr())) {
                 startDate = DateUtil.parse(param.getStartTimeStr(), "yyyy-MM-dd");
+            }else {
+                startDate = DateUtil.beginOfDay(now);
+
             }
         } catch (Exception e) {
             endDate = null;
@@ -78,6 +83,8 @@ public class OrderController {
         try {
             if (!StringUtils.isEmpty(param.getEndTimeStr())) {
                 endDate = DateUtil.parse(param.getEndTimeStr(), "yyyy-MM-dd");
+            } else {
+                endDate = DateUtil.endOfDay(now);
             }
         } catch (Exception e) {
             endDate = null;

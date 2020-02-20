@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cqc.common.constant.Constants;
 import com.cqc.common.enums.BaseErrorMsg;
 import com.cqc.common.exception.BaseException;
+import com.cqc.common.utils.OrderUtils;
 import com.cqc.model.*;
 import com.cqc.portal.dto.resp.CityHotDataDto;
 import com.cqc.portal.mapper.OrderMapper;
@@ -113,7 +114,19 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             // 没有可抢的订单
             return;
         }
-        buyOrder(user, order.getId(), list, pddList);
+        ReceiveCode receiveCode = new ReceiveCode();
+        PddAccount pddAccount = new PddAccount();
+
+        receiveCode = list.get(new Random().nextInt(list.size() - 1));
+        if (!CollectionUtils.isEmpty(pddList)) {
+            pddAccount = pddList.get(new Random().nextInt(pddList.size() - 1));
+        }
+        // 查询该二维码和该金额是否存在未支付的订单
+        Integer ct = orderMapper.countByReceiveId(receiveCode.getId(), order.getAmount());
+        if (ct != null && ct > 0) {
+            return;
+        }
+        buyOrder(user, order.getId(), receiveCode, pddAccount);
     }
 
 
@@ -218,33 +231,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
      */
 
     @Transactional(rollbackFor = Throwable.class, propagation = Propagation.REQUIRES_NEW)
-    public void buyOrder(User user, String orderId, List<ReceiveCode> receiveCodeList, List<PddAccount> pddList) {
+    public void buyOrder(User user, String orderId, ReceiveCode receiveCode, PddAccount pddAccount) {
         // 再次查询数据库
         OrderPublish orderPublish = orderPublishMapper.selectById(orderId);
         if (orderPublish == null || orderPublish.getStatus() != -1) {
             return;
-        }
-        ReceiveCode receiveCode = new ReceiveCode();
-        // 取一个收款码
-        List<ReceiveCode> collect = receiveCodeList.stream().filter(item -> {return item.getChannel().equals(orderPublish.getChannel());
-        }).collect(Collectors.toList());
-        // 得到一个收款码
-        if (!CollectionUtils.isEmpty(collect)) {
-            receiveCode = collect.get(0);
-        }
-        // 冻结金额
-        boolean b = userFundService.freezeBalance(user.getId(), orderPublish.getAmount());
-        if (!b) {
-            throw new BaseException("", "可用余额不足，不足以抢单");
-        }
-        PddAccount pddAccount = new PddAccount();
-        if (orderPublish.getChannel() == 3) {
-            pddList = pddList.stream().filter(item -> {return item.getType().equals(1);}).collect(Collectors.toList());
-        } else if (orderPublish.getChannel() == 4) {
-            pddList = pddList.stream().filter(item -> {return item.getType().equals(2);}).collect(Collectors.toList());
-        }
-        if (!CollectionUtils.isEmpty(pddList)) {
-            pddAccount = pddList.get(0);
         }
         // 读取费率
         BigDecimal income = BigDecimal.ZERO;
@@ -257,7 +248,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             income = orderPublish.getAmount().multiply(rate);
         }
         Order entity = new Order();
-        entity.setOrderSn(orderPublish.getOrderSn());
+        entity.setOrderSn(OrderUtils.generatePublishOrderSn());
+
+        entity.setPublishOrderSn(orderPublish.getOrderSn());
         entity.setPublishOrderId(orderId);
         entity.setPublisher(orderPublish.getPublisher());
         entity.setAmount(orderPublish.getAmount());
@@ -287,7 +280,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         }
     }
 
-
     @Override
     public BigDecimal getWaitPayIncome(String userId) {
         // 直接从数据库中查
@@ -299,4 +291,5 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     public List<CityHotDataDto> cityHot() {
         return orderMapper.cityHot();
     }
+
 }

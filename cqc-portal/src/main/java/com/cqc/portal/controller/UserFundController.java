@@ -82,11 +82,14 @@ public class UserFundController {
         }
         userService.checkUser(userId);
 
+        Date now = new Date();
         Date startDate = null;
         Date endDate = null;
         try {
             if (!StringUtils.isEmpty(param.getStartTimeStr())) {
                 startDate = DateUtil.parse(param.getStartTimeStr(), "yyyy-MM-dd");
+            } else {
+                startDate = DateUtil.beginOfDay(now);
             }
         } catch (Exception e) {
             endDate = null;
@@ -94,6 +97,8 @@ public class UserFundController {
         try {
             if (!StringUtils.isEmpty(param.getEndTimeStr())) {
                 endDate = DateUtil.parse(param.getEndTimeStr(), "yyyy-MM-dd");
+            } else {
+                endDate = DateUtil.endOfDay(now);
             }
         } catch (Exception e) {
             endDate = null;
