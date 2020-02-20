@@ -370,7 +370,7 @@
                     '<span> </span>' +
                     '<span>'+item.amount.toFixed(2)+'</span>' +
                     '</div>' +
-                    '<span class="three" data-type="'+item.status+'">'+getStatus(item.status)+'</span>' +
+                    '<span class="three '+getClass(item.status)+'" data-type="'+item.status+'">'+getStatus(item.status)+'</span>' +
                     '<a href="javascript:void(0);" class="four">删除</a>' +
                     '</li>';
             }
@@ -392,6 +392,21 @@
             logo = "img/pinduoduo.png";
         }
         return logo;
+    }
+
+
+    function getClass(status) {
+        var cls = "";
+        if (status == 0) {
+            cls = "";
+        } else if (status == 1) {
+            cls = "bg_g";
+        } else if (status == 2) {
+            cls = "bg_b";
+        } else if (status == 3) {
+            cls = "bg_r";
+        }
+        return cls;
     }
 
     function getStatus(status) {
