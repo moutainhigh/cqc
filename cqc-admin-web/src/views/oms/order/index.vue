@@ -48,11 +48,12 @@
                 @selection-change="handleSelectionChange"
                 v-loading="listLoading" border>
         <el-table-column type="selection" width="60" align="center"></el-table-column>
-        <el-table-column hidden="hidden" label="编号" width="280" align="center" v-show="0">
-          <template slot-scope="scope">{{scope.row.id}}</template>
-        </el-table-column>
+
         <el-table-column label="订单号" width="280" align="center">
           <template slot-scope="scope">{{scope.row.orderSn}}</template>
+        </el-table-column>
+        <el-table-column  label="放单号" width="280" align="center" v-show="0">
+          <template slot-scope="scope">{{scope.row.publishOrderSn}}</template>
         </el-table-column>
         <el-table-column label="金额" align="center" width="100">
           <template slot-scope="scope">{{scope.row.amount}}</template>

@@ -2,7 +2,7 @@
   <div class="detail-container">
     <div style="margin-top: 20px">
       <svg-icon icon-class="marker" style="color: #606266"></svg-icon>
-      <span class="font-small">收货人信息</span>
+      <span class="font-small">实名信息</span>
     </div>
     <div class="table-layout">
       <el-row>
