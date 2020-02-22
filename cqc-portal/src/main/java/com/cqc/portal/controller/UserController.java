@@ -16,6 +16,7 @@ import com.cqc.portal.dto.ModifyPasswordParam;
 import com.cqc.portal.dto.resp.UserFundDto;
 import com.cqc.portal.dto.resp.UserInfo;
 import com.cqc.portal.service.*;
+import com.cqc.portal.utils.EhcacheUtil;
 import com.cqc.security.util.GoogleAuthUtil;
 import com.cqc.security.util.PortalUserUtil;
 import io.swagger.annotations.Api;
@@ -60,6 +61,8 @@ public class UserController {
     @Autowired
     private ReceiveCodeService receiveCodeService;
 
+    @Autowired
+    private EhcacheUtil ehcacheUtil;
 
     @ApiOperation("登录用户数据")
     @GetMapping("/getInfo")
@@ -233,6 +236,13 @@ public class UserController {
         userFundDto.setCqc(fund.getAvailableBalance().multiply(Constants.BUY_ORDER_PERCENT));
 
         userFundDto.setAutoOrderStatus(user.getAutoOrderStatus());
+
+        String newOrderState = ehcacheUtil.get(Constants.NEW_ORDER_PREFIX + user.getId());
+        if ("1".equals(newOrderState)) {
+            userFundDto.setNewOrderStatus(true);
+            ehcacheUtil.remove(Constants.NEW_ORDER_PREFIX + user.getId());
+        }
+
         return Result.success(userFundDto);
     }
 

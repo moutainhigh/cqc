@@ -46,6 +46,13 @@
         .two span:nth-child(1) {
             width: 100% !important;
         }
+
+        .wrapper{width: 80%;min-height: 2.5rem; background: white; box-sizing: border-box; box-shadow: 0 0 .1rem gray; border-radius: .2rem; position: fixed; top: 30%; left: 10%; z-index: 1001;}
+        .wrapper h2{ width: 100%; text-align: center; line-height: 1rem; font-size: .35rem;}
+        .wrapper p{ padding: .15rem .2rem; font-size: .3rem;}
+        .wrapper em{ color: #9c9c9c;text-align: right; width: 30%; display: inline-block;}
+        .w_btn{ width: 100%; text-align: center; color: blue; font-size: .3rem; border-top: 1px solid #dedede; padding: .2rem 0;}
+
     </style>
 </head>
 <body>
@@ -137,6 +144,18 @@
     </div>
     <a href="javascript:;" class="notice_cancel">朕知道了</a>
 </div>
+
+<div class="wrapper" style="display: none;">
+    <h2>订单详情</h2>
+    <p><em>CCC：</em><label class="amount">0.00</label></p>
+    <p><em>付款方式：</em><label class="channel">0.00</label></p>
+    <p><em>创建时间：</em><label class="create_time">0.00</label></p>
+    <p><em>处理时间：</em><label class="pay_time">0.00</label></p>
+    <p><em>订单号：</em><label class="order_sn">0.00</label></p>
+    <p><em>订单状态：</em><label class="status">0.00</label></p>
+    <div class="w_btn" onclick="$('.wrapper').hide();">朕知道了</div>
+</div>
+
 </body>
 <script>
     var day = new Date();
@@ -363,14 +382,14 @@
             for (let i = 0; i < len; i++) {
                 var item = list[i];
                 html +=
-                    '<li>' +
-                    '<img src="'+getChannelImg(item.channel)+'" alt="" data-type="2">' +
+                    '<li order_sn="'+item.orderSn+'" pay_time="'+item.payTime+'">' +
+                    '<img src="'+getChannelImg(item.channel)+'" alt="" data-type="'+item.channel+'">' +
                     '<div class="two">' +
-                    '<span>'+item.createTime+'</span>' +
+                    '<span class="c_time">'+item.createTime+'</span>' +
                     '<span> </span>' +
-                    '<span>'+item.amount.toFixed(2)+'</span>' +
+                    '<span class="amount">'+item.amount.toFixed(2)+'</span>' +
                     '</div>' +
-                    '<span class="three '+getClass(item.status)+'" data-type="'+item.status+'">'+getStatus(item.status)+'</span>' +
+                    '<span class="state three '+getClass(item.status)+'" data-type="'+item.status+'">'+getStatus(item.status)+'</span>' +
                     '<a href="javascript:void(0);" class="four">删除</a>' +
                     '</li>';
             }
@@ -379,6 +398,11 @@
             } else {
                 $(".two_model ul").append(html);
             }
+
+
+            $(".two_model ul li").click(function () {
+                showDetail($(this))
+            });
         });
     }
 
@@ -393,6 +417,7 @@
         }
         return logo;
     }
+
 
 
     function getClass(status) {
@@ -430,6 +455,42 @@
             text = "付款失败";
         }
         return text;
+    }
+
+    function showDetail(obj) {
+        var channel = $(obj).find("img").attr("data-type");
+        var channelTxt = getChannelTxt(channel);
+        var orderSn = $(obj).attr("order_sn");
+        var pay_time = $(obj).attr("pay_time");
+
+        var c_time = $(obj).find(".c_time").text();
+        var amount = $(obj).find(".amount").text();
+        var status = $(obj).find(".state").text();
+
+        console.log(channelTxt, orderSn, pay_time, c_time, amount, status);
+        $(".wrapper .amount").text(amount);
+        $(".wrapper .create_time").text(c_time);
+        $(".wrapper .pay_time").text(pay_time);
+        $(".wrapper .order_sn").text(orderSn);
+        $(".wrapper .status").text(status);
+        $(".wrapper .channel").text(channelTxt);
+        $(".wrapper").show();
+
+
+    }
+
+    function getChannelTxt(channel) {
+        var logo = "";
+        if (channel == 1) {
+            logo = "支付宝";
+        } else if (channel == 2) {
+            logo = "微信";
+        } else if (channel == 3) {
+            logo = "拼多多商家";
+        }else if (channel == 4) {
+            logo = "拼多多买家";
+        }
+        return logo;
     }
 
 </script>

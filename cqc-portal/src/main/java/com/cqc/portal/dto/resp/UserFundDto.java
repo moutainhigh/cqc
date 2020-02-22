@@ -30,4 +30,6 @@ public class UserFundDto {
      */
     private BigDecimal pddBuyer = BigDecimal.ZERO;
 
+    private Boolean newOrderStatus = false;
+
 }

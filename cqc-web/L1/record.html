@@ -55,6 +55,12 @@
 
         .dtPicker th, .dtPicker td {
         }
+
+        .wrapper{width: 80%;min-height: 2.5rem; background: white; box-sizing: border-box; box-shadow: 0 0 .1rem gray; border-radius: .2rem; position: fixed; top: 30%; left: 10%; z-index: 1001;}
+        .wrapper h2{ width: 100%; text-align: center; line-height: 1rem; font-size: .35rem;}
+        .wrapper p{ padding: .15rem .2rem; font-size: .3rem;}
+        .wrapper em{ color: #9c9c9c;text-align: right; width: 30%; display: inline-block;}
+        .w_btn{ width: 100%; text-align: center; color: blue; font-size: .3rem; border-top: 1px solid #dedede; padding: .2rem 0;}
     </style>
 </head>
 
@@ -146,6 +152,19 @@
     </div>
     <a href="javascript:;" class="notice_cancel">朕知道了</a>
 </div>
+
+<div class="wrapper" style="display: none;">
+    <h2>账变详情</h2>
+    <p><em>CCC：</em><label class="amount">0.00</label></p>
+    <p><em>变动前：</em><label class="pre_balance">0.00</label></p>
+    <p><em>变动后：</em><label class="balance">0.00</label></p>
+    <p><em>账变方式：</em><label class="type">0.00</label></p>
+    <p><em>创建时间：</em><label class="create_time">0.00</label></p>
+    <p><em>订单号：</em><label class="order_sn">0.00</label></p>
+    <div class="w_btn" onclick="$('.wrapper').hide();">朕知道了</div>
+</div>
+
+
 </body>
 <script>
     var day = new Date();
@@ -316,16 +335,21 @@
             var item = list[i];
             var direct = item.direct == 1 ? "+" : "-";
             html +=
-                '<div class="pro_each">' +
+                '<div class="pro_each" pre_balance="'+item.preBalance+'" balance="'+item.balance+'" data-type="'+item.id+'">' +
                 '<span>'+direct+'</span>' +
-                '<span>'+item.amount.toFixed(4)+'</span>' +
+                '<span class="amount">'+item.amount.toFixed(4)+'</span>' +
                 '<div class="re fr">' +
-                '<p>'+item.createTime+'</p>' +
-                '<p class="'+getClass(item.type)+'" data-type="'+item.type+'">'+getType(item.type)+'</p>' +
+                '<p class="create_time">'+item.createTime+'</p>' +
+                '<p class="type '+getClass(item.type)+'" data-type="'+item.type+'">'+getType(item.type)+'</p>' +
                 '</div>' +
                 '</div>';
         }
         $(".invitation_code_box").append(html);
+
+        $(".invitation_code_box .pro_each").click(function () {
+
+            showDetail($(this));
+        });
     }
 
 
@@ -363,6 +387,10 @@
             cls = "bg_g";
         } else if (type == 15) {
             cls = "bg_r";
+        } else if (type == 16) {
+            cls = "bg_r";
+        } else if (type == 17) {
+            cls = "bg_r";
         }
         return cls;
     }
@@ -384,7 +412,7 @@
         } else if (type == 5) {
             text = "提款失败";
         } else if (type == 6) {
-            text = "确认收款";
+            text = "抢单付款";
         } else if (type == 7) {
             text = "任务佣金";
         } else if (type == 8) {
@@ -406,8 +434,29 @@
         }
         else if (type == 16) {
             text = "拼多多押金";
+        } else if (type == 17) {
+            text = "订单取消退回";
         }
         return text;
+    }
+    
+    function showDetail(obj) {
+        var type = $(obj).find(".type").text();
+        var order_sn = $(obj).attr("data-type");
+        var pre_balance =  $(obj).attr("pre_balance");
+        var balance =  $(obj).attr("balance");
+
+        var create_time = $(obj).find(".create_time").text();
+        var amount = $(obj).find(".amount").text();
+
+
+        $(".wrapper .amount").text(amount);
+        $(".wrapper .create_time").text(create_time);
+        $(".wrapper .balance").text(balance);
+        $(".wrapper .order_sn").text(order_sn);
+        $(".wrapper .pre_balance").text(pre_balance);
+        $(".wrapper .type").text(type);
+        $(".wrapper").show();
     }
 </script>
 </html>

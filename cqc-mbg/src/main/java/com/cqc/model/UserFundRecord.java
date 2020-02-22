@@ -53,6 +53,11 @@ public class UserFundRecord implements Serializable {
      */
     private BigDecimal balance;
 
+    /**
+     * 变动前余额
+     */
+    private BigDecimal preBalance;
+
     private String remark;
 
     private Date createTime;

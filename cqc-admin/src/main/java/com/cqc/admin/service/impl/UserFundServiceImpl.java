@@ -47,18 +47,19 @@ public class UserFundServiceImpl extends ServiceImpl<UserFundMapper, UserFund> i
         if (BigDecimal.ZERO.compareTo(amount) >= 0) {
             return false;
         }
+        // 保存记录
+        UserFund userFund = this.getFund(userId);
         int i = userFundMapper.addBalance(userId, amount);
         if (i != 1) {
             return false;
         }
-        // 保存记录
-        UserFund userFund = this.getFund(userId);
         UserFundRecord record = new UserFundRecord();
         record.setUserId(userId);
         record.setType(1);
         record.setAmount(amount);
         record.setDirect(1);
-        record.setBalance(userFund.getBalance());
+        record.setPreBalance(userFund.getAvailableBalance());
+        record.setBalance(userFund.getAvailableBalance().add(amount));
         record.setRemark("后台管理员手工充值");
 
         int j = userFundRecordMapper.insert(record);
@@ -74,18 +75,19 @@ public class UserFundServiceImpl extends ServiceImpl<UserFundMapper, UserFund> i
         if (BigDecimal.ZERO.compareTo(amount) >= 0) {
             return false;
         }
+        // 保存记录
+        UserFund userFund = this.getFund(userId);
         int i = userFundMapper.addBalance(userId, amount);
         if (i != 1) {
             return false;
         }
-        // 保存记录
-        UserFund userFund = this.getFund(userId);
         UserFundRecord record = new UserFundRecord();
         record.setUserId(userId);
         record.setType(5);
         record.setAmount(amount);
         record.setDirect(1);
-        record.setBalance(userFund.getBalance());
+        record.setPreBalance(userFund.getAvailableBalance());
+        record.setBalance(userFund.getAvailableBalance().add(amount));
         record.setRemark("后台打回提现");
 
         int j = userFundRecordMapper.insert(record);

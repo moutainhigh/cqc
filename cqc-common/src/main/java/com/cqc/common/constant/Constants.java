@@ -21,5 +21,6 @@ public class Constants {
     // 拼多多买家押金
     public final static BigDecimal DEPOSIT_BUYER = new BigDecimal("3000");
 
-
+    // 新订单提醒
+    public final static String NEW_ORDER_PREFIX = "new_order_user_";
 }

@@ -134,6 +134,9 @@
         </div>
         <!-- 底部end -->
     </div>
+
+    <video id="vdo" src="./music/new_order.mp3" hidden></video>
+    <iframe id="ifm" allow="autoplay" style="display:none" src="./music/new_order.mp3"></iframe>
 </body>
 <script>
     // 显示通告
@@ -272,6 +275,8 @@
         }
         getForAuth(host + get_auto_order_status, null, function(result){
             if (result.code == 200) {
+                console.log("获取账号最新状态： ", result.data);
+                play();
                 // 显示余额
                 $("#cqc_balance").text(result.data.cqc.toFixed(4));
                 if (result.data.autoOrderStatus){
@@ -424,6 +429,14 @@
         return text;
     }
 
-
+    function play() {
+        var vdo = new $("#vdo")[0];
+        ifm.onload = function(){
+            vdo.src = './music/new_order.mp3';
+            vdo.oncanplay = function(){
+                vdo.play();
+            };
+        };
+    }
 </script>
 </html>

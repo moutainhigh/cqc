@@ -12,6 +12,7 @@ import com.cqc.portal.dto.resp.CityHotDataDto;
 import com.cqc.portal.mapper.OrderMapper;
 import com.cqc.portal.mapper.OrderPublishMapper;
 import com.cqc.portal.service.*;
+import com.cqc.portal.utils.EhcacheUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -60,6 +61,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private EhcacheUtil ehcacheUtil;
 
     @Autowired
     private PddAccountService pddAccountService;
@@ -237,6 +240,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         if (orderPublish == null || orderPublish.getStatus() != -1) {
             return;
         }
+        // 冻结金额
+        boolean b = userFundService.freezeBalance(user.getId(), orderPublish.getAmount());
+        if (!b) {
+            throw new BaseException("", "可用余额不足，不足以抢单");
+        }
         // 读取费率
         BigDecimal income = BigDecimal.ZERO;
         BigDecimal rate = rateService.getRate(orderPublish.getChannel());
@@ -278,6 +286,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             // 抢单失败
             throw new BaseException("", "抢单失败，回滚");
         }
+        // 抢单成功  存放标记到 ecache中s
+        ehcacheUtil.set(Constants.NEW_ORDER_PREFIX + user.getId(), "1");
     }
 
     @Override

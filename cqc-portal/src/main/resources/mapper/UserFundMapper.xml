@@ -15,6 +15,12 @@
             and balance >= #{amount} and available_balance >= #{amount}
     </update>
 
+    <update id="addBalance">
+        update user_fund set balance = balance + #{amount},
+        available_balance = available_balance + #{amount}
+        where user_id = #{userId}
+    </update>
+
     <update id="freezeBalance">
         update user_fund set freeze_balance = freeze_balance + #{amount},
             available_balance = available_balance - #{amount}

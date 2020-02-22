@@ -117,16 +117,17 @@ public class UserFundServiceImpl extends ServiceImpl<UserFundMapper, UserFund> i
     @Transactional(rollbackFor = Throwable.class)
     @Override
     public boolean addBalance(String userId, BigDecimal amount, int type, String remark) {
-        userFundMapper.addCommission(userId, amount);
-
         UserFund userFund = this.getFund(userId);
+
+        userFundMapper.addCommission(userId, amount);
         // 保存记录
         UserFundRecord record = new UserFundRecord();
         record.setUserId(userId);
         record.setType(type);
         record.setAmount(amount);
         record.setDirect(1);
-        record.setBalance(userFund.getBalance());
+        record.setPreBalance(userFund.getAvailableBalance());
+        record.setBalance(userFund.getAvailableBalance().add(amount));
         record.setRemark(remark);
         userFundRecordMapper.insert(record);
 
@@ -156,15 +157,43 @@ public class UserFundServiceImpl extends ServiceImpl<UserFundMapper, UserFund> i
     @Transactional(rollbackFor = Throwable.class)
     @Override
     public boolean freezeBalance(String userId, BigDecimal amount) {
-        int i = userFundMapper.freezeBalance(userId, amount);
-        return i == 1;
+        UserFund userFund = this.getFund(userId);
+        int i = userFundMapper.cutBalance(userId, amount);
+        if (i <= 0) {
+            return false;
+        }
+        // 保存记录
+        UserFundRecord record = new UserFundRecord();
+        record.setUserId(userId);
+        record.setType(6);
+        record.setAmount(amount);
+        record.setDirect(2);
+        record.setPreBalance(userFund.getAvailableBalance());
+        record.setBalance(userFund.getAvailableBalance().subtract(amount));
+        record.setRemark("抢单付款");
+        userFundRecordMapper.insert(record);
+        return true;
     }
 
     @Transactional(rollbackFor = Throwable.class)
     @Override
     public boolean unFreezeBalance(String userId, BigDecimal amount) {
-        int i = userFundMapper.unFreezeBalance(userId, amount);
-        return i == 1;
+        UserFund userFund = this.getFund(userId);
+        int i = userFundMapper.addBalance(userId, amount);
+        if (i <= 0) {
+            return false;
+        }
+        // 保存记录
+        UserFundRecord record = new UserFundRecord();
+        record.setUserId(userId);
+        record.setType(17);
+        record.setAmount(amount);
+        record.setDirect(1);
+        record.setPreBalance(userFund.getAvailableBalance());
+        record.setBalance(userFund.getAvailableBalance().add(amount));
+        record.setRemark("取消订单退回");
+        userFundRecordMapper.insert(record);
+        return true;
     }
 
     @Transactional(rollbackFor = Throwable.class)
@@ -186,6 +215,7 @@ public class UserFundServiceImpl extends ServiceImpl<UserFundMapper, UserFund> i
         record.setType(4);
         record.setAmount(amount);
         record.setDirect(2);
+        record.setPreBalance(userFund.getAvailableBalance());
         record.setBalance(userFund.getAvailableBalance().subtract(amount));
         record.setRemark("提现");
         userFundRecordMapper.insert(record);
@@ -219,6 +249,7 @@ public class UserFundServiceImpl extends ServiceImpl<UserFundMapper, UserFund> i
         record.setType(16);
         record.setAmount(amount);
         record.setDirect(2);
+        record.setPreBalance(userFund.getAvailableBalance());
         record.setBalance(userFund.getAvailableBalance().subtract(amount));
         record.setRemark("提现");
         userFundRecordMapper.insert(record);
