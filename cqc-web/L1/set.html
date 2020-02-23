@@ -102,5 +102,48 @@
         window.location = "./sign_out.html";
     });
 
+    $(function () {
+
+        getAutoOrderStatus();
+
+        $("#chck").click(function () {
+            var status = 0;
+            if ($(this).attr("checked") == "checked") {
+                status = 0;
+            } else {
+                status = 1;
+            }
+            updateOrderNotify(status);
+        });
+    });
+
+    function getAutoOrderStatus() {
+        if (!hashToken()) {
+            return false;
+        }
+        getForAuth(host + get_auto_order_status, null, function(result){
+            if (result.code == 200) {
+                console.log("获取账号最新状态： ", result.data);
+
+                if (result.data.orderNotify) {
+                    $("#chck").attr("checked", "checked");
+                } else {
+                    $("#chck").removeAttr("checked");
+                }
+            }
+        });
+    }
+
+
+
+    function updateOrderNotify(status) {
+        var uri = update_order_notify_uri + "?status=" + status;
+        getForAuth(host + uri, null, function(result){
+            if (result.code == 200) {
+                $(".comm_mes").show().fadeOut(2000).find("p").text("更改成功");
+            }
+        });
+    }
+
 </script>
 </html>

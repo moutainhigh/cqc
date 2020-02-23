@@ -136,7 +136,7 @@
     </div>
 
     <video id="vdo" src="./music/new_order.mp3" hidden></video>
-    <iframe id="ifm" allow="autoplay" style="display:none" src="./music/new_order.mp3"></iframe>
+    <iframe id="ifm" allow="autoplay" style="display:none" src=""></iframe>
 </body>
 <script>
     // 显示通告
@@ -276,7 +276,14 @@
         getForAuth(host + get_auto_order_status, null, function(result){
             if (result.code == 200) {
                 console.log("获取账号最新状态： ", result.data);
-                play();
+
+                // 必须开启了抢单提示才 有声音
+                if (result.data.newOrderStatus) {
+                    // 抢单提示声音
+                    if (result.data.orderNotify) {
+                        play(1);
+                    }
+                }
                 // 显示余额
                 $("#cqc_balance").text(result.data.cqc.toFixed(4));
                 if (result.data.autoOrderStatus){
@@ -429,14 +436,10 @@
         return text;
     }
 
-    function play() {
+    function play(a) {
         var vdo = new $("#vdo")[0];
-        ifm.onload = function(){
-            vdo.src = './music/new_order.mp3';
-            vdo.oncanplay = function(){
-                vdo.play();
-            };
-        };
+        ifm.src = "./music/new_order.mp3";
+
     }
 </script>
 </html>

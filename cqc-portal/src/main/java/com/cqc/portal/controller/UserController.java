@@ -224,7 +224,7 @@ public class UserController {
     @ApiOperation(value = "查询用户资金")
     @GetMapping("/getAutoOrderStatus")
     public Result<UserFundDto> getAutoOrderStatus() {
-        String userId = PortalUserUtil.getCurrentUserId();
+            String userId = PortalUserUtil.getCurrentUserId();
         if (StringUtils.isEmpty(userId)) {
             throw new BaseException(ResultCode.UNAUTHORIZED);
         }
@@ -236,6 +236,7 @@ public class UserController {
         userFundDto.setCqc(fund.getAvailableBalance().multiply(Constants.BUY_ORDER_PERCENT));
 
         userFundDto.setAutoOrderStatus(user.getAutoOrderStatus());
+        userFundDto.setOrderNotify(user.getOrderNotify());
 
         String newOrderState = ehcacheUtil.get(Constants.NEW_ORDER_PREFIX + user.getId());
         if ("1".equals(newOrderState)) {
@@ -247,5 +248,24 @@ public class UserController {
     }
 
 
+    @ApiOperation(value = "更改用户抢单通知")
+    @GetMapping("/updateOrderNotify")
+    public Result<Boolean> updateOrderNotify(Integer status) {
+        String userId = PortalUserUtil.getCurrentUserId();
+        if (StringUtils.isEmpty(userId)) {
+            throw new BaseException(ResultCode.UNAUTHORIZED);
+        }
+        userService.getUser(userId);
+
+        User entity = new User();
+        entity.setId(userId);
+        entity.setStatus(status);
+
+        boolean rs = userService.updateById(entity);
+        if (!rs) {
+            return Result.failed("操作失败");
+        }
+        return Result.success(true);
+    }
 
 }

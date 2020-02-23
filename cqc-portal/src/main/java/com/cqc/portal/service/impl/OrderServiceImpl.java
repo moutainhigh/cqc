@@ -117,10 +117,14 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             // 没有可抢的订单
             return;
         }
+        // 过滤
+        List<ReceiveCode> collect = list.stream().filter(item -> {return item.getChannel().equals(order.getChannel());
+        }).collect(Collectors.toList());
+
         ReceiveCode receiveCode = new ReceiveCode();
         PddAccount pddAccount = new PddAccount();
 
-        receiveCode = list.get(new Random().nextInt(list.size() - 1));
+        receiveCode = collect.get(new Random().nextInt(collect.size() - 1));
         if (!CollectionUtils.isEmpty(pddList)) {
             pddAccount = pddList.get(new Random().nextInt(pddList.size() - 1));
         }

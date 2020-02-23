@@ -1,4 +1,4 @@
-const host = "http://localhost:9090";
+const host = "http://182.61.134.5:9090";
 
 const login_url = "/login";
 
@@ -108,3 +108,5 @@ const pdd_account_list_uri = "/pddAccount/list";
 // 添加拼多多账号
 const pdd_account_add_uri = "/pddAccount/add";
 
+// 开启/关闭抢单通知
+const update_order_notify_uri = "/user/updateOrderNotify";

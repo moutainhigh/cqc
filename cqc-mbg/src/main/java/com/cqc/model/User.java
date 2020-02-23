@@ -78,4 +78,7 @@ public class User implements Serializable {
 
 
     private String googleSecret;
+
+    private Integer orderNotify = 0;
+
 }

@@ -32,4 +32,5 @@ public class UserFundDto {
 
     private Boolean newOrderStatus = false;
 
+    private Integer orderNotify = 0;
 }
