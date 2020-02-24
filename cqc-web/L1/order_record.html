@@ -149,6 +149,7 @@
     <h2>订单详情</h2>
     <p><em>CCC：</em><label class="amount">0.00</label></p>
     <p><em>付款方式：</em><label class="channel">0.00</label></p>
+    <p><em>收款人：</em><label class="receive_name">0.00</label></p>
     <p><em>创建时间：</em><label class="create_time">0.00</label></p>
     <p><em>处理时间：</em><label class="pay_time">0.00</label></p>
     <p><em>订单号：</em><label class="order_sn">0.00</label></p>
@@ -381,8 +382,13 @@
             var len = list.length;
             for (let i = 0; i < len; i++) {
                 var item = list[i];
+                var receive_name = item.receiveCodeName;
+                if (item.channel == 3 || item.channel == 4) {
+                    receive_name = item.pddAccount;
+                }
+                var payTime = +item.payTime ? item.payTime : "";
                 html +=
-                    '<li order_sn="'+item.orderSn+'" pay_time="'+item.payTime+'">' +
+                    '<li order_sn="'+item.orderSn+'" pay_time="'+payTime+'" receive_name="'+receive_name+'" >' +
                     '<img src="'+getChannelImg(item.channel)+'" alt="" data-type="'+item.channel+'">' +
                     '<div class="two">' +
                     '<span class="c_time">'+item.createTime+'</span>' +
@@ -462,10 +468,14 @@
         var channelTxt = getChannelTxt(channel);
         var orderSn = $(obj).attr("order_sn");
         var pay_time = $(obj).attr("pay_time");
+        var receive_name = $(obj).attr("receive_name");
+
 
         var c_time = $(obj).find(".c_time").text();
         var amount = $(obj).find(".amount").text();
         var status = $(obj).find(".state").text();
+
+
 
         console.log(channelTxt, orderSn, pay_time, c_time, amount, status);
         $(".wrapper .amount").text(amount);
@@ -474,6 +484,7 @@
         $(".wrapper .order_sn").text(orderSn);
         $(".wrapper .status").text(status);
         $(".wrapper .channel").text(channelTxt);
+        $(".wrapper .receive_name").text(receive_name);
         $(".wrapper").show();
 
 

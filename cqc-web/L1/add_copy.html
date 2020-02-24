@@ -65,7 +65,7 @@
                 <h2 class="notice_title">请输入google验证码</h2>
             </div>
             <div style="height: 50px; margin-top: 10px;">
-                <input style="margin-top: 10px; height: 25px" id="google_code"/>
+                <input style="margin-top: 10px; height: 25px" id=""/>
             </div>
             <a href="javascript:;" class="notice_cancel b-color sure" id="sure">确认</a>
             <a href="javascript: $('.open_google_code').hide();$('.gray_bg').hide();"
@@ -99,6 +99,9 @@
 
                     </div>
                 </div>
+                <h3>谷歌验证码</h3>
+                <input type="text" id="google_code" class="input_text">
+                <a href="./google_down.html" style="margin-top: 10px" id="go_bind">点击绑定谷歌验证码</a>
                 <a href="#" class="sure_btn sure" id="sure_btn">提交</a>
             </div>
             <!-- 筛选内容end -->
@@ -175,7 +178,7 @@
 
      $(function () {
 
-
+         getGoogleSecretStatus();
 
          $(".cate .each_btn").click(function(){
              $(this).addClass("bg_blue").siblings().removeClass("bg_blue");
@@ -199,7 +202,7 @@
                  return;
              }
              var googleCode = $("#google_code").val();
-             if (resultCode == 1050 && !googleCode){
+             if (!googleCode){
                  $(".comm_mes").show().fadeOut(2000).find("p").text("请输入6位谷歌验证码");
                  return;
              }
@@ -234,6 +237,23 @@
 
 
 
-
+    function getGoogleSecretStatus() {
+        if (!hashToken()) {
+            $(".comm_mes").show().fadeOut(2000).find("p").text("请先登录");
+            alert("请先登录");
+            return false;
+        }
+        getForAuth(host + get_user_info, null, function (result) {
+            if (result.code == 200) {
+                // 如果已经绑定谷歌
+                var status = result.data.googleBind;
+                if (status == 1) {
+                    $("#go_bind").hide();
+                }else {
+                    $("#go_bind").show();
+                }
+            }
+        });
+    }
 </script>
 </html>

@@ -13,6 +13,7 @@ import com.cqc.portal.mapper.OrderMapper;
 import com.cqc.portal.mapper.OrderPublishMapper;
 import com.cqc.portal.service.*;
 import com.cqc.portal.utils.EhcacheUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -35,10 +36,14 @@ import java.util.stream.Collectors;
  * @since 2020-01-18
  */
 
-
+@Slf4j
 @EnableAsync
 @Service
 public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements OrderService {
+
+
+    @Autowired
+    private OrderPublishService orderPublishService;
 
     @Autowired
     private OrderPublishMapper orderPublishMapper;
@@ -112,7 +117,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             return;
         }
         // 查询金额足够支付的订单
-        OrderPublish order = orderPublishMapper.selectNewOrder(availableBalance, channelSet);
+        OrderPublish order = orderPublishService.selectNewOrder(availableBalance, channelSet);
         if (order == null) {
             // 没有可抢的订单
             return;
@@ -124,13 +129,25 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         ReceiveCode receiveCode = new ReceiveCode();
         PddAccount pddAccount = new PddAccount();
 
-        receiveCode = collect.get(new Random().nextInt(collect.size() - 1));
+        if (!CollectionUtils.isEmpty(collect)) {
+            if (collect.size() > 1) {
+                receiveCode = collect.get(new Random().nextInt(collect.size()));
+            } else {
+                receiveCode = collect.get(0);
+            }
+        }
+
         if (!CollectionUtils.isEmpty(pddList)) {
-            pddAccount = pddList.get(new Random().nextInt(pddList.size() - 1));
+            if (pddList.size() > 1) {
+                pddAccount = pddList.get(new Random().nextInt(pddList.size()));
+            } else {
+                pddAccount = pddList.get(0);
+            }
         }
         // 查询该二维码和该金额是否存在未支付的订单
         Integer ct = orderMapper.countByReceiveId(receiveCode.getId(), order.getAmount());
         if (ct != null && ct > 0) {
+            log.info("该收款码 不能重复抢 同样金额的单");
             return;
         }
         buyOrder(user, order.getId(), receiveCode, pddAccount);
@@ -159,7 +176,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             return false;
         }
         // 查询放单
-        OrderPublish orderPublish = orderPublishMapper.selectById(order.getPublishOrderId());
+        OrderPublish orderPublish = orderPublishService.getById(order.getPublishOrderId());
         if (orderPublish == null || orderPublish.getStatus() != 0) {
             return false;
         }
@@ -183,7 +200,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             OrderPublish entity2 = new OrderPublish();
             entity2.setId(order.getPublishOrderId());
             entity2.setStatus(-1);
-            orderPublishMapper.updateById(entity2);
+            orderPublishService.updateById(entity2);
         }
         return true;
     }
@@ -202,11 +219,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         if (order.getStatus() > 0) {
             throw new BaseException("", "重复付款");
         }
-        // 获取订单金额  将用户cqc冻结金额减少
-        boolean rs = userFundService.cutFreezeBalance(userId, order.getAmount(), 6, "确认付款");
-        if (!rs) {
-            return false;
-        }
+
         // 将订单状态改为确认付款
         Order entity = new Order();
         entity.setId(id);
@@ -219,7 +232,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         entity2.setId(order.getPublishOrderId());
         entity2.setStatus(1);
         entity2.setPayTime(new Date());
-        orderPublishMapper.updateById(entity2);
+        orderPublishService.updateById(entity2);
 
         // 保存佣金记录
         userFundService.addIncome(userId, order.getIncome());

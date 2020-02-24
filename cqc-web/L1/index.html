@@ -366,11 +366,15 @@
                 if (flag === 1) {
                     continue;
                 }
+                var receive_name = item.receiveCodeName;
+                if (item.channel == 3 || item.channel == 4) {
+                    receive_name = item.pddAccount;
+                }
                 html =
                     '<li>' +
                     '<img src="'+getChannelImg(item.channel)+'" alt="" data-type="2">' +
                     '<div class="two">' +
-                    '<span>'+item.receiveCodeName+'</span>' +
+                    '<span>'+receive_name+'</span>' +
                     '<span class="order_time">'+item.createTime+'</span>' +
                     '<span>'+item.amount.toFixed(2)+'</span>' +
                     '</div>' +

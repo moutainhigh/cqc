@@ -149,6 +149,9 @@ public class OrderController {
             // 如果没实名 不允许抢单
             throw new BaseException(BaseErrorMsg.NOT_REAL);
         }
+        if (StringUtils.isEmpty(user.getGoogleSecret())) {
+            throw new BaseException(BaseErrorMsg.NO_BIND_GOODS_SECRET);
+        }
         List<ReceiveCode> list = receiveCodeService.list(new QueryWrapper<ReceiveCode>().eq("user_id", userId)
                 .eq("status", 1));
         //未上传收款码

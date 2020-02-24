@@ -8,9 +8,11 @@ import com.cqc.common.enums.BaseErrorMsg;
 import com.cqc.common.exception.BaseException;
 import com.cqc.model.ReceiveCode;
 import com.cqc.model.User;
+import com.cqc.model.UserRealInfo;
 import com.cqc.portal.dto.ReceiveCodeAddParam;
 import com.cqc.portal.dto.ReceiveCodeQueryParam;
 import com.cqc.portal.service.ReceiveCodeService;
+import com.cqc.portal.service.UserRealInfoService;
 import com.cqc.portal.service.UserService;
 import com.cqc.security.util.GoogleAuthUtil;
 import com.cqc.security.util.PortalUserUtil;
@@ -45,6 +47,9 @@ public class ReceiveCodeController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserRealInfoService userRealInfoService;
+
     @ApiOperation("我的收款账户")
     @GetMapping("/list")
     public Result<List<ReceiveCode>> list(ReceiveCodeQueryParam param) {
@@ -69,21 +74,28 @@ public class ReceiveCodeController {
         if (StringUtils.isEmpty(userId)) {
             throw new BaseException(ResultCode.UNAUTHORIZED);
         }
-        User user = userService.checkUser(userId);
-        // 判断用户是否绑定了谷歌验证码
-        if (!StringUtils.isEmpty(user.getGoogleSecret())) {
-            // 开启了谷歌验证码，但是没有输入验证码，报错
-            if (StringUtils.isEmpty(param.getGoogleCode())) {
-                throw new BaseException(BaseErrorMsg.NO_GOOGLE_CODE);
-            }
-            // 此时验证码谷歌验证码
-            long t = System.currentTimeMillis();
-            boolean b = GoogleAuthUtil.checkCode(param.getGoogleCode(), user.getGoogleSecret(), t);
-            log.info("谷歌验证， 账号 : {}, 密钥: {}, code ： {}", user.getId(), user.getGoogleSecret(), param.getGoogleCode());
-            if (!b) {
-                throw new BaseException(BaseErrorMsg.GOOGLE_CODE_ERROR);
-            }
+        // 查实名信息
+        UserRealInfo realInfo = userRealInfoService.getRealInfo(userId);
+        if (realInfo == null) {
+            // 如果没实名 不允许抢单
+            throw new BaseException(BaseErrorMsg.NOT_REAL);
         }
+
+        User user = userService.checkUser(userId);
+        if (StringUtils.isEmpty(user.getGoogleSecret())) {
+            throw new BaseException(BaseErrorMsg.NO_BIND_GOODS_SECRET);
+        }
+        // 此时验证码谷歌验证码
+        long t = System.currentTimeMillis();
+        boolean b = GoogleAuthUtil.checkCode(param.getGoogleCode(), user.getGoogleSecret(), t);
+        log.info("谷歌验证， 账号 : {}, 密钥: {}, code ： {}", user.getId(), user.getGoogleSecret(), param.getGoogleCode());
+        if (!b) {
+            throw new BaseException(BaseErrorMsg.GOOGLE_CODE_ERROR);
+        }
+        // 判断用户是否绑定了谷歌验证码
+        /*if (!StringUtils.isEmpty(user.getGoogleSecret())) {
+
+        }*/
         ReceiveCode receiveCode = new ReceiveCode();
         receiveCode.setUserId(user.getId());
         receiveCode.setAccount(user.getAccount());

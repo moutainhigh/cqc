@@ -194,6 +194,10 @@ public class UserController {
             // 如果没实名 不允许抢单
             return Result.failed(BaseErrorMsg.NOT_REAL);
         }
+        // 未绑定谷歌验证码不允许抢单
+        if (StringUtils.isEmpty(user.getGoogleSecret())) {
+            throw new BaseException(BaseErrorMsg.NO_BIND_GOODS_SECRET);
+        }
         //未上传收款码
         int codeNumber = receiveCodeService.getCodeNumber(userId);
         if (codeNumber <= 0) {
