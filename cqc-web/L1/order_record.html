@@ -151,7 +151,7 @@
     <p><em>付款方式：</em><label class="channel">0.00</label></p>
     <p><em>收款人：</em><label class="receive_name">0.00</label></p>
     <p><em>创建时间：</em><label class="create_time">0.00</label></p>
-    <p><em>处理时间：</em><label class="pay_time">0.00</label></p>
+    <p><em>处理时间：</em><label class="cancel_time">0.00</label></p>
     <p><em>订单号：</em><label class="order_sn">0.00</label></p>
     <p><em>订单状态：</em><label class="status">0.00</label></p>
     <div class="w_btn" onclick="$('.wrapper').hide();">朕知道了</div>
@@ -386,9 +386,18 @@
                 if (item.channel == 3 || item.channel == 4) {
                     receive_name = item.pddAccount;
                 }
-                var payTime = +item.payTime ? item.payTime : "";
+                var payTime = item.payTime ? item.payTime : "";
+                var cancelTime = item.cancelTime ? item.cancelTime : "";
+                var dealTime = "";
+                if (item.status == 1) {
+                    dealTime = payTime;
+                } else if (item.status == 3) {
+                    dealTime = cancelTime;
+                }
+
+
                 html +=
-                    '<li order_sn="'+item.orderSn+'" pay_time="'+payTime+'" receive_name="'+receive_name+'" >' +
+                    '<li order_sn="'+item.orderSn+'" cancel_time="'+dealTime+'" receive_name="'+receive_name+'" >' +
                     '<img src="'+getChannelImg(item.channel)+'" alt="" data-type="'+item.channel+'">' +
                     '<div class="two">' +
                     '<span class="c_time">'+item.createTime+'</span>' +
@@ -467,7 +476,7 @@
         var channel = $(obj).find("img").attr("data-type");
         var channelTxt = getChannelTxt(channel);
         var orderSn = $(obj).attr("order_sn");
-        var pay_time = $(obj).attr("pay_time");
+        var cancel_time = $(obj).attr("cancel_time");
         var receive_name = $(obj).attr("receive_name");
 
 
@@ -477,10 +486,10 @@
 
 
 
-        console.log(channelTxt, orderSn, pay_time, c_time, amount, status);
+        console.log(channelTxt, orderSn, cancel_time, c_time, amount, status);
         $(".wrapper .amount").text(amount);
         $(".wrapper .create_time").text(c_time);
-        $(".wrapper .pay_time").text(pay_time);
+        $(".wrapper .cancel_time").text(cancel_time);
         $(".wrapper .order_sn").text(orderSn);
         $(".wrapper .status").text(status);
         $(".wrapper .channel").text(channelTxt);
